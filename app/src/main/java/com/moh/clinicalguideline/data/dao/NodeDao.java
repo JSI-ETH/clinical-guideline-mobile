@@ -7,17 +7,40 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.moh.clinicalguideline.data.entities.Node;
+import com.moh.clinicalguideline.data.entities.NodeDescription;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 @Dao
 public interface NodeDao {
 
-    @Query("SELECT * FROM Node WHERE Id =:id LIMIT 1")
-    Node getNode(int id);
+    @Query("Select nd.* \n" +
+            "    from node n \n" +
+            "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
+            "    join nodeDescription nd on nd.id = n.Id\n" +
+            "    Where nt.NodeTypeCode =:code ")
+    Observable<List<NodeDescription>> getNodesWithDescriptionByNodeTypeCode(String code);
 
-    @Query("SELECT * FROM Node Where NodeTypeId =:nodeTypeId")
-    List<Node> getNodes(int nodeTypeId);
+    @Query("Select nd.* \n" +
+            "    From noderelation nr \n" +
+            "       Join node n on n.Id = nr.ChildNodeId " +
+            "       Join nodetype nt on n.NodeTypeId = nt.Id\n" +
+            "       Join nodeDescription nd on nd.id = n.Id\n" +
+            "    Where nt.NodeTypeCode =:code and nr.ParentNodeId =:parentId")
+    Observable<List<NodeDescription>> getNodesWithDescriptionByParentIdAndNodeTypeCode(int parentId,String code);
+
+    @Query("Select nd.* \n" +
+            "    From noderelation nr \n" +
+            "       Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
+            "    Where nr.ParentNodeId =:parentId")
+    Observable<List<NodeDescription>> getNodesWithDescriptionByParentId(int parentId);
+
+    @Query("Select nd.* \n" +
+            "    From nodeDescription nd \n" +
+            "    Where nd.Id =:parentId")
+    Observable<NodeDescription> getNodesWithDescription(int parentId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Node... nodes);

@@ -9,13 +9,15 @@ import com.moh.clinicalguideline.data.dao.NodeDao;
 import com.moh.clinicalguideline.data.dao.NodeRelationDao;
 import com.moh.clinicalguideline.data.dao.NodeTypeDao;
 import com.moh.clinicalguideline.data.entities.Node;
+import com.moh.clinicalguideline.data.entities.NodeDescription;
 import com.moh.clinicalguideline.data.entities.NodeRelation;
 import com.moh.clinicalguideline.data.entities.NodeType;
 
 @Database(entities = {
         Node.class,
         NodeType.class,
-        NodeRelation.class},
+        NodeRelation.class,
+        NodeDescription.class},
  exportSchema = false,
          version = 1)
 @TypeConverters({Converters.class})

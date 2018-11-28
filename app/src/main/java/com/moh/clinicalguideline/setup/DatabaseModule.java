@@ -1,7 +1,9 @@
-package com.moh.clinicalguideline.data;
+package com.moh.clinicalguideline.setup;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+
+import com.moh.clinicalguideline.data.CgDatabase;
 
 import javax.inject.Singleton;
 

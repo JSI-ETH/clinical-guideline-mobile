@@ -3,7 +3,6 @@ package com.moh.clinicalguideline.setup;
 import android.app.Application;
 
 import com.moh.clinicalguideline.CgApplication;
-import com.moh.clinicalguideline.views.ActivityBindingModule;
 
 import javax.inject.Singleton;
 

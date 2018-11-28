@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.views;
+package com.moh.clinicalguideline.setup;
 
 
 import com.moh.clinicalguideline.setup.scope.ActivityScoped;
