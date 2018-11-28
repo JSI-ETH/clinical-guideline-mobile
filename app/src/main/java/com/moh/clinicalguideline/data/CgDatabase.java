@@ -18,8 +18,8 @@ import com.moh.clinicalguideline.data.entities.NodeType;
         NodeRelation.class},
  exportSchema = false,
          version = 1)
-@TypeConverters({converters.class})
-public abstract class cgdatabase extends RoomDatabase {
+@TypeConverters({Converters.class})
+public abstract class CgDatabase extends RoomDatabase {
     public abstract NodeDao getNodeDao();
     public abstract NodeTypeDao getNodeTypeDao();
     public abstract NodeRelationDao getNodeRelationDao();

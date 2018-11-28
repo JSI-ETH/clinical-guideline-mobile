@@ -19,17 +19,34 @@ android {
 }
 ext {
     roomVersion = "1.0.0"
+    daggerVer = 2.11
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
+    //region Install Room: SQLLite based Database persitance library
     annotationProcessor "android.arch.persistence.room:compiler:${roomVersion}"
     implementation "android.arch.persistence.room:runtime:${roomVersion}"
     testImplementation "android.arch.persistence.room:testing:${roomVersion}"
+    //endregion
 
+    //region Install Dagger: Dependency Injenction library
+    implementation "com.google.dagger:dagger-android:${daggerVer}"
+    implementation "com.google.dagger:dagger-android-support:${daggerVer}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVer}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVer}"
+    //endregion
+
+    //region Install rxJava: observer pattern extension library
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //endregion
+
+    //region Install Testing Libraries
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //endregion
 }
