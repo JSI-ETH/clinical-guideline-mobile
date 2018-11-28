@@ -21,7 +21,7 @@ public interface NodeDao {
             "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
             "    join nodeDescription nd on nd.id = n.Id\n" +
             "    Where nt.NodeTypeCode =:code ")
-    Observable<List<NodeDescription>> getNodesWithDescriptionByNodeTypeCode(String code);
+    List<NodeDescription> getNodesWithDescriptionByNodeTypeCode(String code);
 
     @Query("Select nd.* \n" +
             "    From noderelation nr \n" +
@@ -29,18 +29,18 @@ public interface NodeDao {
             "       Join nodetype nt on n.NodeTypeId = nt.Id\n" +
             "       Join nodeDescription nd on nd.id = n.Id\n" +
             "    Where nt.NodeTypeCode =:code and nr.ParentNodeId =:parentId")
-    Observable<List<NodeDescription>> getNodesWithDescriptionByParentIdAndNodeTypeCode(int parentId,String code);
+    List<NodeDescription> getNodesWithDescriptionByParentIdAndNodeTypeCode(int parentId,String code);
 
     @Query("Select nd.* \n" +
             "    From noderelation nr \n" +
             "       Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
             "    Where nr.ParentNodeId =:parentId")
-    Observable<List<NodeDescription>> getNodesWithDescriptionByParentId(int parentId);
+    List<NodeDescription> getNodesWithDescriptionByParentId(int parentId);
 
     @Query("Select nd.* \n" +
             "    From nodeDescription nd \n" +
             "    Where nd.Id =:parentId")
-    Observable<NodeDescription> getNodesWithDescription(int parentId);
+    NodeDescription getNodesWithDescription(int parentId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Node... nodes);

@@ -1,0 +1,16 @@
+<resources>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="smallMargin">4dp</dimen>
+
+    <dimen name="xPaddingSize">7dp</dimen>
+    <dimen name="noPadding">0dp</dimen>
+    <dimen name="smallPadding">4dp</dimen>
+
+    <dimen name="secondaryTextSize">14sp</dimen>
+    <dimen name="firstLetterTextSize">18sp</dimen>
+
+
+
+</resources>

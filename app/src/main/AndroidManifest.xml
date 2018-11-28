@@ -3,7 +3,6 @@
     package="com.moh.clinicalguideline">
 
     <application
-
         android:name=".CgApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.main.MainActivity">
+        <activity android:name=".views.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

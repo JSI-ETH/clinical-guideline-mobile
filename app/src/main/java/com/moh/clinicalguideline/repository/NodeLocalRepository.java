@@ -23,30 +23,30 @@ public class NodeLocalRepository implements NodeRepository {
     }
 
     @Override
-    public Observable<List<NodeDescription>> getAdultSymptom() {
+    public List<NodeDescription> getAdultSymptom() {
         return nodeDao.getNodesWithDescriptionByNodeTypeCode(ADULT_SYMPTOM);
     }
     @Override
-    public Observable<List<NodeDescription>> getChildSymptom() {
+    public List<NodeDescription> getChildSymptom() {
         return nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
     }
     @Override
-    public Observable<List<NodeDescription>> getUrgent(int parentNodeId) {
+    public List<NodeDescription> getUrgent(int parentNodeId) {
         return nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,URGENT);
     }
 
     @Override
-    public Observable<List<NodeDescription>> getNonUrgent(int parentNodeId) {
+    public List<NodeDescription> getNonUrgent(int parentNodeId) {
         return nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,NOT_URGENT);
     }
 
     @Override
-    public Observable<NodeDescription> getNode(int nodeId) {
+    public NodeDescription getNode(int nodeId) {
         return nodeDao.getNodesWithDescription(nodeId);
     }
 
     @Override
-    public Observable<List<NodeDescription>> getChildNode(int parentNodeId) {
+    public List<NodeDescription> getChildNode(int parentNodeId) {
         return nodeDao.getNodesWithDescriptionByParentId(parentNodeId);
     }
 }
