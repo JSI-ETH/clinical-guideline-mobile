@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.views.main;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -7,6 +8,8 @@ import android.support.design.widget.BottomNavigationView;
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.ActivityMenuBinding;
 import com.moh.clinicalguideline.helper.BaseActivity;
+import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
+import com.moh.clinicalguideline.views.symptom.SymptomActivity;
 
 import javax.inject.Inject;
 
@@ -46,6 +49,8 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
     @Override
     public void openSymptom(int nodeId) {
-
+        Intent intent = new Intent(this, AlgorithmActivity.class);
+        intent.putExtra(SymptomActivity.Extra_NodeId, nodeId);
+        startActivity(intent);
     }
 }

@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.entities.Node;
 import com.moh.clinicalguideline.data.entities.NodeDescription;
 
@@ -31,16 +32,20 @@ public interface NodeDao {
             "    Where nt.NodeTypeCode =:code and nr.ParentNodeId =:parentId")
     List<NodeDescription> getNodesWithDescriptionByParentIdAndNodeTypeCode(int parentId,String code);
 
-    @Query("Select nd.* \n" +
+    @Query("Select nd.*,nt.NodeTypeCode \n" +
             "    From noderelation nr \n" +
             "       Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
+            "       Join node n on n.id = nr.ChildNodeId" +
+            "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "    Where nr.ParentNodeId =:parentId")
-    List<NodeDescription> getNodesWithDescriptionByParentId(int parentId);
+    List<AlgorithmDescription> getNodesWithDescriptionByParentId(int parentId);
 
-    @Query("Select nd.* \n" +
+    @Query("Select nd.*,nt.NodeTypeCode\n" +
             "    From nodeDescription nd \n" +
+            "       Join node n on n.id = nd.Id" +
+            "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "    Where nd.Id =:parentId")
-    NodeDescription getNodesWithDescription(int parentId);
+    AlgorithmDescription getNodesWithDescription(int parentId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Node... nodes);

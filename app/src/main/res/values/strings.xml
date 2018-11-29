@@ -99,4 +99,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="bt_view">View</string>
+    <string name="title_activity_symptom">SymptomActivity</string>
 </resources>

@@ -19,7 +19,7 @@ public class Node {
     private int Id;
     private String NodeName;
     private int NodeTypeId;
-    private int Page;
+    private float Page;
     private UUID rowguid;
 
     public int getId() {
@@ -46,11 +46,11 @@ public class Node {
         NodeTypeId = nodeTypeId;
     }
 
-    public int getPage() {
+    public float getPage() {
         return Page;
     }
 
-    public void setPage(int page) {
+    public void setPage(float page) {
         Page = page;
     }
 

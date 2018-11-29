@@ -14,10 +14,18 @@
             android:name=".views.main.MenuActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.algorithm.AlgorithmActivity"
+            android:label="@string/title_activity_symptom"
+            android:parentActivityName=".views.main.MenuActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.moh.clinicalguideline.views.main.MenuActivity" />
+        </activity>
     </application>
 
 </manifest>

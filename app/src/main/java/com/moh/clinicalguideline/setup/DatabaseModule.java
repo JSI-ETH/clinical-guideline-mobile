@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.moh.clinicalguideline.data.CgDatabase;
 import com.moh.clinicalguideline.data.dao.NodeDao;
+import com.moh.clinicalguideline.data.migration.DatabaseCopier;
 
 import javax.inject.Singleton;
 
@@ -20,8 +21,7 @@ public class DatabaseModule {
     @Provides
     public static CgDatabase provideDatabase(Context context){
         if(db==null){
-            db = Room.databaseBuilder(context,CgDatabase.class,"cg-db")
-                    .build();
+            db = DatabaseCopier.builder(context).build();
         }
         return db;
     }

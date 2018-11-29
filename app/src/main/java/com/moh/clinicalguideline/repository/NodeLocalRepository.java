@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.repository;
 
+import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.dao.NodeDao;
 import com.moh.clinicalguideline.data.entities.NodeDescription;
 
@@ -39,33 +40,17 @@ public class NodeLocalRepository implements NodeRepository {
             }).subscribeOn(Schedulers.io());
     }
     @Override
-    public Observable<List<NodeDescription>> getUrgent(int parentNodeId) {
+    public Observable<AlgorithmDescription> getNode(int nodeId) {
         return Observable.defer(() -> {
-            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,URGENT);
-            return Observable.just(list);
-        }).subscribeOn(Schedulers.io());
-    }
-
-    @Override
-    public Observable<List<NodeDescription>>getNonUrgent(int parentNodeId) {
-        return Observable.defer(() -> {
-            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,NOT_URGENT);
-            return Observable.just(list);
-        }).subscribeOn(Schedulers.io());
-    }
-
-    @Override
-    public Observable<NodeDescription> getNode(int nodeId) {
-        return Observable.defer(() -> {
-            NodeDescription item = nodeDao.getNodesWithDescription(nodeId);
+            AlgorithmDescription item = nodeDao.getNodesWithDescription(nodeId);
             return Observable.just(item);
         }).subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<List<NodeDescription>> getChildNode(int parentNodeId) {
+    public Observable<List<AlgorithmDescription>> getChildNode(int parentNodeId) {
         return Observable.defer(() -> {
-            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByParentId(parentNodeId);
+            List<AlgorithmDescription> list = nodeDao.getNodesWithDescriptionByParentId(parentNodeId);
             return Observable.just(list);
         }).subscribeOn(Schedulers.io());
     }

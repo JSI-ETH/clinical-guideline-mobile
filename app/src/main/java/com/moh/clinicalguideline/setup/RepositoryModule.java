@@ -13,10 +13,10 @@ import dagger.Provides;
 
 @Module
 public abstract class RepositoryModule {
-//    @Binds
-//    public abstract NodeRepository getNodeRepository(NodeLocalRepository nodeLocalRepository);
-   @Binds
-    public abstract NodeRepository getNodeRepository(NodeTestRepository nodeLocalRepository);
+    @Binds
+    public abstract NodeRepository getNodeRepository(NodeLocalRepository nodeLocalRepository);
+//   @Binds
+//    public abstract NodeRepository getNodeRepository(NodeTestRepository nodeLocalRepository);
 
 }
 

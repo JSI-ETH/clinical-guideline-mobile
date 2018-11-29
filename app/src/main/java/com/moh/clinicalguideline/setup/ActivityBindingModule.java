@@ -2,7 +2,9 @@ package com.moh.clinicalguideline.setup;
 
 
 import com.moh.clinicalguideline.setup.scope.ActivityScoped;
+import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
 import com.moh.clinicalguideline.views.main.MenuActivity;
+import com.moh.clinicalguideline.views.symptom.SymptomActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -20,4 +22,8 @@ public abstract class ActivityBindingModule {
         @ActivityScoped
         @ContributesAndroidInjector
         abstract MenuActivity menuActivity();
+
+        @ActivityScoped
+        @ContributesAndroidInjector
+        abstract AlgorithmActivity algorithmActivity();
 }

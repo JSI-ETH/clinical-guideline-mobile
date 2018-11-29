@@ -1,19 +1,28 @@
-package com.moh.clinicalguideline.helper;
+package com.moh.clinicalguideline.views.algorithm;
+
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.moh.clinicalguideline.R;
+import com.moh.clinicalguideline.helper.BaseViewHolder;
+import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.BaseAdapter;
+
 import java.util.List;
 
-public class SimpleLayoutAdapter<T> extends BaseAdapter {
+public class CardAdapter<T> extends BaseAdapter {
     private List<T> data;
     private final int layoutId;
-    private final OnItemClickListener<T> itemClickListener;
-
+    private final SimpleLayoutAdapter.OnItemClickListener<T> itemClickListener;
+    private Button mapbtn;
     public interface OnItemClickListener<T> {
         void onItemClick(T item);
     }
 
-    public SimpleLayoutAdapter(int layoutId) {
+    public CardAdapter(int layoutId) {
         this.layoutId = layoutId;
-        this.itemClickListener = new OnItemClickListener<T>() {
+        this.itemClickListener = new SimpleLayoutAdapter.OnItemClickListener<T>() {
             @Override
             public void onItemClick(T item) {
 
@@ -21,7 +30,7 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter {
         };
     }
 
-    public SimpleLayoutAdapter(int layoutId, OnItemClickListener<T> itemClickListener) {
+    public CardAdapter(int layoutId, SimpleLayoutAdapter.OnItemClickListener<T> itemClickListener) {
 
         this.layoutId = layoutId;
         this.itemClickListener = itemClickListener;
@@ -31,7 +40,9 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter {
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         @SuppressWarnings("unchecked") T item = (T) getObjForPosition(position);
         holder.bind(item);
-        holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
+        mapbtn = holder.itemView.findViewById(R.id.btnDelete);
+        //holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
+        mapbtn.setOnClickListener(v-> itemClickListener.onItemClick(item));
     }
 
     @Override
