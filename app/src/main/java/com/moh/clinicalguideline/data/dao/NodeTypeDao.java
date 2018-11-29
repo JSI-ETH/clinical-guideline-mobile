@@ -19,4 +19,8 @@ public interface NodeTypeDao {
 
     @Query("SELECT * FROM NodeType")
     List<NodeType> getNodeTypes();
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(NodeType... nodes);
+
 }

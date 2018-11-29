@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.views;
+package com.moh.clinicalguideline.helper;
 
 
 import android.os.Bundle;

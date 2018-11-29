@@ -8,6 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
 public class NodeLocalRepository implements NodeRepository {
         public static String ADULT_SYMPTOM ="ASMPT";
@@ -23,30 +25,48 @@ public class NodeLocalRepository implements NodeRepository {
     }
 
     @Override
-    public List<NodeDescription> getAdultSymptom() {
-        return nodeDao.getNodesWithDescriptionByNodeTypeCode(ADULT_SYMPTOM);
+    public Observable<List<NodeDescription>> getAdultSymptom() {
+        return Observable.defer(() -> {
+            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(ADULT_SYMPTOM);
+            return Observable.just(list);
+        }).subscribeOn(Schedulers.io());
     }
     @Override
-    public List<NodeDescription> getChildSymptom() {
-        return nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
+    public Observable<List<NodeDescription>> getChildSymptom() {
+        return Observable.defer(() -> {
+            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
+            return Observable.just(list);
+            }).subscribeOn(Schedulers.io());
     }
     @Override
-    public List<NodeDescription> getUrgent(int parentNodeId) {
-        return nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,URGENT);
+    public Observable<List<NodeDescription>> getUrgent(int parentNodeId) {
+        return Observable.defer(() -> {
+            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,URGENT);
+            return Observable.just(list);
+        }).subscribeOn(Schedulers.io());
     }
 
     @Override
-    public List<NodeDescription> getNonUrgent(int parentNodeId) {
-        return nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,NOT_URGENT);
+    public Observable<List<NodeDescription>>getNonUrgent(int parentNodeId) {
+        return Observable.defer(() -> {
+            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByParentIdAndNodeTypeCode(parentNodeId,NOT_URGENT);
+            return Observable.just(list);
+        }).subscribeOn(Schedulers.io());
     }
 
     @Override
-    public NodeDescription getNode(int nodeId) {
-        return nodeDao.getNodesWithDescription(nodeId);
+    public Observable<NodeDescription> getNode(int nodeId) {
+        return Observable.defer(() -> {
+            NodeDescription item = nodeDao.getNodesWithDescription(nodeId);
+            return Observable.just(item);
+        }).subscribeOn(Schedulers.io());
     }
 
     @Override
-    public List<NodeDescription> getChildNode(int parentNodeId) {
-        return nodeDao.getNodesWithDescriptionByParentId(parentNodeId);
+    public Observable<List<NodeDescription>> getChildNode(int parentNodeId) {
+        return Observable.defer(() -> {
+            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByParentId(parentNodeId);
+            return Observable.just(list);
+        }).subscribeOn(Schedulers.io());
     }
 }

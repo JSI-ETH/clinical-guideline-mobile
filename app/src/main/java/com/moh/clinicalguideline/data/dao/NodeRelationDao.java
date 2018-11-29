@@ -19,4 +19,8 @@ public interface NodeRelationDao {
 
     @Query("SELECT * FROM NodeRelation Where ParentNodeId =:parentNodeId")
     List<NodeRelation> getNodeRelations(int parentNodeId);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(NodeRelation... nodes);
+
 }

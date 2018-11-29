@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.moh.clinicalguideline.data.CgDatabase;
+import com.moh.clinicalguideline.data.dao.NodeDao;
 
 import javax.inject.Singleton;
 
@@ -24,4 +25,11 @@ public class DatabaseModule {
         }
         return db;
     }
+
+    @Provides
+    static NodeDao providesLookupDao(CgDatabase db)
+    {
+        return db.getNodeDao();
+    }
+
 }

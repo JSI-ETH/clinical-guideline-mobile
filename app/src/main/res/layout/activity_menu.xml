@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="menu"
+            type="com.moh.clinicalguideline.views.main.MenuViewModel" />
+        <variable
+            name="itemAnimator"
+            type="android.support.v7.widget.RecyclerView.ItemAnimator" />
+
+        <variable
+            name="itemDecorator"
+            type="com.moh.clinicalguideline.helper.SimpleDividerItemDecoration" />
+        <import type="android.view.View" />
+
+        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/activity_menu" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:visibility="@{menu.loading? View.VISIBLE : View.GONE}" />
+
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/smallPadding"
+                android:paddingLeft="@dimen/noPadding"
+                android:paddingRight="@dimen/noPadding"
+                android:paddingTop="@dimen/noPadding">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvPostsLis"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:itemAnimator="@{itemAnimator}"
+                    android:itemDecoration="@{itemDecorator}"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:adapter="@{menu.adapter}"/>
+
+            </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
+</layout>
