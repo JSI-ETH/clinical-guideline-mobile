@@ -51,6 +51,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
                 .subscribe(this::OnChildNodeLoaded,this::onLoadError);
     }
 
+
     public CardAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }

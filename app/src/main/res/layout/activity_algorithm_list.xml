@@ -7,30 +7,51 @@
         <variable
             name="item"
             type="com.moh.clinicalguideline.core.AlgorithmDescription" />
+        <import type="android.text.Html"/>
 
+        <import type="android.view.View" />
     </data>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@drawable/card_edge">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="@{item.description.isEmpty() || item.title.isEmpty()? View.GONE:View.VISIBLE }">
+
+            <ImageView
+                android:id="@+id/imgUrgent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:srcCompat="@drawable/outline_warning_24"
+                android:tint="@color/red"
+                android:visibility='@{item.nodeTypeCode.equalsIgnoreCase("URGNT") ? View.VISIBLE : View.GONE }'
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgUrgent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@{item.title}" />
-
             <TextView
                 android:id="@+id/tvContent"
                 android:layout_width="0dp"
@@ -38,14 +59,14 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:maxLines="3"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:maxLines="5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                tools:text="@{item.description}" />
-
+                tools:text="@{Html.fromHtml(item.description)}" />
             <Button
-                android:id="@+id/btnDelete"
+                android:id="@+id/btnNext"
                 style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,5 +80,40 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvContent"
                 tools:text="@string/bt_view" />
         </android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{item.description.isEmpty() || item.title.isEmpty()? View.VISIBLE : View.GONE}">
+            <TextView
+                android:id="@+id/tvTitle_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:minLines="1"
+                android:maxLines="3"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toStartOf="@+id/btnNext_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@{item.description.isEmpty()?Html.fromHtml(item.title):Html.fromHtml(item.description)}" />
+
+            <Button
+                android:id="@+id/btnNext_2"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/bt_view"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:icon="@drawable/ic_arrow_forward_next_black_24dp"
+                tools:text="@string/bt_view" />
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
     </android.support.v7.widget.CardView>
 </layout>

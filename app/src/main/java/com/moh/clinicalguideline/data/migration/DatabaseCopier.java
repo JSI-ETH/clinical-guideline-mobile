@@ -13,7 +13,7 @@ import java.io.OutputStream;
 
 public class DatabaseCopier {
     private static final String TAG = DatabaseCopier.class.getSimpleName();
-    private static final String DATABASE_NAME = "databases/cg.db";
+    private static final String DATABASE_NAME = "cg.db";
 
     private CgDatabase mAppDataBase;
     private static Context appContext;

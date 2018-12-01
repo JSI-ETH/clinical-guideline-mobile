@@ -21,10 +21,7 @@
         <activity
             android:name=".views.algorithm.AlgorithmActivity"
             android:label="@string/title_activity_symptom"
-            android:parentActivityName=".views.main.MenuActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.moh.clinicalguideline.views.main.MenuActivity" />
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

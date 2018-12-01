@@ -1,7 +1,5 @@
 package com.moh.clinicalguideline.views.algorithm;
 
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.moh.clinicalguideline.R;
@@ -16,6 +14,7 @@ public class CardAdapter<T> extends BaseAdapter {
     private final int layoutId;
     private final SimpleLayoutAdapter.OnItemClickListener<T> itemClickListener;
     private Button mapbtn;
+    private Button mapbtn2;
     public interface OnItemClickListener<T> {
         void onItemClick(T item);
     }
@@ -40,9 +39,11 @@ public class CardAdapter<T> extends BaseAdapter {
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         @SuppressWarnings("unchecked") T item = (T) getObjForPosition(position);
         holder.bind(item);
-        mapbtn = holder.itemView.findViewById(R.id.btnDelete);
-        //holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
+        mapbtn = holder.itemView.findViewById(R.id.btnNext);
+        mapbtn2 = holder.itemView.findViewById(R.id.btnNext_2);
+
         mapbtn.setOnClickListener(v-> itemClickListener.onItemClick(item));
+        mapbtn2.setOnClickListener(v-> itemClickListener.onItemClick(item));
     }
 
     @Override

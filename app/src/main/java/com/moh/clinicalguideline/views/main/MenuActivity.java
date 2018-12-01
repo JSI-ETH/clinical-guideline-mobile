@@ -50,7 +50,7 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
     @Override
     public void openSymptom(int nodeId) {
         Intent intent = new Intent(this, AlgorithmActivity.class);
-        intent.putExtra(SymptomActivity.Extra_NodeId, nodeId);
+        intent.putExtra(AlgorithmActivity.Extra_NodeId, nodeId);
         startActivity(intent);
     }
 }
