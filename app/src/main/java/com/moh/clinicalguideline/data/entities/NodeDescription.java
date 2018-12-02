@@ -22,7 +22,6 @@ public class NodeDescription {
     private String Title;
     private String Description;
     private UUID rowguid;
-    private boolean IsFavorite;
 
     public int getId() {
         return Id;
@@ -54,13 +53,5 @@ public class NodeDescription {
 
     public void setRowguid(UUID rowguid) {
         this.rowguid = rowguid;
-    }
-
-    public boolean isFavorite() {
-        return IsFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        IsFavorite = favorite;
     }
 }
