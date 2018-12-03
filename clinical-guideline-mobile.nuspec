@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>clinical.guideline.mobile</id>
+    <title>clinical guideline mobile</title>
+    <authors>JSI</authors>
+    <owners>JSI</owners>
+    <version>2.0</version>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>clinical guideline mobile Dev Version</description>
+    <releaseNotes>2.0 debug</releaseNotes>
+  </metadata>
+  <files>
+  	<file src = "app\build\outputs\apk\dev\release\vitas-transit-dev.apk"/>
+  	<file src = "app\version.json"/>
+  </files>  
+</package>
