@@ -11,7 +11,7 @@
     <releaseNotes>2.0 debug</releaseNotes>
   </metadata>
   <files>
-  	<file src = "app\build\outputs\apk\dev\release\vitas-transit-dev.apk"/>
+  	<file src = "app\build\outputs\apk\debug\clinical-guideline-android.apk"/>
   	<file src = "app\version.json"/>
   </files>  
 </package>
