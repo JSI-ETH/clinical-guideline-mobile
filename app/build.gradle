@@ -28,7 +28,7 @@ android {
 }
 ext {
     roomVersion = "1.1.1"
-    daggerVer = 2.11
+    daggerVer = 2.15
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -46,10 +46,10 @@ dependencies {
 
 
     //region Install Dagger: Dependency Injenction library
-    implementation "com.google.dagger:dagger-android:2.15"
-    implementation "com.google.dagger:dagger-android-support:2.15"
-    annotationProcessor "com.google.dagger:dagger-android-processor:2.15"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.15"
+    implementation "com.google.dagger:dagger-android:${daggerVer}"
+    implementation "com.google.dagger:dagger-android-support:${daggerVer}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVer}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVer}"
     //endregion
 
     //region Install rxJava: observer pattern extension library
