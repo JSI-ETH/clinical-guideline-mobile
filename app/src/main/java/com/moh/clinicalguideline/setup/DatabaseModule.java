@@ -13,12 +13,13 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-@Singleton
 public class DatabaseModule {
 
     private static CgDatabase db = null;
 
     @Provides
+
+    @Singleton
     public static CgDatabase provideDatabase(Context context){
         if(db==null){
             db = DatabaseCopier.builder(context).build();
@@ -27,6 +28,8 @@ public class DatabaseModule {
     }
 
     @Provides
+
+    @Singleton
     static NodeDao providesLookupDao(CgDatabase db)
     {
         return db.getNodeDao();
