@@ -45,6 +45,7 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
     public SimpleLayoutAdapter<NodeDescription> getAdapter(){
          return adapter;
     }
+
     private void OnAdultSymptomLoaded(List<NodeDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
