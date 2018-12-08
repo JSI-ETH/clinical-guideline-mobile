@@ -23,6 +23,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     private List<AlgorithmDescription> nodeDescriptions;
     private boolean loading;
     private int parentId;
+
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository){
 

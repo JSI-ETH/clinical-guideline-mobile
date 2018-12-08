@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
 
@@ -15,43 +16,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@drawable/card_edge">
+        card_view:cardBackgroundColor="#E6E6E6"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="8dp">
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/white">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{item.description.isEmpty() || item.title.isEmpty()? View.GONE:View.VISIBLE }">
 
-            <ImageView
-                android:id="@+id/imgUrgent"
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:srcCompat="@drawable/outline_warning_24"
-                android:tint="@color/red"
-                android:visibility='@{item.nodeTypeCode.equalsIgnoreCase("URGNT") ? View.VISIBLE : View.GONE }'
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/urgent_title"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:background="@color/red"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textSize="30sp"/>
+
 
             <TextView
                 android:id="@+id/tvTitle"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="58dp"
+                app:layout_constraintTop_toBottomOf="@+id/urgent_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgUrgent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@{item.title}" />
+
+
             <TextView
                 android:id="@+id/tvContent"
                 android:layout_width="0dp"
@@ -65,9 +73,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle"
                 tools:text="@{Html.fromHtml(item.description)}" />
+
             <Button
                 android:id="@+id/btnNext"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:background="@drawable/curved_button_urgent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -75,6 +84,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/bt_view"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvContent"
@@ -102,13 +112,16 @@
 
             <Button
                 android:id="@+id/btnNext_2"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:background="@drawable/curved_button_urgent"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/bt_view"
+                android:textColor="@color/white"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:icon="@drawable/ic_arrow_forward_next_black_24dp"
