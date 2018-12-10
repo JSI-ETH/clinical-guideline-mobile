@@ -6,7 +6,7 @@ public class AlgorithmDescription {
     private int Id;
     private String Title;
     private String Description;
-
+    private boolean IsCondition;
     private String NodeTypeCode;
     private UUID rowguid;
 
@@ -49,4 +49,11 @@ public class AlgorithmDescription {
         this.rowguid = rowguid;
     }
 
+    public boolean getIsCondition() {
+        return IsCondition;
+    }
+
+    public void setIsCondition(boolean condition) {
+        IsCondition = condition;
+    }
 }

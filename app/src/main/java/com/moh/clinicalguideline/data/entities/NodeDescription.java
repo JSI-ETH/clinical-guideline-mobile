@@ -21,6 +21,7 @@ public class NodeDescription {
     private int Id;
     private String Title;
     private String Description;
+    private boolean IsCondition;
     private UUID rowguid;
 
     public int getId() {
@@ -53,5 +54,13 @@ public class NodeDescription {
 
     public void setRowguid(UUID rowguid) {
         this.rowguid = rowguid;
+    }
+
+    public boolean getIsCondition() {
+        return IsCondition;
+    }
+
+    public void setIsCondition(boolean condition) {
+        IsCondition = condition;
     }
 }
