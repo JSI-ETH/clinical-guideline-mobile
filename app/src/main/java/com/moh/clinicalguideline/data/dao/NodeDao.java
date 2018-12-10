@@ -17,32 +17,50 @@ import io.reactivex.Observable;
 @Dao
 public interface NodeDao {
 
-    @Query("Select nd.* \n" +
+    @Query("Select n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  nd.Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid \n" +
             "    from node n \n" +
             "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
-            "    join nodeDescription nd on nd.id = n.Id\n" +
+            "    Left join nodeDescription nd on nd.id = n.Id\n" +
             "    Where nt.NodeTypeCode =:code ")
     List<NodeDescription> getNodesWithDescriptionByNodeTypeCode(String code);
 
-    @Query("Select nd.* \n" +
+    @Query("Select n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  nd.Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid \n" +
             "    From noderelation nr \n" +
             "       Join node n on n.Id = nr.ChildNodeId " +
             "       Join nodetype nt on n.NodeTypeId = nt.Id\n" +
-            "       Join nodeDescription nd on nd.id = n.Id\n" +
+            "       Left Join nodeDescription nd on nd.id = n.Id\n" +
             "    Where nt.NodeTypeCode =:code and nr.ParentNodeId =:parentId")
     List<NodeDescription> getNodesWithDescriptionByParentIdAndNodeTypeCode(int parentId,String code);
 
-    @Query("Select nd.*,nt.NodeTypeCode \n" +
+    @Query("Select  n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  nd.Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "nt.NodeTypeCode \n" +
             "    From noderelation nr \n" +
-            "       Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
             "       Join node n on n.id = nr.ChildNodeId" +
+            "       left Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "    Where nr.ParentNodeId =:parentId")
     List<AlgorithmDescription> getNodesWithDescriptionByParentId(int parentId);
 
-    @Query("Select nd.*,nt.NodeTypeCode\n" +
-            "    From nodeDescription nd \n" +
-            "       Join node n on n.id = nd.Id" +
+    @Query("Select  n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  nd.Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "  nt.NodeTypeCode \n" +
+            "    From node n \n" +
+            "       Left Join nodeDescription nd on n.id = nd.Id" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "    Where nd.Id =:parentId")
     AlgorithmDescription getNodesWithDescription(int parentId);

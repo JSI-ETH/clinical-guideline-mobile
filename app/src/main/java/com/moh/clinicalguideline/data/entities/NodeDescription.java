@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.Nullable;
 
 import java.util.UUID;
 
@@ -48,6 +49,13 @@ public class NodeDescription {
         Description = description;
     }
 
+    public boolean getIsCondition() {
+        return IsCondition;
+    }
+
+    public void setIsCondition(boolean condition) {
+        IsCondition = condition;
+    }
     public UUID getRowguid() {
         return rowguid;
     }
@@ -56,11 +64,4 @@ public class NodeDescription {
         this.rowguid = rowguid;
     }
 
-    public boolean getIsCondition() {
-        return IsCondition;
-    }
-
-    public void setIsCondition(boolean condition) {
-        IsCondition = condition;
-    }
 }
