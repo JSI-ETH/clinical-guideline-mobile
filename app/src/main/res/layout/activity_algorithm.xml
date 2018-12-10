@@ -43,26 +43,10 @@
                 app:title="@{menu.title}"/>
 
         </android.support.design.widget.AppBarLayout>
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/navigation"
-            android:layout_width="match_parent"
-            android:layout_height="128dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="0dp"
-            android:background="@color/primaryLightColor">
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@{menu.title}"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-        </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v4.widget.NestedScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -87,6 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/text_margin"
+                        android:textStyle="bold"
                         android:text="@{Html.fromHtml(menu.description)}" />
                 </LinearLayout>
 
