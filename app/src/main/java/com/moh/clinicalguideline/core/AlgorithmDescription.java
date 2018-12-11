@@ -33,6 +33,7 @@ public class AlgorithmDescription {
     public void setDescription(String description) {
         Description = description;
     }
+
     public String getNodeTypeCode() {
         return NodeTypeCode;
     }

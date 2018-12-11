@@ -9,6 +9,7 @@ import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.ViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,10 +18,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
-    private CardAdapter<AlgorithmDescription> adapter;
+    private CardAdapter<AlgorithmCardViewModel> adapter;
     private final NodeRepository nodeRepository;
     private AlgorithmDescription nodeDescription;
-    private List<AlgorithmDescription> nodeDescriptions;
+    private List<AlgorithmCardViewModel> nodeDescriptions;
     private boolean loading;
     private int parentId;
 
@@ -53,7 +54,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
 
 
-    public CardAdapter<AlgorithmDescription> getAdapter(){
+    public CardAdapter<AlgorithmCardViewModel> getAdapter(){
          return adapter;
     }
 
@@ -64,7 +65,11 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
     private void OnChildNodeLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
-        adapter.setData(nodeDescriptionList);
+        List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
+        for (AlgorithmDescription nodeDescription: nodeDescriptionList) {
+            algorithmNodeViewModels.add(new AlgorithmCardViewModel(nodeDescription));
+            }
+        adapter.setData(algorithmNodeViewModels);
         notifyChange();
     }
 
