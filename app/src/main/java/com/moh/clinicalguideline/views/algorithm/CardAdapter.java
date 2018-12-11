@@ -15,6 +15,7 @@ public class CardAdapter<T> extends BaseAdapter {
     private final SimpleLayoutAdapter.OnItemClickListener<T> itemClickListener;
     private Button mapbtn;
     private Button mapbtn2;
+    private Button mapbtn3;
     public interface OnItemClickListener<T> {
         void onItemClick(T item);
     }
@@ -40,10 +41,12 @@ public class CardAdapter<T> extends BaseAdapter {
         @SuppressWarnings("unchecked") T item = (T) getObjForPosition(position);
         holder.bind(item);
         mapbtn = holder.itemView.findViewById(R.id.btnNext);
-        mapbtn2 = holder.itemView.findViewById(R.id.btnNext_2);
+        mapbtn2 = holder.itemView.findViewById(R.id.btnYes);
+        mapbtn3 = holder.itemView.findViewById(R.id.btnNo);
 
         mapbtn.setOnClickListener(v-> itemClickListener.onItemClick(item));
         mapbtn2.setOnClickListener(v-> itemClickListener.onItemClick(item));
+        mapbtn3.setOnClickListener(v-> itemClickListener.onItemClick(item));
     }
 
     @Override
