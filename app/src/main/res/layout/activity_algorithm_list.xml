@@ -119,7 +119,7 @@
 
                 <Button
                     android:id="@+id/btnNo"
-                    android:background="@{item.Urgent? @drawable/curved_button_urgent:@drawable/curved_button_normal}"
+                    android:background="@{item.Urgent? @drawable/empty_curved_button_urgent:@drawable/empty_curved_button_normal}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -127,7 +127,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/btn_no"
-                    android:textColor="@color/white"/>
+                    android:textColor="@{item.Urgent? @color/red:@color/primaryColor}"
+                    />
 
             </LinearLayout>
 
