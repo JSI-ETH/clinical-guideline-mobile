@@ -3,6 +3,7 @@ package com.moh.clinicalguideline.views.main;
 import android.util.Log;
 
 import com.moh.clinicalguideline.R;
+import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.entities.NodeDescription;
 import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.ViewModel;
@@ -16,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class MenuViewModel extends ViewModel<MenuNavigator> {
 
-    private SimpleLayoutAdapter<NodeDescription> adapter;
+    private SimpleLayoutAdapter<AlgorithmDescription> adapter;
     private final NodeRepository nodeRepository;
 
     private boolean loading;
@@ -42,17 +43,17 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
                 .subscribe(this::OnChildSymptomLoaded,this::onLoadError);
     }
 
-    public SimpleLayoutAdapter<NodeDescription> getAdapter(){
+    public SimpleLayoutAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }
 
-    private void OnAdultSymptomLoaded(List<NodeDescription> nodeDescriptionList) {
+    private void OnAdultSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
         notifyChange();
     }
 
-    private void OnChildSymptomLoaded(List<NodeDescription> nodeDescriptionList) {
+    private void OnChildSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
         notifyChange();

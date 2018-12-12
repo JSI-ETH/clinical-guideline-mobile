@@ -3,6 +3,7 @@ import android.util.Log;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.entities.Node;
 import com.moh.clinicalguideline.data.entities.NodeDescription;
 import com.moh.clinicalguideline.helper.BaseAdapter;
@@ -12,10 +13,10 @@ import java.util.List;
 
 public class SimpleLayoutAdapter<T> extends BaseAdapter implements Filterable {
 
-    private List<NodeDescription> data;
-    private List<NodeDescription> descriptions;
+    private List<BaseModel> data;
+    private List<BaseModel> nResults;
     private final int layoutId;
-    private final OnItemClickListener<T> itemClickListener;
+    private final OnItemClickListener<BaseModel> itemClickListener;
 
     public CustomFilter filter;
 
@@ -25,15 +26,15 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter implements Filterable {
 
     public SimpleLayoutAdapter(int layoutId) {
         this.layoutId = layoutId;
-        this.itemClickListener = new OnItemClickListener<T>() {
+        this.itemClickListener = new OnItemClickListener<BaseModel>() {
             @Override
-            public void onItemClick(T item) {
+            public void onItemClick(BaseModel item) {
 
             }
         };
     }
 
-    public SimpleLayoutAdapter(int layoutId, OnItemClickListener<T> itemClickListener) {
+    public SimpleLayoutAdapter(int layoutId, OnItemClickListener<BaseModel> itemClickListener) {
 
         this.layoutId = layoutId;
         this.itemClickListener = itemClickListener;
@@ -41,14 +42,14 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter implements Filterable {
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        @SuppressWarnings("unchecked") T item = (T) getObjForPosition(position);
+        @SuppressWarnings("unchecked") BaseModel item = (BaseModel) getObjForPosition(position);
         holder.bind(item);
         holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
     }
 
     @Override
     protected Object getObjForPosition(int position) {
-        return data.get(position);
+        return nResults.get(position);
     }
 
     @Override
@@ -58,16 +59,16 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter implements Filterable {
 
     @Override
     public int getItemCount() {
-        if (data == null) {
+        if (nResults == null) {
             return 0;
         }
-        return descriptions.size();
+        return nResults.size();
     }
 
-    public void setData(List<NodeDescription> data) {
-        this.data = data;
+    public void setData(List<T> data) {
+        this.data = (List<BaseModel>) data;
+        this.nResults =   this.data;
         this.notifyDataSetChanged();
-        this.descriptions=data;
     }
 
     @Override
@@ -88,37 +89,37 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter implements Filterable {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-
-            String charString = constraint.toString();
-            if (charString.isEmpty()) {
-                descriptions = data;
-            } else {
-                List<NodeDescription> filteredList = new ArrayList<>();
-                for (NodeDescription nd : data) {
-
-                    if (nd.getTitle().toUpperCase().contains(charString.trim().toUpperCase())) {
-                        filteredList.add(nd);
-                        Log.d("simpleLayoutAdapter", "found it!" + nd.getTitle());
-                    }
-                }
-
-                descriptions = filteredList;
-                for (NodeDescription i : descriptions) {
-                    Log.d("simpleLayoutAdapter", " " + i.getTitle());
-                }
-
+            FilterResults results = new FilterResults();
+            if (constraint == null || constraint.length() == 0) {
+                // No filter implemented we return all the list
+                results.values = data;
+                results.count = data.size();
             }
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = descriptions;
-            return filterResults;
+            else {
+                List<BaseModel> nPlanetList = new ArrayList<BaseModel>();
+
+                for (BaseModel p : data) {
+                    if (p.getFilterrableText().toUpperCase()
+                            .startsWith(constraint.toString().toUpperCase()))
+                        nPlanetList.add(p);
+                }
+
+                results.values = nPlanetList;
+                results.count = nPlanetList.size();
+            }
+            return results;
         }
 
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            descriptions=(List<NodeDescription>) results.values;
-            notifyDataSetChanged();
+            if (results.count == 0)
+                notifyDataSetChanged();
+            else {
+                nResults =  (List<BaseModel>) results.values;
+                notifyDataSetChanged();
+            }
         }
 
     }

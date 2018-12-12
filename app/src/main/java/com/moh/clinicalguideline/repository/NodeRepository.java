@@ -10,9 +10,11 @@ import io.reactivex.Observable;
 public interface NodeRepository {
 
     //getSymptom by NodeTypeCode
-   Observable<List<NodeDescription>> getAdultSymptom();
-   Observable<List<NodeDescription>> getChildSymptom();
+   Observable<List<AlgorithmDescription>> getAdultSymptom();
+   Observable<List<AlgorithmDescription>> getChildSymptom();
+   Observable<List<AlgorithmDescription>> getChronicCare();
    Observable<List<AlgorithmDescription>> getChildNode(int nodeId);
+   Observable<List<AlgorithmDescription>> getChildNode(int nodeId,boolean isConditional);
    Observable<AlgorithmDescription>getNode(int nodeId);
 
 }

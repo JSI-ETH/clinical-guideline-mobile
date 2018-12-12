@@ -9,13 +9,13 @@ public class AlgorithmCardViewModel {
     private AlgorithmDescription algorithmDescription;
 
     public AlgorithmCardViewModel(AlgorithmDescription algorithmDescription){
-
         this.algorithmDescription = algorithmDescription;
     }
 
     public int getId(){
         return algorithmDescription.getId();
     }
+
     public String getTitle() {
         return algorithmDescription.getTitle();
     }
@@ -24,28 +24,27 @@ public class AlgorithmCardViewModel {
         return algorithmDescription.getDescription();
     }
 
-    public Boolean getHasDescription() {
+    public boolean getHasDescription() {
         return !algorithmDescription.getDescription().isEmpty();
     }
 
-
-
-    public Boolean getHasContent(){
+    public boolean getHasContent(){
 
         return !(algorithmDescription.getDescription().isEmpty()&& algorithmDescription.getTitle().isEmpty());
     }
 
-    public Boolean getHasTitle(){
+    public boolean getHasTitle(){
         return !algorithmDescription.getTitle().isEmpty();
     }
 
-    public Boolean getUrgent () {
+    public boolean getUrgent () {
         Log.e("AlgorithimCardViewModel",algorithmDescription.getNodeTypeCode());
         return algorithmDescription.getNodeTypeCode().equalsIgnoreCase("URGNT");
 
     }
-    public Boolean getHasConditional () {
-        return algorithmDescription.getTitle().equalsIgnoreCase("Yes") || algorithmDescription.getTitle().equalsIgnoreCase("No") ;
+
+    public boolean getHasConditional () {
+        return algorithmDescription.getIsCondition() ;
     }
 
 }

@@ -4,7 +4,6 @@ package com.moh.clinicalguideline.setup;
 import com.moh.clinicalguideline.setup.scope.ActivityScoped;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
 import com.moh.clinicalguideline.views.main.MenuActivity;
-import com.moh.clinicalguideline.views.symptom.SymptomActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

@@ -13,7 +13,6 @@ import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.ActivityMenuBinding;
 import com.moh.clinicalguideline.helper.BaseActivity;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
-import com.moh.clinicalguideline.views.symptom.SymptomActivity;
 
 import javax.inject.Inject;
 

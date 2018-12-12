@@ -1,8 +1,10 @@
 package com.moh.clinicalguideline.core;
 
+import com.moh.clinicalguideline.helper.BaseModel;
+
 import java.util.UUID;
 
-public class AlgorithmDescription {
+public class AlgorithmDescription implements BaseModel {
     private int Id;
     private String Title;
     private String Description;
@@ -56,5 +58,10 @@ public class AlgorithmDescription {
 
     public void setIsCondition(boolean condition) {
         IsCondition = condition;
+    }
+
+    @Override
+    public String getFilterrableText() {
+        return getTitle();
     }
 }
