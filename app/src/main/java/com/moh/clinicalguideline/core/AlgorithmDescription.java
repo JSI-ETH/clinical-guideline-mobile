@@ -8,6 +8,8 @@ public class AlgorithmDescription implements BaseModel {
     private int Id;
     private String Title;
     private String Description;
+    private boolean HasDescription;
+    private boolean HasTitle;
     private boolean IsCondition;
     private String NodeTypeCode;
     private UUID rowguid;
@@ -63,5 +65,21 @@ public class AlgorithmDescription implements BaseModel {
     @Override
     public String getFilterrableText() {
         return getTitle();
+    }
+
+    public boolean getHasDescription() {
+        return HasDescription;
+    }
+
+    public void setHasDescription(boolean hasDescription) {
+        HasDescription = hasDescription;
+    }
+
+    public boolean getHasTitle() {
+        return HasTitle;
+    }
+
+    public void setHasTitle(boolean hasTitle) {
+        HasTitle = hasTitle;
     }
 }

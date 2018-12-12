@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.data.entities.NodeDescription;
 import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.ViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
@@ -22,14 +21,12 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
     private final NodeRepository nodeRepository;
     private AlgorithmDescription nodeDescription;
-    private List<AlgorithmCardViewModel> nodeDescriptions;
     private boolean loading;
-    private int parentId;
 
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository){
 
-        this.nodeRepository = nodeRepository;
+         this.nodeRepository = nodeRepository;
          this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
              navigator.openAlgorithm(item.getId(),nodeDescription.getId());
          });
@@ -40,27 +37,26 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
     public void loadNode(int nodeId,int parentId) {
         setLoading(true);
-        parentId = parentId;
         loadAlgorithmDescription(nodeId);
         loadNonConditionalChildNodes(nodeId);
         loadConditionalChildNodes(nodeId);
     }
 
-    public void loadAlgorithmDescription(int nodeId){
+    private void loadAlgorithmDescription(int nodeId){
         setLoading(true);
         nodeRepository.getNode(nodeId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnAlgorithmNodeLoaded,this::onLoadError);
     }
 
-    public void loadNonConditionalChildNodes(int nodeId) {
+    private void loadNonConditionalChildNodes(int nodeId) {
         setLoading(true);
         nodeRepository.getChildNode(nodeId,false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNonConditionalChildNodesLoaded,this::onLoadError);
     }
 
-    public void loadConditionalChildNodes(int nodeId) {
+    private void loadConditionalChildNodes(int nodeId) {
         setLoading(true);
         nodeRepository.getChildNode(nodeId,true)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,6 +66,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     public SimpleLayoutAdapter<AlgorithmCardViewModel> getAdapter(){
          return adapter;
     }
+
     public SimpleLayoutAdapter<AlgorithmDescription> getConditionalAdapter(){
         return conditionalAdapter;
     }
@@ -113,7 +110,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
 
     public String getTitle(){
-        if(nodeDescription==null)
+        if(nodeDescription==null || !nodeDescription.getHasTitle())
             return "";
         return nodeDescription.getTitle();
     }
@@ -124,7 +121,4 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
         return nodeDescription.getDescription();
     }
 
-    public int getParentId() {
-        return parentId;
-    }
 }

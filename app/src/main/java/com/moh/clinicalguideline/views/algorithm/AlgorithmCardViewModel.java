@@ -25,16 +25,15 @@ public class AlgorithmCardViewModel {
     }
 
     public boolean getHasDescription() {
-        return !algorithmDescription.getDescription().isEmpty();
+        return !algorithmDescription.getHasDescription();
     }
 
     public boolean getHasContent(){
-
-        return !(algorithmDescription.getDescription().isEmpty()&& algorithmDescription.getTitle().isEmpty());
+        return !(algorithmDescription.getHasTitle() && algorithmDescription.getHasDescription());
     }
 
     public boolean getHasTitle(){
-        return !algorithmDescription.getTitle().isEmpty();
+        return !algorithmDescription.getHasTitle();
     }
 
     public boolean getUrgent () {
