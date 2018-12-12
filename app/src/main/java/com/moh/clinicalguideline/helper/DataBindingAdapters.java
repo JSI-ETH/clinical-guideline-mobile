@@ -2,11 +2,17 @@ package com.moh.clinicalguideline.helper;
 
 
 import android.databinding.BindingAdapter;
+import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+
+import com.moh.clinicalguideline.R;
 
 
 public class DataBindingAdapters {
@@ -41,5 +47,22 @@ public class DataBindingAdapters {
     public static void setOnPageChangeListener(ViewPager viewPager, ViewPager.OnPageChangeListener listener) {
         viewPager.clearOnPageChangeListeners();
         viewPager.addOnPageChangeListener(listener);
+    }
+    @BindingAdapter({ "android:setWebViewClient" })
+    public static void setWebViewClient(WebView view, WebViewClient client) {
+        view.setWebViewClient(client);
+        view.getSettings().setJavaScriptEnabled(true);
+        view.getSettings().setDomStorageEnabled(true);
+        view.getSettings().setDefaultTextEncodingName("utf-8");
+    }
+
+    @BindingAdapter({ "android:load" })
+    public static void load(WebView view, String data) {
+        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <html><body>";
+        String footer = "</body><html>";
+        String html = header+data+footer;
+
+
+        view.loadDataWithBaseURL(null,html, "text/html;","utf-8", null);
     }
 }

@@ -1,6 +1,12 @@
 package com.moh.clinicalguideline.views.algorithm;
 
+import android.databinding.Bindable;
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
@@ -21,6 +27,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
     private final NodeRepository nodeRepository;
     private AlgorithmDescription nodeDescription;
+
     private boolean loading;
 
     @Inject
@@ -38,8 +45,8 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     public void loadNode(int nodeId,int parentId) {
         setLoading(true);
         loadAlgorithmDescription(nodeId);
-        loadNonConditionalChildNodes(nodeId);
-        loadConditionalChildNodes(nodeId);
+      //  loadNonConditionalChildNodes(nodeId);
+      //  loadConditionalChildNodes(nodeId);
     }
 
     private void loadAlgorithmDescription(int nodeId){
@@ -74,7 +81,8 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {
         setLoading(false);
         this.nodeDescription = nodeDescription;
-        notifyChange();
+        loadNonConditionalChildNodes(this.nodeDescription.getId());
+       // notifyChange();
     }
 
     private void onNonConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
@@ -83,8 +91,9 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
         for (AlgorithmDescription nodeDescription: nodeDescriptionList) {
             algorithmNodeViewModels.add(new AlgorithmCardViewModel(nodeDescription));
             }
+        loadConditionalChildNodes(this.nodeDescription.getId());
         adapter.setData(algorithmNodeViewModels);
-        notifyChange();
+      //  notifyChange();
     }
 
     private void OnConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
@@ -98,15 +107,13 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
         Log.e("Error Fetching data", throwable.getMessage());
         setLoading(false);
     }
-
+    @Bindable
     public boolean isLoading() {
-
         return loading;
     }
 
     public void setLoading(boolean loading) {
         this.loading = loading;
-        notifyChange();
     }
 
     public String getTitle(){
@@ -120,5 +127,34 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
             return "";
         return nodeDescription.getDescription();
     }
+    public boolean getHasDescription(){
+        if(nodeDescription==null)
+            return false;
+        return nodeDescription.getHasDescription();
+    }
 
+
+    public WebViewClient getClient() {
+        return new Client();
+    }
+    private class Client extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return true;
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request,
+                                    WebResourceError error) {
+            super.onReceivedError(view, request, error);
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+
+        }
+    }
 }

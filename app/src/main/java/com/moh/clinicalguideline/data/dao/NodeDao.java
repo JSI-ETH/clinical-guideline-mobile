@@ -23,8 +23,8 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode \n," +
-            " CASE When ifnull(nd.Title, '') = ''  Then 1 else 0 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 1 else 0 END HasDescription  \n"+
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
             "    from node n \n" +
                 "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
                 "    Left join nodeDescription nd on nd.id = n.Id\n" +
@@ -38,8 +38,8 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "nt.NodeTypeCode, \n" +
-            " CASE When ifnull(nd.Title, '') = ''  Then 1 else 0 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 1 else 0 END HasDescription  \n"+
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
             "    From noderelation nr \n" +
             "       Join node n on n.id = nr.ChildNodeId" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
@@ -53,8 +53,8 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode, \n"  +
-            " CASE When ifnull(nd.Title, '') = ''  Then 1 else 0 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 1 else 0 END HasDescription  \n"+
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
             "    From noderelation nr \n" +
             "       Join node n on n.id = nr.ChildNodeId" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
@@ -68,8 +68,8 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode, \n" +
-            " CASE When ifnull(nd.Title, '') = ''  Then 1 else 0 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 1 else 0 END HasDescription  \n" +
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n" +
             "    From node n \n" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "       Left Join nodeDescription nd on n.id = nd.Id" +
