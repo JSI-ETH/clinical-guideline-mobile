@@ -97,6 +97,29 @@
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
                 </android.support.design.widget.CoordinatorLayout>
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/smallPadding"
+                    android:paddingLeft="@dimen/noPadding"
+                    android:paddingRight="@dimen/noPadding"
+                    android:paddingTop="@dimen/noPadding">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvcPostsLis"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adapter="@{menu.conditionalAdapter}"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        app:itemAnimator="@{itemAnimator}"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                </android.support.design.widget.CoordinatorLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>

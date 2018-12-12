@@ -18,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
-    private CardAdapter<AlgorithmCardViewModel> adapter;
+    private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
     private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
     private final NodeRepository nodeRepository;
     private AlgorithmDescription nodeDescription;
@@ -30,10 +30,10 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     public AlgorithmViewModel(NodeRepository nodeRepository){
 
         this.nodeRepository = nodeRepository;
-         this.adapter = new CardAdapter<>(R.layout.activity_algorithm_list, item -> {
+         this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
              navigator.openAlgorithm(item.getId(),nodeDescription.getId());
          });
-         this.conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
+         this.conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_clist, item -> {
              navigator.openAlgorithm(item.getId(),nodeDescription.getId());
          });
     }
@@ -67,8 +67,11 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
                 .subscribe(this::OnConditionalChildNodesLoaded,this::onLoadError);
     }
 
-    public CardAdapter<AlgorithmCardViewModel> getAdapter(){
+    public SimpleLayoutAdapter<AlgorithmCardViewModel> getAdapter(){
          return adapter;
+    }
+    public SimpleLayoutAdapter<AlgorithmDescription> getConditionalAdapter(){
+        return conditionalAdapter;
     }
 
     private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {

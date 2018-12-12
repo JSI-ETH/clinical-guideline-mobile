@@ -1,8 +1,10 @@
 package com.moh.clinicalguideline.helper;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.entities.Node;
 import com.moh.clinicalguideline.data.entities.NodeDescription;
@@ -11,52 +13,50 @@ import com.moh.clinicalguideline.helper.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleLayoutAdapter<T> extends BaseAdapter implements Filterable {
+public class SimpleLayoutAdapter<T> extends BaseAdapter {
 
-    private List<BaseModel> data;
-    private List<BaseModel> nResults;
+    private List<T> nResults;
     private final int layoutId;
-    private final OnItemClickListener<BaseModel> itemClickListener;
 
-    public CustomFilter filter;
-
+    private Button mapbtn;
+    private final OnItemClickListener<T> itemClickListener;
     public interface OnItemClickListener<T> {
         void onItemClick(T item);
     }
-
     public SimpleLayoutAdapter(int layoutId) {
         this.layoutId = layoutId;
-        this.itemClickListener = new OnItemClickListener<BaseModel>() {
+        this.itemClickListener = new OnItemClickListener<T>() {
             @Override
-            public void onItemClick(BaseModel item) {
+            public void onItemClick(T item) {
 
             }
         };
     }
-
-    public SimpleLayoutAdapter(int layoutId, OnItemClickListener<BaseModel> itemClickListener) {
+    public SimpleLayoutAdapter(int layoutId, OnItemClickListener<T> itemClickListener) {
 
         this.layoutId = layoutId;
         this.itemClickListener = itemClickListener;
     }
-
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        @SuppressWarnings("unchecked") BaseModel item = (BaseModel) getObjForPosition(position);
+        @SuppressWarnings("unchecked") T item = (T) getObjForPosition(position);
         holder.bind(item);
-        holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
-    }
 
+        mapbtn = holder.itemView.findViewById(R.id.btnNext);
+        if(mapbtn ==null) {
+            holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));}
+        else{
+            mapbtn.setOnClickListener(v-> itemClickListener.onItemClick(item));
+        }
+    }
     @Override
     protected Object getObjForPosition(int position) {
         return nResults.get(position);
     }
-
     @Override
     protected int getLayoutIdForPosition(int position) {
         return layoutId;
     }
-
     @Override
     public int getItemCount() {
         if (nResults == null) {
@@ -66,63 +66,10 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter implements Filterable {
     }
 
     public void setData(List<T> data) {
-        this.data = (List<BaseModel>) data;
-        this.nResults =   this.data;
+        this.nResults = data;
         this.notifyDataSetChanged();
     }
 
-    @Override
-    public Filter getFilter() {
-
-        if(filter == null)
-        {
-            filter=new CustomFilter();
-        }
-
-        return filter;
-    }
-
-    //INNER CLASS
-    class CustomFilter extends Filter
-    {
-
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-
-            FilterResults results = new FilterResults();
-            if (constraint == null || constraint.length() == 0) {
-                // No filter implemented we return all the list
-                results.values = data;
-                results.count = data.size();
-            }
-            else {
-                List<BaseModel> nPlanetList = new ArrayList<BaseModel>();
-
-                for (BaseModel p : data) {
-                    if (p.getFilterrableText().toUpperCase()
-                            .startsWith(constraint.toString().toUpperCase()))
-                        nPlanetList.add(p);
-                }
-
-                results.values = nPlanetList;
-                results.count = nPlanetList.size();
-            }
-            return results;
-        }
-
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-
-            if (results.count == 0)
-                notifyDataSetChanged();
-            else {
-                nResults =  (List<BaseModel>) results.values;
-                notifyDataSetChanged();
-            }
-        }
-
-    }
 
 
 }

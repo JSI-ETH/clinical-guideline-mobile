@@ -87,50 +87,10 @@
                 android:text="@string/bt_view"
                 android:textColor="@color/white"
                 android:visibility="@{item.hasConditional? View.GONE:View.VISIBLE }"
-                app:layout_constraintBottom_toTopOf="@+id/yes_no_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvContent"
                  />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/yes_no_layout"
-                android:gravity="center_horizontal"
-                android:visibility="@{item.hasConditional? View.VISIBLE:View.GONE }"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnNext"
-                android:layout_marginTop = "10dp"
-                >
-
-                <Button
-                    android:id="@+id/btnYes"
-                    android:background="@{item.Urgent? @drawable/curved_button_urgent:@drawable/curved_button_normal}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/btn_yes"
-                    android:textColor="@color/white"
-                    />
-
-                <Button
-                    android:id="@+id/btnNo"
-                    android:background="@{item.Urgent? @drawable/empty_curved_button_urgent:@drawable/empty_curved_button_normal}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/btn_no"
-                    android:textColor="@{item.Urgent? @color/red:@color/primaryColor}"
-                    />
-
-            </LinearLayout>
 
 
         </android.support.constraint.ConstraintLayout>
