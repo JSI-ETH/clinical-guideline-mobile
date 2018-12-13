@@ -99,6 +99,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="bt_view">View</string>
+    <string name="bt_next">Next</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
     <string name="title_activity_symptom">SymptomActivity</string>

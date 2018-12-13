@@ -90,6 +90,11 @@ public class AlgorithmDescription implements BaseModel {
         return ChildCount;
     }
 
+    public Boolean getIsSingle() {
+        //has only one and not both
+        return getTitle().isEmpty() || getDescription().isEmpty();
+    }
+
     public void setChildCount(int childCount) {
         ChildCount = childCount;
     }
