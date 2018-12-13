@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/adult_symptom"
+        android:icon="@drawable/baseline_person_black_24dp"
+        android:title="@string/adult_s" />
+
+    <item
+        android:id="@+id/child_symptom"
+        android:icon="@drawable/baseline_child_care_black_24dp"
+        android:title="@string/child_s" />
+
+    <item
+        android:id="@+id/chronic_care"
+        android:icon="@drawable/baseline_local_hospital_black_24dp"
+        android:title="@string/chronic_c" />
+
+</menu>

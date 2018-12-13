@@ -16,7 +16,7 @@ public class NodeType {
     public int Id;
     public String NodeName;
     public String Description;
-    public int NodeTypeCode;
+    public String NodeTypeCode;
     private UUID rowguid;
 
     public int getId() {
@@ -43,11 +43,11 @@ public class NodeType {
         Description = description;
     }
 
-    public int getNodeTypeCode() {
+    public String getNodeTypeCode() {
         return NodeTypeCode;
     }
 
-    public void setNodeTypeCode(int nodeTypeCode) {
+    public void setNodeTypeCode(String nodeTypeCode) {
         NodeTypeCode = nodeTypeCode;
     }
 

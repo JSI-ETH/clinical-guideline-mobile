@@ -21,8 +21,6 @@ public interface NodeTypeDao {
     List<NodeType> getNodeTypes();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(NodeType... nodeTypes);
+    void insert(NodeType... nodes);
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    void update(NodeType... nodeTypes);
 }

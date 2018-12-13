@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="menu"
+            type="com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel" />
+
+        <variable
+            name="itemAnimator"
+            type="android.support.v7.widget.RecyclerView.ItemAnimator" />
+
+        <variable
+            name="itemDecorator"
+            type="com.moh.clinicalguideline.helper.SimpleDividerItemDecoration" />
+
+        <import type="android.view.View" />
+
+        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters" />
+
+        <import type="android.text.Html" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:textColor="@color/white"
+                app:title="@{menu.title}"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                    <WebView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:setWebViewClient="@{menu.client}"
+                        android:visibility="@{menu.hasDescription? View.VISIBLE:View.GONE }"
+                        android:load="@{menu.description}" />
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/smallPadding"
+                    android:paddingLeft="@dimen/noPadding"
+                    android:paddingRight="@dimen/noPadding"
+                    android:paddingTop="@dimen/noPadding">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvPostsLis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adapter="@{menu.adapter}"
+                        android:visibility="@{menu.oneChild()? View.GONE:View.VISIBLE}"
+                        android:nestedScrollingEnabled="false"
+                        app:itemAnimator="@{itemAnimator}"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                </android.support.design.widget.CoordinatorLayout>
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/smallPadding"
+                    android:paddingLeft="@dimen/noPadding"
+                    android:paddingRight="@dimen/noPadding"
+                    android:paddingTop="@dimen/noPadding">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvcPostsLis"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adapter="@{menu.conditionalAdapter}"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        android:nestedScrollingEnabled="false"
+                        app:itemAnimator="@{itemAnimator}"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/curved_button_normal"
+                        android:onClick="@{()->menu.openNext()}"
+                        android:visibility="@{menu.oneChild()? View.VISIBLE:View.GONE }"
+                        android:text="@string/bt_next"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:textColor="@color/white"/>
+
+                </android.support.design.widget.CoordinatorLayout>
+
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

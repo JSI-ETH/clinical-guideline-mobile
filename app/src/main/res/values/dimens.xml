@@ -1,0 +1,24 @@
+<resources>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="smallMargin">4dp</dimen>
+    <dimen name="averageMargin">8dp</dimen>
+
+    <dimen name="xPaddingSize">7dp</dimen>
+    <dimen name="noPadding">0dp</dimen>
+    <dimen name="smallPadding">4dp</dimen>
+
+    <dimen name="secondaryTextSize">14sp</dimen>
+    <dimen name="firstLetterTextSize">18sp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="corner_radius_10">10dp</dimen>
+    <dimen name="bottom">16dp</dimen>
+
+
+</resources>

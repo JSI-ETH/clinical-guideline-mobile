@@ -3,7 +3,6 @@ package com.moh.clinicalguideline.setup;
 import android.app.Application;
 
 import com.moh.clinicalguideline.CgApplication;
-import com.moh.clinicalguideline.views.ActivityBindingModule;
 
 import javax.inject.Singleton;
 
@@ -15,6 +14,8 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Singleton
 @Component(modules = {
         ApplicationModule.class,
+        RepositoryModule.class,
+        DatabaseModule.class,
         ActivityBindingModule.class,
         AndroidSupportInjectionModule.class
 })

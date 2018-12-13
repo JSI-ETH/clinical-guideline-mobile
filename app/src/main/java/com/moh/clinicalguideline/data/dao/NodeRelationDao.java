@@ -21,8 +21,6 @@ public interface NodeRelationDao {
     List<NodeRelation> getNodeRelations(int parentNodeId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(NodeRelation... nodeRelations);
+    void insert(NodeRelation... nodes);
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    void update(NodeRelation... nodeRelations);
 }

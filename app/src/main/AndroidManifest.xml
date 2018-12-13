@@ -3,7 +3,6 @@
     package="com.moh.clinicalguideline">
 
     <application
-
         android:name=".CgApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +10,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.main.MainActivity">
+        <activity
+            android:name=".views.main.MenuActivity"
+            android:theme="@style/AppTheme">
+
+        </activity>
+        <activity
+            android:name=".views.algorithm.AlgorithmActivity"
+            android:label="@string/title_activity_symptom"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".views.main.SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,5 +30,6 @@
             </intent-filter>
         </activity>
     </application>
+
 
 </manifest>
