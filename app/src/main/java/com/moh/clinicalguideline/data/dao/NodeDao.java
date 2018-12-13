@@ -24,7 +24,9 @@ public interface NodeDao {
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode \n," +
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
+            " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
+            " (select y.ChildNodeId from noderelation y where y.ParentNodeId =n.Id LIMIT 1) FirstChildNodeId \n"+
             "    from node n \n" +
                 "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
                 "    Left join nodeDescription nd on nd.id = n.Id\n" +
@@ -39,7 +41,9 @@ public interface NodeDao {
             "  nd.rowguid, \n" +
             "nt.NodeTypeCode, \n" +
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
+            " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
+            " (select y.ChildNodeId from noderelation y where y.ParentNodeId =n.Id LIMIT 1) FirstChildNodeId \n"+
             "    From noderelation nr \n" +
             "       Join node n on n.id = nr.ChildNodeId" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
@@ -57,7 +61,9 @@ public interface NodeDao {
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode, \n"  +
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
+            " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
+            " (select y.ChildNodeId from noderelation y where y.ParentNodeId =n.Id LIMIT 1) FirstChildNodeId \n"+
             "    From noderelation nr \n" +
             "       Join node n on n.id = nr.ChildNodeId" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
@@ -72,7 +78,9 @@ public interface NodeDao {
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode, \n" +
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
-            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n" +
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
+            " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
+            " (select y.ChildNodeId from noderelation y where y.ParentNodeId =n.Id LIMIT 1) FirstChildNodeId \n"+
             "    From node n \n" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "       Left Join nodeDescription nd on n.id = nd.Id" +

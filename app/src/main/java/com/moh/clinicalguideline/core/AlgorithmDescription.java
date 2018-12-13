@@ -12,6 +12,8 @@ public class AlgorithmDescription implements BaseModel {
     private boolean HasTitle;
     private boolean IsCondition;
     private String NodeTypeCode;
+    private int ChildCount;
+    private Integer  FirstChildNodeId;
     private UUID rowguid;
 
     public int getId() {
@@ -81,5 +83,21 @@ public class AlgorithmDescription implements BaseModel {
 
     public void setHasTitle(boolean hasTitle) {
         HasTitle = hasTitle;
+    }
+
+    public int getChildCount() {
+        return ChildCount;
+    }
+
+    public void setChildCount(int childCount) {
+        ChildCount = childCount;
+    }
+
+    public Integer getFirstChildNodeId() {
+        return FirstChildNodeId;
+    }
+
+    public void setFirstChildNodeId(Integer firstChildNodeId) {
+        FirstChildNodeId = firstChildNodeId;
     }
 }

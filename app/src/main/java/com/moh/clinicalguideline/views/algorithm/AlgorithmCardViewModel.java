@@ -28,8 +28,12 @@ public class AlgorithmCardViewModel {
         return algorithmDescription.getHasDescription();
     }
 
-    public boolean getHasContent(){
-        return (algorithmDescription.getHasTitle() && algorithmDescription.getHasDescription());
+    public int getChildCount(){
+         return algorithmDescription.getChildCount();
+    }
+
+    public Integer  getFirstChildNodeId(){
+        return algorithmDescription.getFirstChildNodeId();
     }
 
     public boolean getHasTitle(){
@@ -40,6 +44,10 @@ public class AlgorithmCardViewModel {
         Log.e("AlgorithimCardViewModel",algorithmDescription.getNodeTypeCode());
         return algorithmDescription.getNodeTypeCode().equalsIgnoreCase("URGNT");
 
+    }
+
+    public boolean getHasContent(){
+        return (algorithmDescription.getHasTitle() && algorithmDescription.getHasDescription());
     }
 
     public boolean getHasConditional () {

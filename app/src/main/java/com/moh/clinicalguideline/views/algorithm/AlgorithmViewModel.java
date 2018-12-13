@@ -35,10 +35,22 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
          this.nodeRepository = nodeRepository;
          this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
-             navigator.openAlgorithm(item.getId(),nodeDescription.getId());
+             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() != null)
+             {
+                 navigator.openAlgorithm(item.getId(),nodeDescription.getId());
+             }
+             else {
+                 navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
+             }
          });
          this.conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_clist, item -> {
-             navigator.openAlgorithm(item.getId(),nodeDescription.getId());
+             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
+             {
+                 navigator.openAlgorithm(item.getId(),nodeDescription.getId());
+             }
+             else {
+                 navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
+             }
          });
     }
 
@@ -137,6 +149,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
         }
         return  nodeDescription.getDescription();
     }
+
     public boolean getHasDescription(){
         if(nodeDescription==null)
             return false;
@@ -147,6 +160,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     public WebViewClient getClient() {
         return new Client();
     }
+
     private class Client extends WebViewClient {
 
         @Override

@@ -6,6 +6,6 @@ h4.urgent
 {
  color: #CC0000;
 }
-p:first-child < strong {
-color:#B2DFDB;
+p strong {
+color:#00796B;
 }
