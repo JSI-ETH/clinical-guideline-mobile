@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="menu"
+            type="com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel" />
+
+        <variable
+            name="itemAnimator"
+            type="android.support.v7.widget.RecyclerView.ItemAnimator" />
+
+        <variable
+            name="itemDecorator"
+            type="com.moh.clinicalguideline.helper.SimpleDividerItemDecoration" />
+
+        <import type="android.view.View" />
+
+        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters" />
+
+        <import type="android.text.Html" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title="@{menu.title}"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{menu.hasDescription? View.VISIBLE:View.GONE }"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+                    <WebView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/text_margin"
+                        android:setWebViewClient="@{menu.client}"
+                        android:load="@{menu.description}" />
+                </LinearLayout>
+
+
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/smallPadding"
+                    android:paddingLeft="@dimen/noPadding"
+                    android:paddingRight="@dimen/noPadding"
+                    android:paddingTop="@dimen/noPadding">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvPostsLis"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adapter="@{menu.adapter}"
+                        android:nestedScrollingEnabled="false"
+                        app:itemAnimator="@{itemAnimator}"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                </android.support.design.widget.CoordinatorLayout>
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/smallPadding"
+                    android:paddingLeft="@dimen/noPadding"
+                    android:paddingRight="@dimen/noPadding"
+                    android:paddingTop="@dimen/noPadding">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvcPostsLis"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adapter="@{menu.conditionalAdapter}"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false"
+                        app:itemAnimator="@{itemAnimator}"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                </android.support.design.widget.CoordinatorLayout>
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+</layout>
