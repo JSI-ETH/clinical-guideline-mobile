@@ -90,7 +90,12 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     public String getTitle(){
         if(nodeDescription==null)
             return "";
-        return nodeDescription.getTitle();
+        else
+        {
+            String yourHtmlText = nodeDescription.getTitle().replace("span style=\"color:", "font color='").replace(";\"","'").replace("</span>", "</font>");
+            return yourHtmlText;
+        }
+
     }
     public String getDescription(){
         if(nodeDescription==null)

@@ -33,6 +33,8 @@ public class AlgorithmCardViewModel {
     public Boolean getHasContent(){
 
         return !(algorithmDescription.getDescription().isEmpty()&& algorithmDescription.getTitle().isEmpty());
+        //or if the title is yes or no then no content!
+        //
     }
 
     public Boolean getHasTitle(){
