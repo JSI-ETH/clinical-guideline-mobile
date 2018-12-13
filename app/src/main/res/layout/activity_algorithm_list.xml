@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         card_view:cardBackgroundColor="#E6E6E6"
-        card_view:cardCornerRadius="10dp"
+        card_view:cardCornerRadius="20dp"
         card_view:cardElevation="8dp">
 
 
@@ -29,20 +29,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/urgent_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@{item.Urgent? @color/red:@color/primaryColor}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                android:layout_height="match_parent"
+                android:background="@{item.Urgent? @drawable/urgent_card:@drawable/nonurgent_card}"
+                android:padding="@dimen/averageMargin" >
 
                 <TextView
                     android:id="@+id/tvTitle"
@@ -50,14 +39,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginTop="58dp"
                     android:layout_marginEnd="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/lighter_black"
                     android:visibility="@{item.hasTitle? View.VISIBLE:View.GONE }"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/urgent_title"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@{item.title}" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    tools:text="@{item.title}"/>
 
                 <android.support.constraint.Barrier
                     android:id="@+id/tvTitleb"

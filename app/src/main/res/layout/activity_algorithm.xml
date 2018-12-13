@@ -28,6 +28,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -62,8 +63,7 @@
                         android:load="@{menu.description}" />
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/smallPadding"
                     android:paddingLeft="@dimen/noPadding"
@@ -74,8 +74,8 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvPostsLis"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+
                         android:adapter="@{menu.adapter}"
                         android:nestedScrollingEnabled="false"
                         app:itemAnimator="@{itemAnimator}"
@@ -97,9 +97,9 @@
                         android:id="@+id/rvcPostsLis"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:adapter="@{menu.conditionalAdapter}"
                         android:orientation="horizontal"
+                        android:gravity="center_horizontal"
                         android:nestedScrollingEnabled="false"
                         app:itemAnimator="@{itemAnimator}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />

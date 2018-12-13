@@ -24,6 +24,8 @@
     <color name="gray6">#797979</color>
     <color name="black">#000000</color>
     <color name="write_black">#333333</color>
-    <color name="red">#ffcc0000</color>
+    <color name="lighter_black">#555555</color>
+    <color name="red">#bb0000</color>
+    <color name="dark_red">#ff990000</color>
     <color name="white">#ffffff</color>
 </resources>
