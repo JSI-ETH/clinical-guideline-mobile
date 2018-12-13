@@ -54,4 +54,9 @@ public class AlgorithmCardViewModel {
         return algorithmDescription.getIsCondition() ;
     }
 
+    public boolean getHasOptions() {
+        //more than 2 children not yes/no
+        return algorithmDescription.getIsCondition() ;
+    }
+
 }

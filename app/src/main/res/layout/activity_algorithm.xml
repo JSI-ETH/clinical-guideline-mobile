@@ -41,6 +41,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:textColor="@color/white"
                 app:title="@{menu.title}"/>
 
         </android.support.design.widget.AppBarLayout>
@@ -74,8 +75,8 @@
                         android:id="@+id/rvPostsLis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:adapter="@{menu.adapter}"
+                        android:visibility="@{menu.oneChild()? View.GONE:View.VISIBLE}"
                         android:nestedScrollingEnabled="false"
                         app:itemAnimator="@{itemAnimator}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
@@ -103,7 +104,21 @@
                         app:itemAnimator="@{itemAnimator}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/curved_button_normal"
+                        android:onClick="@{()->menu.openNext()}"
+                        android:visibility="@{menu.oneChild()? View.VISIBLE:View.GONE }"
+                        android:text="@string/bt_next"
+                        android:layout_gravity="end"
+                        android:layout_margin="10dp"
+                        android:textColor="@color/white"/>
+
                 </android.support.design.widget.CoordinatorLayout>
+
+
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>

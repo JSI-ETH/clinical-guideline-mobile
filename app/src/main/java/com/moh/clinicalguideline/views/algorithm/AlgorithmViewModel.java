@@ -25,6 +25,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
     private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
     private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
+    private SimpleLayoutAdapter<AlgorithmDescription> optionsAdapter;
     private final NodeRepository nodeRepository;
     private AlgorithmDescription nodeDescription;
 
@@ -43,6 +44,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
                  navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
              }
          });
+
          this.conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_clist, item -> {
              if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
              {
@@ -52,7 +54,20 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
                  navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
              }
          });
+
+
+        this.optionsAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_option_layout, item -> {
+            if(item.getIsSingle() && item.getChildCount()> 2 && nodeDescription.getFirstChildNodeId() == null)
+            {
+                navigator.openAlgorithm(item.getId(),nodeDescription.getId());
+            }
+            else {
+                navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
+            }
+        });
+
     }
+
 
     public void loadNode(int nodeId,int parentId) {
         setLoading(true);
@@ -90,11 +105,26 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
         return conditionalAdapter;
     }
 
+    public SimpleLayoutAdapter<AlgorithmDescription> getOptionsAdapter(){
+        return optionsAdapter;
+    }
+
     private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {
         setLoading(false);
         this.nodeDescription = nodeDescription;
         loadNonConditionalChildNodes(this.nodeDescription.getId());
        // notifyChange();
+    }
+
+    public Boolean oneChild ()
+    {
+        if(nodeDescription!=null)
+            return nodeDescription.getChildCount()==1;
+        return false;
+    }
+
+    public void openNext() {
+        this.navigator.openAlgorithm(nodeDescription.getFirstChildNodeId(),nodeDescription.getId());
     }
 
     private void onNonConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
@@ -159,6 +189,11 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
         if(nodeDescription==null)
             return false;
         return nodeDescription.getHasDescription();
+    }
+    public boolean IsChildNode(){
+        return nodeDescription.getNodeTypeCode().equalsIgnoreCase("URGNT")
+                || nodeDescription.getNodeTypeCode().equalsIgnoreCase("NTURG")
+                || nodeDescription.getNodeTypeCode().equalsIgnoreCase("ALGTM");
     }
 
 
