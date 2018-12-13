@@ -23,6 +23,7 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode \n," +
+            "  n.Page, "+
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
             " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
             " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
@@ -40,6 +41,7 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "nt.NodeTypeCode, \n" +
+            "  n.Page, "+
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
             " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
             " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
@@ -49,9 +51,9 @@ public interface NodeDao {
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "       left Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
             "    Where nr.ParentNodeId =:parentId and nd.IsCondition =:isConditional \n" +
-            " Order by Case nd.Title When 'Yes' then 0 \n" +
-            "                        When 'No'  then 1 \n" +
-            "                           Else 2 END ")
+            " Order by (Case trim(upper(nd.Title)) When 'YES' then 0 \n" +
+            "                        When 'NO'  then 1 \n" +
+            "                           Else 2 END) asc")
     List<AlgorithmDescription> getNodesWithDescriptionByParentId(int parentId,boolean isConditional);
 
     @Query("Select  n.Id,\n" +
@@ -60,6 +62,7 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode, \n"  +
+            "  n.Page, "+
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
             " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
             " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
@@ -77,6 +80,7 @@ public interface NodeDao {
             "  ifnull(nd.IsCondition,0) IsCondition,\n" +
             "  nd.rowguid, \n" +
             "  nt.NodeTypeCode, \n" +
+            "  n.Page, "+
             " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
             " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
             " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +

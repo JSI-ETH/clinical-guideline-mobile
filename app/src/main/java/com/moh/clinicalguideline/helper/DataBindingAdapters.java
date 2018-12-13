@@ -2,6 +2,7 @@ package com.moh.clinicalguideline.helper;
 
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,13 +15,30 @@ import android.widget.ImageView;
 
 import com.moh.clinicalguideline.R;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class DataBindingAdapters {
     @BindingAdapter("android:src")
     public static void setImageResource(ImageView imageView, int resource) {
         imageView.setImageResource(resource);
     }
-
+    @BindingAdapter("android:srcPage")
+    public static void setPageImageResource(ImageView imageView, int page) {
+        try {
+            // get input
+            String padded = String.format("%03d" , page);
+            InputStream ims = imageView.getContext().getAssets().open("img/image"+padded+".png");
+            // load image as Drawable
+            Drawable d = Drawable.createFromStream(ims, null);
+            // set image to ImageView
+            imageView.setImageDrawable(d);
+        }
+        catch(IOException ex) {
+            return;
+        }
+    }
     @BindingAdapter("android:itemDecoration")
     public static void setItemDecoration(RecyclerView view, RecyclerView.ItemDecoration old,
                                          RecyclerView.ItemDecoration newVal) {
