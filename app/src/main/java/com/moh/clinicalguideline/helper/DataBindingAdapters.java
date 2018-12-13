@@ -58,11 +58,14 @@ public class DataBindingAdapters {
 
     @BindingAdapter({ "android:load" })
     public static void load(WebView view, String data) {
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <html><body>";
+        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <html><head> " +
+                //"<link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\" />" +
+                "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />" +
+                "</head><body>";
         String footer = "</body><html>";
         String html = header+data+footer;
 
 
-        view.loadDataWithBaseURL(null,html, "text/html;","utf-8", null);
+        view.loadDataWithBaseURL("file:///android_asset/styles/",html, "text/html;","utf-8", null);
     }
 }

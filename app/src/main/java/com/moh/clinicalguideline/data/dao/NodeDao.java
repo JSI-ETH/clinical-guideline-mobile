@@ -44,7 +44,10 @@ public interface NodeDao {
             "       Join node n on n.id = nr.ChildNodeId" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "       left Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
-            "    Where nr.ParentNodeId =:parentId and nd.IsCondition =:isConditional")
+            "    Where nr.ParentNodeId =:parentId and nd.IsCondition =:isConditional \n" +
+            " Order by Case nd.Title When 'Yes' then 0 \n" +
+            "                        When 'No'  then 1 \n" +
+            "                           Else 2 END ")
     List<AlgorithmDescription> getNodesWithDescriptionByParentId(int parentId,boolean isConditional);
 
     @Query("Select  n.Id,\n" +

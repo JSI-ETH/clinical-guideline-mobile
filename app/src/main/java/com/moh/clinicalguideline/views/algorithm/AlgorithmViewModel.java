@@ -125,7 +125,17 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     public String getDescription(){
         if(nodeDescription==null)
             return "";
-        return nodeDescription.getDescription();
+        if(nodeDescription.getHasTitle())
+        {
+            String title= "";
+               if(nodeDescription.getNodeTypeCode().equalsIgnoreCase("URGNT")) {
+                   title = "<h4 class=\"urgent\">" + getTitle() + "</h4>";
+               } else {
+                   title = "<h4>" +getTitle() +"</h4>";
+               }
+            return title+nodeDescription.getDescription();
+        }
+        return  nodeDescription.getDescription();
     }
     public boolean getHasDescription(){
         if(nodeDescription==null)
