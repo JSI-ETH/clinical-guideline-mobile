@@ -26,18 +26,26 @@ public class NodeLocalRepository implements NodeRepository {
     }
 
     @Override
-    public Observable<List<NodeDescription>> getAdultSymptom() {
+    public Observable<List<AlgorithmDescription>> getAdultSymptom() {
         return Observable.defer(() -> {
-            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(ADULT_SYMPTOM);
+            List<AlgorithmDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(ADULT_SYMPTOM);
             return Observable.just(list);
         }).subscribeOn(Schedulers.io());
     }
     @Override
-    public Observable<List<NodeDescription>> getChildSymptom() {
+    public Observable<List<AlgorithmDescription>> getChildSymptom() {
         return Observable.defer(() -> {
-            List<NodeDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
+            List<AlgorithmDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
             return Observable.just(list);
             }).subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<List<AlgorithmDescription>> getChronicCare() {
+        return Observable.defer(() -> {
+            List<AlgorithmDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
+            return Observable.just(list);
+        }).subscribeOn(Schedulers.io());
     }
     @Override
     public Observable<AlgorithmDescription> getNode(int nodeId) {
@@ -47,6 +55,13 @@ public class NodeLocalRepository implements NodeRepository {
         }).subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<List<AlgorithmDescription>> getChildNode(int parentNodeId,boolean isConditional) {
+        return Observable.defer(() -> {
+            List<AlgorithmDescription> list = nodeDao.getNodesWithDescriptionByParentId(parentNodeId,isConditional);
+            return Observable.just(list);
+        }).subscribeOn(Schedulers.io());
+    }
     @Override
     public Observable<List<AlgorithmDescription>> getChildNode(int parentNodeId) {
         return Observable.defer(() -> {

@@ -3,7 +3,9 @@ package com.moh.clinicalguideline.views.main;
 import android.util.Log;
 
 import com.moh.clinicalguideline.R;
+import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.entities.NodeDescription;
+import com.moh.clinicalguideline.helper.FilterableLayoutAdapter;
 import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.ViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
@@ -16,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class MenuViewModel extends ViewModel<MenuNavigator> {
 
-    private SimpleLayoutAdapter<NodeDescription> adapter;
+    private FilterableLayoutAdapter<AlgorithmDescription> adapter;
     private final NodeRepository nodeRepository;
 
     private boolean loading;
@@ -24,7 +26,7 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
     public MenuViewModel(NodeRepository nodeRepository){
 
         this.nodeRepository = nodeRepository;
-         this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_menu_mlist, item -> {
+         this.adapter = new FilterableLayoutAdapter<>(R.layout.activity_menu_mlist, item -> {
                 navigator.openSymptom(item.getId());
          });
     }
@@ -42,17 +44,17 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
                 .subscribe(this::OnChildSymptomLoaded,this::onLoadError);
     }
 
-    public SimpleLayoutAdapter<NodeDescription> getAdapter(){
+    public FilterableLayoutAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }
 
-    private void OnAdultSymptomLoaded(List<NodeDescription> nodeDescriptionList) {
+    private void OnAdultSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
         notifyChange();
     }
 
-    private void OnChildSymptomLoaded(List<NodeDescription> nodeDescriptionList) {
+    private void OnChildSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
         notifyChange();

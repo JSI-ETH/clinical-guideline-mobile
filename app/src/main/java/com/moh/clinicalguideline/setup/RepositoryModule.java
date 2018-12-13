@@ -2,7 +2,6 @@ package com.moh.clinicalguideline.setup;
 
 import com.moh.clinicalguideline.repository.NodeLocalRepository;
 import com.moh.clinicalguideline.repository.NodeRepository;
-import com.moh.clinicalguideline.repository.NodeTestRepository;
 import com.moh.clinicalguideline.views.main.MenuViewModel;
 
 import javax.inject.Singleton;

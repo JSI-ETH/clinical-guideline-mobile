@@ -17,34 +17,63 @@ import io.reactivex.Observable;
 @Dao
 public interface NodeDao {
 
-    @Query("Select nd.* \n" +
+    @Query("Select n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  ifnull(nd.Description,'') Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "  nt.NodeTypeCode \n," +
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
             "    from node n \n" +
-            "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
-            "    join nodeDescription nd on nd.id = n.Id\n" +
-            "    Where nt.NodeTypeCode =:code ")
-    List<NodeDescription> getNodesWithDescriptionByNodeTypeCode(String code);
+                "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
+                "    Left join nodeDescription nd on nd.id = n.Id\n" +
+            "    Where nt.NodeTypeCode =:code " +
+            "Order by ifnull(nd.Title,n.NodeName)")
+    List<AlgorithmDescription> getNodesWithDescriptionByNodeTypeCode(String code);
 
-    @Query("Select nd.* \n" +
+    @Query("Select  n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  ifnull(nd.Description,'') Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "nt.NodeTypeCode, \n" +
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
             "    From noderelation nr \n" +
-            "       Join node n on n.Id = nr.ChildNodeId " +
-            "       Join nodetype nt on n.NodeTypeId = nt.Id\n" +
-            "       Join nodeDescription nd on nd.id = n.Id\n" +
-            "    Where nt.NodeTypeCode =:code and nr.ParentNodeId =:parentId")
-    List<NodeDescription> getNodesWithDescriptionByParentIdAndNodeTypeCode(int parentId,String code);
-
-    @Query("Select nd.*,nt.NodeTypeCode \n" +
-            "    From noderelation nr \n" +
-            "       Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
             "       Join node n on n.id = nr.ChildNodeId" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
-            "    Where nr.ParentNodeId =:parentId")
+            "       left Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
+            "    Where nr.ParentNodeId =:parentId and nd.IsCondition =:isConditional")
+    List<AlgorithmDescription> getNodesWithDescriptionByParentId(int parentId,boolean isConditional);
+
+    @Query("Select  n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  ifnull(nd.Description,'') Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "  nt.NodeTypeCode, \n"  +
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n"+
+            "    From noderelation nr \n" +
+            "       Join node n on n.id = nr.ChildNodeId" +
+            "       Join nodeType nt on nt.id = n.NodeTypeId" +
+            "       left Join nodeDescription nd on nd.id = nr.ChildNodeId\n" +
+            "    Where nr.ParentNodeId =:parentId ")
     List<AlgorithmDescription> getNodesWithDescriptionByParentId(int parentId);
 
-    @Query("Select nd.*,nt.NodeTypeCode\n" +
-            "    From nodeDescription nd \n" +
-            "       Join node n on n.id = nd.Id" +
+    @Query("Select  n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  ifnull(nd.Description,'') Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "  nt.NodeTypeCode, \n" +
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription  \n" +
+            "    From node n \n" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
-            "    Where nd.Id =:parentId")
+            "       Left Join nodeDescription nd on n.id = nd.Id" +
+            "    Where n.Id =:parentId")
     AlgorithmDescription getNodesWithDescription(int parentId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

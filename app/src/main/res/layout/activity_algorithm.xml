@@ -42,23 +42,24 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="@{menu.title}"/>
 
-
         </android.support.design.widget.AppBarLayout>
 
 
         <android.support.v4.widget.NestedScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".views.symptom.SymptomActivity">
-
+            android:fillViewport="true">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-
+                    <WebView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_margin"
+                        android:setWebViewClient="@{menu.client}"
+                        android:visibility="@{menu.hasDescription? View.VISIBLE:View.GONE }"
+                        android:load="@{menu.description}" />
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -69,13 +70,6 @@
                     android:paddingRight="@dimen/noPadding"
                     android:paddingTop="@dimen/noPadding">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textColor="@color/write_black"
-                        android:layout_margin="@dimen/text_margin"
-                        android:text="@{Html.fromHtml(menu.description)}" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvPostsLis"
@@ -83,6 +77,29 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:adapter="@{menu.adapter}"
+                        android:nestedScrollingEnabled="false"
+                        app:itemAnimator="@{itemAnimator}"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                </android.support.design.widget.CoordinatorLayout>
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/smallPadding"
+                    android:paddingLeft="@dimen/noPadding"
+                    android:paddingRight="@dimen/noPadding"
+                    android:paddingTop="@dimen/noPadding">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvcPostsLis"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adapter="@{menu.conditionalAdapter}"
+                        android:orientation="horizontal"
                         android:nestedScrollingEnabled="false"
                         app:itemAnimator="@{itemAnimator}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
