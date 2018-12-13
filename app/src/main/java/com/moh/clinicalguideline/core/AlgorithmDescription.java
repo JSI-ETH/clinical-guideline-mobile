@@ -11,6 +11,7 @@ public class AlgorithmDescription implements BaseModel {
     private boolean HasDescription;
     private boolean HasTitle;
     private boolean IsCondition;
+    private int Page;
     private String NodeTypeCode;
     private int ChildCount;
     private Integer  FirstChildNodeId;
@@ -99,5 +100,13 @@ public class AlgorithmDescription implements BaseModel {
 
     public void setFirstChildNodeId(Integer firstChildNodeId) {
         FirstChildNodeId = firstChildNodeId;
+    }
+
+    public int getPage() {
+        return Page;
+    }
+
+    public void setPage(int page) {
+        Page = page;
     }
 }
