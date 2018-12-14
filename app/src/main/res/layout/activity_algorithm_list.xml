@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="urgent_title,tvTitle" />
+                    app:constraint_referenced_ids="tvTitle" />
 
                 <TextView
                     android:id="@+id/tvContent"

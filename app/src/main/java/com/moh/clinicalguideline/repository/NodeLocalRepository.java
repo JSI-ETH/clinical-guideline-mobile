@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NodeLocalRepository implements NodeRepository {
         public static String ADULT_SYMPTOM ="ASMPT";
-        public static String CHILD_SYMPTOM ="CSMPT";
+        public static String CHILD_SYMPTOM ="CHRNC";
         public static String URGENT ="URGNT";
         public static String NOT_URGENT ="NTURG";
         public static String ALGORITHM ="ALGTM";
@@ -51,6 +51,13 @@ public class NodeLocalRepository implements NodeRepository {
     public Observable<AlgorithmDescription> getNode(int nodeId) {
         return Observable.defer(() -> {
             AlgorithmDescription item = nodeDao.getNodesWithDescription(nodeId);
+            return Observable.just(item);
+        }).subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<AlgorithmDescription> getNodeByPage(int pageId) {
+        return Observable.defer(() -> {
+            AlgorithmDescription item = nodeDao.getNodesWithDescriptionByPage(pageId);
             return Observable.just(item);
         }).subscribeOn(Schedulers.io());
     }

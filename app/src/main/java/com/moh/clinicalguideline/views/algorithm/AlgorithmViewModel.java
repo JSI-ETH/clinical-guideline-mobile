@@ -36,7 +36,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
          this.nodeRepository = nodeRepository;
          this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
-             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() != null)
+             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
              {
                  navigator.openAlgorithm(item.getId(),nodeDescription.getId());
              }
@@ -110,9 +110,9 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
 
     private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {
-        setLoading(false);
+
         this.nodeDescription = nodeDescription;
-        loadNonConditionalChildNodes(this.nodeDescription.getId());
+        loadNonConditionalChildNodes(nodeDescription.getId());
        // notifyChange();
     }
 
@@ -128,7 +128,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
 
     private void onNonConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
-        setLoading(false);
+
         List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
         for (AlgorithmDescription nodeDescription: nodeDescriptionList) {
             algorithmNodeViewModels.add(new AlgorithmCardViewModel(nodeDescription));
@@ -157,6 +157,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     public void setLoading(boolean loading) {
         this.loading = loading;
     }
+
 
     public String getTitle(){
         if(nodeDescription==null || !nodeDescription.getHasTitle())
@@ -205,9 +206,22 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            String pages =  url.replace("http://page/","");
+            int page = Integer.valueOf(pages.split("/")[0]);
+            nodeRepository.getNodeByPage(page)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::OnAlgorithmNodePageLoaded,this::onLoadError);
             return true;
-        }
 
+        }
+        private void OnAlgorithmNodePageLoaded(AlgorithmDescription algorithmDescription) {
+
+            navigator.openAlgorithm(algorithmDescription.getId(),nodeDescription.getId());
+        }
+        public void onLoadError(Throwable throwable) {
+            Log.e("Error Fetching data", throwable.getMessage());
+            setLoading(false);
+        }
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request,
                                     WebResourceError error) {
