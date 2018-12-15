@@ -33,6 +33,7 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
                         viewModel.loadChildSymptom();
                          return true;
                     case R.id.chronic_care:
+                        viewModel.loadChronic();
                          return true;
                 }
                 return false;
