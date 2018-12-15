@@ -76,13 +76,17 @@ public class DataBindingAdapters {
 
     @BindingAdapter({ "android:load" })
     public static void load(WebView view, String data) {
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <html><head> " +
-                "<link rel=\"stylesheet\" type=\"text/css\" href=\"font/css/all.min.css\" />" +
-                "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />" +
-                "</head><body>";
-        String footer = "</body><html>";
-        data = data.replace("&hArr;","<i class=\"fas fa-reply\"></i>");
-        data = data.replace("&rArr;","<i class=\"fas fa-share\"></i>");
+       if(data == null || data == "")
+       {
+            return;
+       }
+           String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <html><head> " +
+                   "<link rel=\"stylesheet\" type=\"text/css\" href=\"font/css/all.min.css\" />" +
+                   "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />" +
+                   "</head><body>";
+           String footer = "</body><html>";
+           data = data.replace("&hArr;", "<i class=\"fas fa-reply\"></i>");
+           data = data.replace("&rArr;", "<i class=\"fas fa-share\"></i>");
 
         String html = header+data+footer;
 
