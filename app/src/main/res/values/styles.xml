@@ -13,10 +13,17 @@
         <item name="cardViewStyle">@style/CardView</item>
 
     </style>
+
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="AppTheme.TitleBar" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/white</item>
+
+    </style>
+
     <style name="MaterialAppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
