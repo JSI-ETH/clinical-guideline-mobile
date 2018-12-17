@@ -1,5 +1,7 @@
 package com.moh.clinicalguideline.views.main;
 
+import android.databinding.BindingAdapter;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.moh.clinicalguideline.R;
@@ -77,4 +79,14 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
         this.loading = loading;
         notifyChange();
     }
+    @BindingAdapter("itemDecoration")
+    public static void setItemDecoration(RecyclerView view, RecyclerView.ItemDecoration old, RecyclerView.ItemDecoration newVal) {
+        if (old != null) {
+            view.removeItemDecoration(old);
+        }
+        if (newVal != null) {
+            view.addItemDecoration(newVal);
+        }
+    }
+
 }

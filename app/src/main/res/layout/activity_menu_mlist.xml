@@ -9,57 +9,56 @@
             type="com.moh.clinicalguideline.core.AlgorithmDescription" />
 
     </data>
+
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:baselineAligned="false"
-    android:orientation="horizontal"
-    android:paddingBottom="7dp"
-    android:paddingTop="7dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.9"
-            android:gravity="center">
-
-               <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal"
-                app:srcCompat="@drawable/outline_pageview_24"/>
-
-        </LinearLayout>
-
-        <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingEnd="18dp"
-        android:orientation="vertical"
-        android:paddingRight="18dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:minHeight="56dp"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="16dp">
 
             <TextView
+                android:id="@+id/singleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignTop="@id/image"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toStartOf="@+id/image"
+                android:layout_toLeftOf="@+id/image"
                 android:text="@{item.title }"
                 android:textSize="6.5pt"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical|center_horizontal"
+                app:srcCompat="@drawable/baseline_keyboard_arrow_right_24" />
 
+        </RelativeLayout>
 
-        </LinearLayout>
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/dividerColor" />
     </LinearLayout>
 
-    </LinearLayout>
 </layout>

@@ -61,11 +61,8 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_search, menu);
-        MenuItem item = menu.findItem(R.id.menu_search);
 
-        SearchView searchView = (SearchView) item.getActionView();
+        SearchView searchView = (SearchView) viewModelBinding.simpleSearchView;
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

@@ -29,7 +29,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-
+        <item name="android:editTextColor">@color/primaryTextColor</item>
         <item name="colorAccent">@color/accentColor</item>
         <item name="dividerVertical">@color/dividerColor</item>
         <item name="dividerHorizontal">@color/dividerColor</item>
