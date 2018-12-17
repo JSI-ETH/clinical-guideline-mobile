@@ -41,7 +41,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         String string = "";
-        string.isEmpty();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -58,6 +57,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         intent.putExtra(Extra_NodeId, nodeId);
         intent.putExtra(Extra_ParentNodeId,parentId);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up,R.anim.nothing);
     }
     @Override
     public void returnToPrevious(int parentNodeId) {
@@ -68,6 +68,13 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
             startActivity(intent);
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_out_up,R.anim.nothing);
+
     }
 
     @Override
