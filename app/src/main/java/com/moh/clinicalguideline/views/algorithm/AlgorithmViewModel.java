@@ -8,6 +8,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
@@ -30,13 +31,14 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     private AlgorithmDescription nodeDescription;
 
     private boolean loading;
+    private boolean rendering;
 
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository){
 
          this.nodeRepository = nodeRepository;
          this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
-             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
+              if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
              {
                  navigator.openAlgorithm(item.getId(),nodeDescription.getId());
              }
@@ -67,10 +69,9 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
 
     public void loadNode(int nodeId,int parentId) {
+        this.rendering = true;
         setLoading(true);
         loadAlgorithmDescription(nodeId);
-      //  loadNonConditionalChildNodes(nodeId);
-      //  loadConditionalChildNodes(nodeId);
     }
 
     private void loadAlgorithmDescription(int nodeId){
@@ -81,14 +82,14 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
 
     private void loadNonConditionalChildNodes(int nodeId) {
-        setLoading(true);
+
         nodeRepository.getChildNode(nodeId,false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNonConditionalChildNodesLoaded,this::onLoadError);
     }
 
     private void loadConditionalChildNodes(int nodeId) {
-        setLoading(true);
+
         nodeRepository.getChildNode(nodeId,true)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnConditionalChildNodesLoaded,this::onLoadError);
@@ -113,9 +114,9 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
        // notifyChange();
     }
 
-    public Boolean oneChild ()
+    public Boolean isOneChild ()
     {
-        if(nodeDescription!=null)
+        if(nodeDescription!=null && (!nodeDescription.getNodeTypeCode().equals("ASMPT") && !nodeDescription.getNodeTypeCode().equals("CSMPT") && !nodeDescription.getNodeTypeCode().equals("CHRNC") ))
             return nodeDescription.getChildCount()==1;
         return false;
     }
@@ -132,14 +133,13 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
             }
         loadConditionalChildNodes(this.nodeDescription.getId());
         adapter.setData(algorithmNodeViewModels);
-      //  notifyChange();
+
     }
 
     private void OnConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
-
         conditionalAdapter.setData(nodeDescriptionList);
-        notifyChange();
+        notifyPropertyChanged(BR.description);
     }
 
     public void onLoadError(Throwable throwable) {
@@ -148,13 +148,18 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
     @Bindable
     public boolean isLoading() {
-        return loading;
+        return loading || rendering;
     }
 
     public void setLoading(boolean loading) {
         this.loading = loading;
+        notifyPropertyChanged(BR.loading);
     }
+    public void setRendering(boolean rendering){
 
+        this.rendering = rendering;
+        notifyPropertyChanged(BR.loading);
+    }
 
     public String getTitle(){
         if(nodeDescription==null || !nodeDescription.getHasTitle())
@@ -166,7 +171,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
         }
 
     }
-
+    @Bindable
     public String getDescription(){
         if(nodeDescription==null)
             return "";
@@ -232,6 +237,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            setRendering(false);
             super.onPageFinished(view, url);
 
         }

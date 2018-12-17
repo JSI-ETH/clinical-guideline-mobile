@@ -47,10 +47,10 @@
 
         </android.support.design.widget.AppBarLayout>
 
-
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="@{menu.loading? View.GONE:View.VISIBLE}"
             android:fillViewport="true">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,35 +60,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:setWebViewClient="@{menu.client}"
-                        android:visibility="@{menu.hasDescription? View.VISIBLE:View.GONE }"
+                        android:visibility="@{menu.hasDescription? View.GONE: View.VISIBLE }"
                         android:load="@{menu.description}" />
-                <android.support.design.widget.CoordinatorLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/smallPadding"
-                    android:paddingLeft="@dimen/noPadding"
-                    android:paddingRight="@dimen/noPadding"
-                    android:paddingTop="@dimen/noPadding">
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvPostsLis"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:adapter="@{menu.adapter}"
-                        android:visibility="@{menu.oneChild()? View.GONE:View.VISIBLE}"
-                        android:nestedScrollingEnabled="false"
-                        app:itemAnimator="@{itemAnimator}"
-                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
-                </android.support.design.widget.CoordinatorLayout>
-                <android.support.design.widget.CoordinatorLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/smallPadding"
+                    android:paddingBottom="@dimen/noPadding"
                     android:paddingLeft="@dimen/noPadding"
                     android:paddingRight="@dimen/noPadding"
                     android:paddingTop="@dimen/noPadding">
@@ -97,28 +77,36 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvcPostsLis"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:adapter="@{menu.conditionalAdapter}"
                         android:orientation="horizontal"
                         android:gravity="center_horizontal"
+                        android:visibility="@{menu.loading|| menu.oneChild?View.GONE :View.VISIBLE }"
                         android:nestedScrollingEnabled="false"
                         app:itemAnimator="@{itemAnimator}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/curved_button_normal"
                         android:onClick="@{()->menu.openNext()}"
-                        android:visibility="@{menu.oneChild()? View.VISIBLE:View.GONE }"
+                        android:visibility="@{menu.loading || !menu.oneChild?View.GONE: View.VISIBLE }"
                         android:text="@string/bt_next"
-                        android:layout_gravity="end"
                         android:layout_margin="10dp"
                         android:textColor="@color/white"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvPostsLis"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adapter="@{menu.adapter}"
+                        android:gravity="center_horizontal"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="@{menu.loading || menu.oneChild? View.GONE:View.VISIBLE}"
+                        app:itemAnimator="@{itemAnimator}"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-                </android.support.design.widget.CoordinatorLayout>
-
+                </LinearLayout>
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
