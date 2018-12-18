@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjector;
+import dagger.android.support.DaggerApplication;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
@@ -19,12 +20,17 @@ import dagger.android.support.AndroidSupportInjectionModule;
         ActivityBindingModule.class,
         AndroidSupportInjectionModule.class
 })
-public interface AppComponent extends AndroidInjector<CgApplication> {
+public interface AppComponent extends AndroidInjector<DaggerApplication> {
+
+    void inject(CgApplication app);
+
+    @Override
+    void inject(DaggerApplication instance);
+
     @Component.Builder
     interface Builder {
         @BindsInstance
-        Builder addApplication(Application application);//this binds new components to the
-
+        Builder application(Application application);
         AppComponent build();
     }
 }
