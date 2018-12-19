@@ -1,5 +1,7 @@
 package com.moh.clinicalguideline.views.algorithm;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.webkit.WebViewClient;
 import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
+import com.moh.clinicalguideline.data.entities.NodeDescription;
 import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
@@ -24,11 +27,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
-    private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
-    private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
-    private SimpleLayoutAdapter<AlgorithmDescription> optionsAdapter;
     private final NodeRepository nodeRepository;
-    private AlgorithmDescription nodeDescription;
+
+    private MutableLiveData<List<AlgorithmCardViewModel>> adapter;
+    private MutableLiveData<List<AlgorithmDescription>> conditionalAdapter;
+    private MutableLiveData<List<AlgorithmDescription>> optionsAdapter;
+    private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
+
+    public MutableLiveData<AlgorithmDescription> getAlgorithmNodeDescription() {
+        return algorithmNodeDescription;
+    }
 
     private boolean loading;
     private boolean rendering;
@@ -37,34 +45,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     public AlgorithmViewModel(NodeRepository nodeRepository){
 
          this.nodeRepository = nodeRepository;
-         this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
-              if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
-             {
-                 navigator.openAlgorithm(item.getId(),nodeDescription.getId());
-             }
-             else {
-                 navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
-             }
-         });
-         this.conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_clist, item -> {
-             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
-             {
-                 navigator.openAlgorithm(item.getId(),nodeDescription.getId());
-             }
-             else {
-                 navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
-             }
-         });
-         this.optionsAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_option_layout, item -> {
-            if(item.getIsSingle() && item.getChildCount()> 2 && nodeDescription.getFirstChildNodeId() == null)
-            {
-                navigator.openAlgorithm(item.getId(),nodeDescription.getId());
-            }
-            else {
-                navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
-            }
-        });
-
+         adapter = new MutableLiveData<>();
+         conditionalAdapter= new MutableLiveData<>();
+         optionsAdapter= new MutableLiveData<>();
+        algorithmNodeDescription = new MutableLiveData<>();
     }
 
 
@@ -95,50 +79,53 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .subscribe(this::OnConditionalChildNodesLoaded,this::onLoadError);
     }
 
-    public SimpleLayoutAdapter<AlgorithmCardViewModel> getAdapter(){
+    public MutableLiveData<List<AlgorithmCardViewModel>> getAdapter(){
          return adapter;
     }
 
-    public SimpleLayoutAdapter<AlgorithmDescription> getConditionalAdapter(){
+    public MutableLiveData<List<AlgorithmDescription>> getConditionalAdapter(){
         return conditionalAdapter;
     }
 
-    public SimpleLayoutAdapter<AlgorithmDescription> getOptionsAdapter(){
+    public MutableLiveData<List<AlgorithmDescription>> getOptionsAdapter(){
         return optionsAdapter;
     }
 
     private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {
 
-        this.nodeDescription = nodeDescription;
+        this.algorithmNodeDescription.setValue(nodeDescription);
         loadNonConditionalChildNodes(nodeDescription.getId());
        // notifyChange();
     }
 
     public Boolean isOneChild ()
     {
+        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         if(nodeDescription!=null && (!nodeDescription.getNodeTypeCode().equals("ASMPT") && !nodeDescription.getNodeTypeCode().equals("CSMPT") && !nodeDescription.getNodeTypeCode().equals("CHRNC") ))
             return nodeDescription.getChildCount()==1;
         return false;
     }
 
     public void openNext() {
+        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         this.navigator.openAlgorithm(nodeDescription.getFirstChildNodeId(),nodeDescription.getId());
     }
 
     private void onNonConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
 
+        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
-        for (AlgorithmDescription nodeDescription: nodeDescriptionList) {
-            algorithmNodeViewModels.add(new AlgorithmCardViewModel(nodeDescription));
+        for (AlgorithmDescription aNodeDescription: nodeDescriptionList) {
+            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
             }
-        loadConditionalChildNodes(this.nodeDescription.getId());
-        adapter.setData(algorithmNodeViewModels);
+        loadConditionalChildNodes(nodeDescription.getId());
+        adapter.setValue(algorithmNodeViewModels);
 
     }
 
     private void OnConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
-        conditionalAdapter.setData(nodeDescriptionList);
+        conditionalAdapter.setValue(nodeDescriptionList);
         notifyPropertyChanged(BR.description);
     }
 
@@ -162,6 +149,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     public String getTitle(){
+
+        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         if(nodeDescription==null || !nodeDescription.getHasTitle())
             return "";
         else
@@ -173,6 +162,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
     @Bindable
     public String getDescription(){
+
+        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         if(nodeDescription==null)
             return "";
         if(nodeDescription.getHasTitle())
@@ -189,12 +180,16 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     public boolean getHasDescription(){
+
+        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         if(nodeDescription==null)
             return false;
         return nodeDescription.getHasDescription();
     }
 
     public boolean IsChildNode(){
+
+        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         return nodeDescription.getNodeTypeCode().equalsIgnoreCase("URGNT")
                 || nodeDescription.getNodeTypeCode().equalsIgnoreCase("NTURG")
                 || nodeDescription.getNodeTypeCode().equalsIgnoreCase("ALGTM");
@@ -221,6 +216,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         }
         private void OnAlgorithmNodePageLoaded(AlgorithmDescription algorithmDescription) {
 
+            AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
             navigator.openAlgorithm(algorithmDescription.getId(),nodeDescription.getId());
         }
 

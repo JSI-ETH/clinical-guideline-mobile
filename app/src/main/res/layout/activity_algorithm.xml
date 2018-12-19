@@ -78,7 +78,6 @@
                         android:id="@+id/rvcPostsLis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:adapter="@{menu.conditionalAdapter}"
                         android:orientation="horizontal"
                         android:gravity="center_horizontal"
                         android:visibility="@{menu.loading|| menu.oneChild?View.GONE :View.VISIBLE }"
@@ -95,11 +94,11 @@
                         android:text="@string/bt_next"
                         android:layout_margin="10dp"
                         android:textColor="@color/white"/>
+                    <!--android:adapter="@{menu.adapter}"-->
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvPostsLis"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:adapter="@{menu.adapter}"
                         android:gravity="center_horizontal"
                         android:nestedScrollingEnabled="false"
                         android:visibility="@{menu.loading || menu.oneChild? View.GONE:View.VISIBLE}"
