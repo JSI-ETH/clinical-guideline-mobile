@@ -20,6 +20,13 @@
         <import type="android.widget.LinearLayout" />
         <import type="android.view.View" />
     </data>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       >
+       <include layout="@layout/toolbar" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -88,4 +95,5 @@
             app:menu="@menu/activity_menu"/>
     </FrameLayout>
 
+   </LinearLayout>
 </layout>

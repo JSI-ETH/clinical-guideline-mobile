@@ -22,6 +22,9 @@
     <style name="AppTheme.TitleBar" parent="AppTheme">
         <item name="android:textColorPrimary">@color/white</item>
 
+        <item name="android:icon">@drawable/logo</item>
+        <item name="android:displayOptions">useLogo|showHome</item>
+
     </style>
 
     <style name="MaterialAppTheme" parent="Theme.MaterialComponents.Light">
