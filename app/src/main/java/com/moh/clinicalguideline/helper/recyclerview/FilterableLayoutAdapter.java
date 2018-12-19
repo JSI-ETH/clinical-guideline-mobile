@@ -1,6 +1,8 @@
-package com.moh.clinicalguideline.helper;
+package com.moh.clinicalguideline.helper.recyclerview;
 import android.widget.Filter;
 import android.widget.Filterable;
+
+import com.moh.clinicalguideline.helper.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;

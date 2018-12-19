@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.helper;
+package com.moh.clinicalguideline.helper.recyclerview;
 
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;

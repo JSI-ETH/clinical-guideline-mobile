@@ -43,7 +43,8 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:${roomVersion}"
     testImplementation "android.arch.persistence.room:testing:${roomVersion}"
     //endregion
-
+    implementation "android.arch.lifecycle:extensions:${roomVersion}"
+    implementation "android.arch.lifecycle:viewmodel:${roomVersion}"
     //region Install Dagger: Dependency Injenction library
     implementation "com.google.dagger:dagger-android:${daggerVer}"
     implementation "com.google.dagger:dagger-android-support:${daggerVer}"

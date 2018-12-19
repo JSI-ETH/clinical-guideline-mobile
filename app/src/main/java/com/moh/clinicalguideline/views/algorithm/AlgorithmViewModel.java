@@ -11,8 +11,8 @@ import android.webkit.WebViewClient;
 import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
-import com.moh.clinicalguideline.helper.ViewModel;
+import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
+import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
+public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
     private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
     private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
@@ -68,7 +68,7 @@ public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
     }
 
 
-    public void loadNode(int nodeId,int parentId) {
+    public void loadNode(int nodeId) {
         this.rendering = true;
         setLoading(true);
         loadAlgorithmDescription(nodeId);

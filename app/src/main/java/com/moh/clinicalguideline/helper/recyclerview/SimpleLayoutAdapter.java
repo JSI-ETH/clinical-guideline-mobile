@@ -1,16 +1,8 @@
-package com.moh.clinicalguideline.helper;
-import android.util.Log;
+package com.moh.clinicalguideline.helper.recyclerview;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import com.moh.clinicalguideline.R;
-import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.data.entities.Node;
-import com.moh.clinicalguideline.data.entities.NodeDescription;
-import com.moh.clinicalguideline.helper.BaseAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleLayoutAdapter<T> extends BaseAdapter {

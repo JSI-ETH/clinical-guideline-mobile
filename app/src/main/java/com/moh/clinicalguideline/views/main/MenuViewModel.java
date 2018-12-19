@@ -6,10 +6,8 @@ import android.util.Log;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.data.entities.NodeDescription;
-import com.moh.clinicalguideline.helper.FilterableLayoutAdapter;
-import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
-import com.moh.clinicalguideline.helper.ViewModel;
+import com.moh.clinicalguideline.helper.recyclerview.FilterableLayoutAdapter;
+import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class MenuViewModel extends ViewModel<MenuNavigator> {
+public class MenuViewModel extends BaseViewModel<MenuNavigator> {
 
     private FilterableLayoutAdapter<AlgorithmDescription> adapter;
     private final NodeRepository nodeRepository;
@@ -58,13 +56,13 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
     private void OnAdultSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
-        notifyChange();
+        //notifyChange();
     }
 
     private void OnChildSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
-        notifyChange();
+        //notifyChange();
     }
 
     public void onLoadError(Throwable throwable) {
@@ -77,7 +75,7 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
 
     public void setLoading(boolean loading) {
         this.loading = loading;
-        notifyChange();
+        //notifyChange();
     }
     @BindingAdapter("itemDecoration")
     public static void setItemDecoration(RecyclerView view, RecyclerView.ItemDecoration old, RecyclerView.ItemDecoration newVal) {

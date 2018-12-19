@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.helper;
+package com.moh.clinicalguideline.helper.recyclerview;
 
 import android.content.Context;
 import android.graphics.Canvas;

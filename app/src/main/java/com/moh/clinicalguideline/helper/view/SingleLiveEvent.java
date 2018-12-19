@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.helper;
+package com.moh.clinicalguideline.helper.view;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;

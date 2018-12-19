@@ -1,46 +1,43 @@
 package com.moh.clinicalguideline.views.algorithm;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.View;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.ActivityAlgorithmBinding;
-import com.moh.clinicalguideline.databinding.ActivityMenuBinding;
-import com.moh.clinicalguideline.helper.BaseActivity;
+import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.main.MenuActivity;
 
 import javax.inject.Inject;
 
 public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigator {
-
+    @Inject
+    public ViewModelProvider.Factory viewModelFactory;
     public static String Extra_NodeId = "Extra_NodeId";
     public static String Extra_ParentNodeId="Extra_ParentNodeId";
-    @Inject
-    public AlgorithmViewModel viewModel;
-
     private ActivityAlgorithmBinding viewModelBinding;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-
+        setContentView(R.layout.activity_algorithm);
+        AlgorithmViewModel viewModel = ViewModelProviders.of(this,viewModelFactory).get(AlgorithmViewModel.class);
         viewModel.setNavigator(this);
+        viewModel.loadNode(getIntent().getExtras().getInt(Extra_NodeId,0));
         viewModelBinding = DataBindingUtil.setContentView(this, R.layout.activity_algorithm);
         viewModelBinding.setMenu(viewModel);
-        int id = getIntent().getExtras().getInt(Extra_NodeId,0);
-        int parentId = getIntent().getExtras().getInt(Extra_ParentNodeId,0);
-        viewModel.loadNode(id,parentId);
+        initViews();
+
+    }
+
+    public void initViews(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        String string = "";
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

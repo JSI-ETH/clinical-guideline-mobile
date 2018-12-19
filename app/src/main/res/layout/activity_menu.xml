@@ -13,10 +13,10 @@
 
         <variable
             name="simpleItemDecorator"
-            type="com.moh.clinicalguideline.helper.SimpleDividerItemDecoration"/>
+            type="com.moh.clinicalguideline.helper.recyclerview.SimpleDividerItemDecoration"/>
 
 
-        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters"/>
+        <import type="com.moh.clinicalguideline.helper.recyclerview.DataBindingAdapters"/>
         <import type="android.widget.LinearLayout" />
         <import type="android.view.View" />
     </data>

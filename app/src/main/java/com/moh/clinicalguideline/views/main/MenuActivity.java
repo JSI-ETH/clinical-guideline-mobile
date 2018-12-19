@@ -5,13 +5,11 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.SearchView;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.ActivityMenuBinding;
-import com.moh.clinicalguideline.helper.BaseActivity;
+import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
 
 import javax.inject.Inject;
