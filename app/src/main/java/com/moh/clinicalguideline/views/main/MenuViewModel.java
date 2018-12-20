@@ -51,6 +51,7 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnChildSymptomLoaded,this::onLoadError);
     }
+
     public FilterableLayoutAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }

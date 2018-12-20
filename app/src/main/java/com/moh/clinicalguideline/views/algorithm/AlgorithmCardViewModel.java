@@ -1,6 +1,5 @@
 package com.moh.clinicalguideline.views.algorithm;
 
-import android.util.Log;
 
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 
@@ -41,7 +40,6 @@ public class AlgorithmCardViewModel {
     }
 
     public boolean getUrgent () {
-        Log.e("AlgorithimCardViewModel",algorithmDescription.getNodeTypeCode());
         return algorithmDescription.getNodeTypeCode().equalsIgnoreCase("URGNT");
 
     }
