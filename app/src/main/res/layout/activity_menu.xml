@@ -16,7 +16,7 @@
             type="com.moh.clinicalguideline.helper.recyclerview.SimpleDividerItemDecoration"/>
 
 
-        <import type="com.moh.clinicalguideline.helper.recyclerview.DataBindingAdapters"/>
+        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters"/>
         <import type="android.widget.LinearLayout" />
         <import type="android.view.View" />
     </data>

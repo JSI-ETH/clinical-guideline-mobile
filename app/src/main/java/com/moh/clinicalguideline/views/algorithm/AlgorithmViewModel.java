@@ -85,7 +85,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
 
-
+    public void selectedNewNode(int id){
+        navigator.openAlgorithm(id);
+    }
     public String getTitle(){
 
         AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();

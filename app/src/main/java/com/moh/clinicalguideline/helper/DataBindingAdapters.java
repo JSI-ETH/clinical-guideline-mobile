@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.helper.recyclerview;
+package com.moh.clinicalguideline.helper;
 
 
 import android.databinding.BindingAdapter;
@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -49,18 +50,15 @@ public class DataBindingAdapters {
             view.addItemDecoration(newVal);
         }
     }
-
     @BindingAdapter("android:error")
     public static void setErrorTextMessage(TextInputLayout view, String errorMessage) {
 
         view.setError(errorMessage);
     }
-
     @BindingAdapter("android:vpadapter")
     public static void setPagerAdapter(ViewPager view, FragmentPagerAdapter fragmentPagerAdapter) {
         view.setAdapter(fragmentPagerAdapter);
     }
-
     @BindingAdapter("android:onPageChangeListener")
     public static void setOnPageChangeListener(ViewPager viewPager, ViewPager.OnPageChangeListener listener) {
         viewPager.clearOnPageChangeListeners();
@@ -73,7 +71,6 @@ public class DataBindingAdapters {
         view.getSettings().setDomStorageEnabled(true);
         view.getSettings().setDefaultTextEncodingName("utf-8");
     }
-
     @BindingAdapter({ "android:load" })
     public static void load(WebView view, String data) {
        if(data == null || data == "")
@@ -92,5 +89,10 @@ public class DataBindingAdapters {
 
 
         view.loadDataWithBaseURL("file:///android_asset/styles/",html, "text/html;","utf-8", null);
+    }
+
+    @BindingAdapter({"android:visible"})
+    public static void isVisible(View view, boolean isVisible){
+        view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

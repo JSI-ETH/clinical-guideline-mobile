@@ -13,7 +13,11 @@ public class AlgorithmCardViewModel {
     }
 
     public int getId(){
-        return algorithmDescription.getId();
+        if(getHasDescription() || getChildCount()>1 || getFirstChildNodeId() == null)
+        {
+            return algorithmDescription.getId();
+        }
+        return algorithmDescription.getFirstChildNodeId();
     }
 
     public String getTitle() {
@@ -32,7 +36,7 @@ public class AlgorithmCardViewModel {
          return algorithmDescription.getChildCount();
     }
 
-    public Integer  getFirstChildNodeId(){
+    private Integer getFirstChildNodeId(){
         return algorithmDescription.getFirstChildNodeId();
     }
 
@@ -41,22 +45,7 @@ public class AlgorithmCardViewModel {
     }
 
     public boolean getUrgent () {
-        Log.e("AlgorithimCardViewModel",algorithmDescription.getNodeTypeCode());
         return algorithmDescription.getNodeTypeCode().equalsIgnoreCase("URGNT");
 
     }
-
-    public boolean getHasContent(){
-        return (algorithmDescription.getHasTitle() && algorithmDescription.getHasDescription());
-    }
-
-    public boolean getHasConditional () {
-        return algorithmDescription.getIsCondition() ;
-    }
-
-    public boolean getHasOptions() {
-        //more than 2 children not yes/no
-        return algorithmDescription.getIsCondition() ;
-    }
-
 }

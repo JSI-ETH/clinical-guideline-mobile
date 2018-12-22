@@ -24,7 +24,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.moh.clinicalguideline.helper.recyclerview.DataBindingAdapters" />
+        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters" />
 
         <import type="android.text.Html" />
     </data>
@@ -84,16 +84,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/curved_button_normal"
-                        android:onClick="@{()->menu.openNext()}"
-                        android:text="@string/bt_next"
-                        android:layout_margin="10dp"
-                        android:textColor="@color/white"/>
-                    <!--android:adapter="@{menu.adapter}"-->
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvPostsLis"
                         android:layout_width="match_parent"

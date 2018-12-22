@@ -37,28 +37,28 @@ public class OptionFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         viewModelBinding = DataBindingUtil.inflate(inflater, R.layout.algorithm_fragment_options, container, false);
-        View view = viewModelBinding.getRoot();
-       return view;
+        return viewModelBinding.getRoot();
   }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         parentViewModel = ViewModelProviders.of((FragmentActivity) getActivity()).get(AlgorithmViewModel.class);
         viewModel = ViewModelProviders.of((FragmentActivity) getActivity(),viewModelFactory).get(OptionsViewModel.class);
+        viewModelBinding.setViewModel(viewModel);
+        //load child nodes when new node is selected
         parentViewModel.getSelectedItemId().observe((LifecycleOwner) getActivity(), Id -> {
             viewModel.loadNodes(Id);
         });
+        //when a child node is selected inform parent
+        viewModel.getSelectedId().observe((LifecycleOwner) getActivity(), Id -> {
+            parentViewModel.selectedNewNode(Id);
+        });
         initAdapters();
     }
+
     public void initAdapters(){
-        adapter = new SimpleLayoutAdapter<>(R.layout.algorithm_fragment_options_list, item -> {
-            if(item.getHasDescription() || item.getChildCount()>1 || item.getFirstChildNodeId() == null)
-            {
-                parentViewModel.getNavigator().openAlgorithm(item.getId());
-            }
-            else {
-                parentViewModel.getNavigator().openAlgorithm(item.getFirstChildNodeId());
-            }
+      adapter = new SimpleLayoutAdapter<>(R.layout.algorithm_fragment_options_list, item -> {
+            viewModel.selectNode(item.getId());
         });
       viewModelBinding.setOptionsAdapter(adapter);
       viewModel.getNodes().observe((LifecycleOwner) getActivity(), algorithmCardViewModels -> {
