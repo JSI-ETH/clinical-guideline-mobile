@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import com.moh.clinicalguideline.helper.view.ViewModelFactory;
 import com.moh.clinicalguideline.setup.scope.ViewModelKey;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
+import com.moh.clinicalguideline.views.algorithm.fragment.OptionsViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -16,7 +17,12 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(AlgorithmViewModel.class)
-    abstract ViewModel bindViewModel(AlgorithmViewModel algorithmViewModel);
+    abstract ViewModel bindAlgorithmViewModel(AlgorithmViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OptionsViewModel.class)
+    abstract ViewModel bindOptionsViewModel(OptionsViewModel viewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory viewModelFactory);

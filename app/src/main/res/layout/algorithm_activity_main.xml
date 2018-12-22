@@ -55,7 +55,6 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{menu.loading? View.GONE:View.VISIBLE}"
             android:fillViewport="true">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,7 +78,7 @@
                     android:paddingTop="@dimen/noPadding">
 
 
-                    <fragment class="com.moh.clinicalguideline.views.algorithm.fragment.Options"
+                    <fragment class="com.moh.clinicalguideline.views.algorithm.fragment.OptionFragment"
                         android:id="@+id/optionsfragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -91,7 +90,6 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/curved_button_normal"
                         android:onClick="@{()->menu.openNext()}"
-                        android:visibility="@{menu.loading || !menu.oneChild?View.GONE: View.VISIBLE }"
                         android:text="@string/bt_next"
                         android:layout_margin="10dp"
                         android:textColor="@color/white"/>
@@ -104,7 +102,6 @@
                         android:gravity="center_horizontal"
                         android:adapter="@{answersAdapter}"
                         android:nestedScrollingEnabled="false"
-                        android:visibility="@{menu.loading || menu.oneChild? View.GONE:View.VISIBLE}"
                         app:itemAnimator="@{itemAnimator}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 

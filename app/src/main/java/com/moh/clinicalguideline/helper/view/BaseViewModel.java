@@ -1,11 +1,20 @@
 package com.moh.clinicalguideline.helper.view;
 import android.arch.lifecycle.ViewModel;
+import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.PropertyChangeRegistry;
+import android.util.Log;
+
+import com.moh.clinicalguideline.BR;
 
 public abstract class BaseViewModel<T> extends ViewModel implements Observable {
+    protected boolean loading =false;
 
+    public void setLoading(boolean loading) {
+        this.loading = loading;
+        notifyPropertyChanged(BR.loading);
+    }
     public ObservableField<String> StatusText = new ObservableField<>();
 
     protected T navigator;
@@ -47,6 +56,14 @@ public abstract class BaseViewModel<T> extends ViewModel implements Observable {
      */
     protected void notifyPropertyChanged(int fieldId) {
         callbacks.notifyCallbacks(this, fieldId, null);
+    }
+    public void onLoadError(Throwable throwable) {
+        Log.e("Error Fetching data", throwable.getMessage());
+        setLoading(false);
+    }
+    @Bindable
+    public boolean isLoading() {
+        return loading;
     }
 
 }
