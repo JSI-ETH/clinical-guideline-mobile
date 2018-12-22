@@ -16,7 +16,7 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(AlgorithmViewModel.class)
-    abstract ViewModel bindUserViewModel(AlgorithmViewModel algorithmViewModel);
+    abstract ViewModel bindViewModel(AlgorithmViewModel algorithmViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory viewModelFactory);

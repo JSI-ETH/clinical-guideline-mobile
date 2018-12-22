@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="menu"
+            type="com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel" />
+
+        <variable
+            name="itemAnimator"
+            type="android.support.v7.widget.RecyclerView.ItemAnimator" />
+
+        <variable
+            name="itemDecorator"
+            type="com.moh.clinicalguideline.helper.recyclerview.SimpleDividerItemDecoration" />
+
+        <variable
+            name="optionsAdapter"
+            type="com.moh.clinicalguideline.helper.recyclerview.BaseAdapter"/>
+
+        <import type="android.view.View" />
+        <import type="com.moh.clinicalguideline.helper.recyclerview.DataBindingAdapters" />
+
+    </data>
+
+    <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="@{menu.loading|| menu.oneChild?View.GONE :View.VISIBLE }"
+        android:adapter="@{optionsAdapter}"
+        android:nestedScrollingEnabled="false"
+        app:itemAnimator="@{itemAnimator}"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+</FrameLayout>
+</layout>

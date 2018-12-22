@@ -1,9 +1,7 @@
 package com.moh.clinicalguideline.views.algorithm;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -11,10 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.moh.clinicalguideline.BR;
-import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.data.entities.NodeDescription;
-import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
@@ -29,73 +24,52 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
     private final NodeRepository nodeRepository;
 
-    private MutableLiveData<List<AlgorithmCardViewModel>> adapter;
-    private MutableLiveData<List<AlgorithmDescription>> conditionalAdapter;
-    private MutableLiveData<List<AlgorithmDescription>> optionsAdapter;
+    private MutableLiveData<List<AlgorithmCardViewModel>> childNodes;
+    private MutableLiveData<List<AlgorithmDescription>> answerNodes;
     private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
-
-    public MutableLiveData<AlgorithmDescription> getAlgorithmNodeDescription() {
-        return algorithmNodeDescription;
-    }
-
     private boolean loading;
     private boolean rendering;
 
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository){
-
          this.nodeRepository = nodeRepository;
-         adapter = new MutableLiveData<>();
-         conditionalAdapter= new MutableLiveData<>();
-         optionsAdapter= new MutableLiveData<>();
-        algorithmNodeDescription = new MutableLiveData<>();
+         childNodes = new MutableLiveData<>();
+         answerNodes = new MutableLiveData<>();
+         algorithmNodeDescription = new MutableLiveData<>();
     }
-
-
     public void loadNode(int nodeId) {
         this.rendering = true;
         setLoading(true);
         loadAlgorithmDescription(nodeId);
     }
-
+    public void loadNodeByPage(int pageId){
+        nodeRepository.getNodeByPage(pageId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::OnAlgorithmNodeLoaded,this::onLoadError);
+    }
     private void loadAlgorithmDescription(int nodeId){
         setLoading(true);
         nodeRepository.getNode(nodeId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnAlgorithmNodeLoaded,this::onLoadError);
     }
-
     private void loadNonConditionalChildNodes(int nodeId) {
-
         nodeRepository.getChildNode(nodeId,false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNonConditionalChildNodesLoaded,this::onLoadError);
     }
-
     private void loadConditionalChildNodes(int nodeId) {
 
         nodeRepository.getChildNode(nodeId,true)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnConditionalChildNodesLoaded,this::onLoadError);
     }
-
-    public MutableLiveData<List<AlgorithmCardViewModel>> getAdapter(){
-         return adapter;
-    }
-
-    public MutableLiveData<List<AlgorithmDescription>> getConditionalAdapter(){
-        return conditionalAdapter;
-    }
-
-    public MutableLiveData<List<AlgorithmDescription>> getOptionsAdapter(){
-        return optionsAdapter;
-    }
-
     private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {
 
         this.algorithmNodeDescription.setValue(nodeDescription);
+
         loadNonConditionalChildNodes(nodeDescription.getId());
-       // notifyChange();
+        // notifyChange();
     }
 
     public Boolean isOneChild ()
@@ -108,7 +82,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
     public void openNext() {
         AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
-        this.navigator.openAlgorithm(nodeDescription.getFirstChildNodeId(),nodeDescription.getId());
+        this.navigator.openAlgorithm(nodeDescription.getFirstChildNodeId());
     }
 
     private void onNonConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
@@ -119,20 +93,29 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
             }
         loadConditionalChildNodes(nodeDescription.getId());
-        adapter.setValue(algorithmNodeViewModels);
+        childNodes.setValue(algorithmNodeViewModels);
 
     }
-
     private void OnConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
-        conditionalAdapter.setValue(nodeDescriptionList);
+        answerNodes.setValue(nodeDescriptionList);
         notifyPropertyChanged(BR.description);
     }
-
     public void onLoadError(Throwable throwable) {
         Log.e("Error Fetching data", throwable.getMessage());
         setLoading(false);
     }
+
+    public MutableLiveData<AlgorithmDescription> getAlgorithmNodeDescription() {
+        return algorithmNodeDescription;
+    }
+    public MutableLiveData<List<AlgorithmCardViewModel>> getChildNodes(){
+        return childNodes;
+    }
+    public MutableLiveData<List<AlgorithmDescription>> getAnswerNodes(){
+        return answerNodes;
+    }
+
     @Bindable
     public boolean isLoading() {
         return loading || rendering;
@@ -216,8 +199,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         }
         private void OnAlgorithmNodePageLoaded(AlgorithmDescription algorithmDescription) {
 
-            AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
-            navigator.openAlgorithm(algorithmDescription.getId(),nodeDescription.getId());
+            navigator.openAlgorithm(algorithmDescription.getId());
         }
 
         public void onLoadError(Throwable throwable) {

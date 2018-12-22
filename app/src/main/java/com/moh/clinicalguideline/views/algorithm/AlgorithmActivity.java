@@ -7,13 +7,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.databinding.ActivityAlgorithmBinding;
+import com.moh.clinicalguideline.databinding.AlgorithmActivityMainBinding;
 import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.main.MenuActivity;
@@ -25,62 +24,62 @@ import javax.inject.Inject;
 public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigator {
     @Inject
     public ViewModelProvider.Factory viewModelFactory;
-    public static String Extra_NodeId = "Extra_NodeId";
-    public static String Extra_ParentNodeId="Extra_ParentNodeId";
-    private ActivityAlgorithmBinding viewModelBinding;
+    private AlgorithmActivityMainBinding binding;
+    private AlgorithmViewModel viewModel;
+
     private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
     private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
-    private SimpleLayoutAdapter<AlgorithmDescription> optionsAdapter;
 
+    public static String Extra_NodeId = "Extra_NodeId";
+    public static String Extra_ParentNodeId="Extra_ParentNodeId";
+    public static String Extra_PageId ="Extra_PageId";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_algorithm);
-        AlgorithmViewModel viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
         viewModel.setNavigator(this);
-        viewModel.loadNode(getIntent().getExtras().getInt(Extra_NodeId, 0));
-        viewModelBinding = DataBindingUtil.setContentView(this, R.layout.activity_algorithm);
-        viewModelBinding.setMenu(viewModel);
-        initViews();
-        RecyclerView recyclerView=  findViewById(R.id.rvPostsLis);
+        binding = DataBindingUtil.setContentView(this, R.layout.algorithm_activity_main);
+        binding.setLifecycleOwner(this);
+        binding.setMenu(viewModel);
 
-        adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
-            if(item.getHasDescription() || item.getChildCount()>1 || viewModel.getAlgorithmNodeDescription().getValue().getFirstChildNodeId() == null)
-            {
-                this.openAlgorithm(item.getId(),viewModel.getAlgorithmNodeDescription().getValue().getId());
-            }
-            else {
-                this.openAlgorithm(item.getFirstChildNodeId(),viewModel.getAlgorithmNodeDescription().getValue().getId());
-            }
-        });
-        recyclerView.setAdapter(adapter);
-        RecyclerView recyclerView1=  findViewById(R.id.rvcPostsLis);
-        viewModel.getAdapter().observe(AlgorithmActivity.this, new Observer<List<AlgorithmCardViewModel>>() {
-            @Override
-            public void onChanged(@Nullable List<AlgorithmCardViewModel> algorithmCardViewModels) {
-                adapter.setData(algorithmCardViewModels);
-            }
-        });
+        int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
+        //int page = getIntent().getExtras().getInt(Extra_PageId, 0);
+
+        viewModel.loadNode(nodeid);
+//        else {
+//            viewModel.loadNodeByPage(page);
+//        }
+
+        initViews();
+        initAdapters();
+//        viewModel.getAlgorithmNodeDescription().observe(AlgorithmActivity.this, algorithmDescription -> {
+//            binding.setWebClient(new Client());
+//            binding.notifyChange();
+//        });
+    }
+
+    public void initAdapters(){
+
+
 
         conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_clist, item -> {
-            if(item.getHasDescription() || item.getChildCount()>1 || viewModel.getAlgorithmNodeDescription().getValue().getFirstChildNodeId() == null)
+            if(item.getHasDescription() || item.getChildCount()>1 || item.getFirstChildNodeId() == null)
             {
-                this.openAlgorithm(item.getId(),viewModel.getAlgorithmNodeDescription().getValue().getId());
+                this.openAlgorithm(item.getId());
             }
             else {
-                this.openAlgorithm(item.getFirstChildNodeId(),viewModel.getAlgorithmNodeDescription().getValue().getId());
+                this.openAlgorithm(item.getFirstChildNodeId());
             }
         });
-        recyclerView1.setAdapter(conditionalAdapter);
+        binding.setAnswersAdapter(conditionalAdapter);
 
-
-        viewModel.getConditionalAdapter().observe(AlgorithmActivity.this, new Observer<List<AlgorithmDescription>>() {
+        binding.getMenu().getAnswerNodes().observe(AlgorithmActivity.this, new Observer<List<AlgorithmDescription>>() {
             @Override
             public void onChanged(@Nullable List<AlgorithmDescription> algorithmDescriptions) {
                 conditionalAdapter.setData(algorithmDescriptions);
+                binding.notifyChange();
             }
         });
-
     }
 
     public void initViews(){
@@ -96,19 +95,25 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         });
     }
 
-
-
     @Override
-    public void openAlgorithm(int nodeId,int parentId) {
+    public void openAlgorithm(int nodeId) {
         Intent intent = new Intent(this, AlgorithmActivity.class);
         intent.putExtra(Extra_NodeId, nodeId);
-        intent.putExtra(Extra_ParentNodeId,parentId);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_up,R.anim.nothing);
     }
+
+    @Override
+    public void openAlgorithmByPage(int pageId,int nodeId) {
+        Intent intent = new Intent(this, AlgorithmActivity.class);
+        intent.putExtra(Extra_PageId, pageId);
+        intent.putExtra(Extra_ParentNodeId,nodeId);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up,R.anim.nothing);
+    }
+
     @Override
     public void returnToPrevious(int parentNodeId) {
-
         if(parentNodeId != 0) {
             Intent intent = new Intent(this, AlgorithmActivity.class);
             intent.putExtra(Extra_ParentNodeId,parentNodeId);
