@@ -1,9 +1,7 @@
 package com.moh.clinicalguideline.views.algorithm;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
-import android.databinding.ObservableInt;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -58,18 +56,14 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {
 
         this.algorithmNodeDescription.setValue(nodeDescription);
+        loadConditionalChildNodes(nodeDescription.getId());
         // notifyChange();
     }
-    public Boolean isOneChild ()
-    {
+    public Boolean isOneChild () {
         AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         if(nodeDescription!=null && (!nodeDescription.getNodeTypeCode().equals("ASMPT") && !nodeDescription.getNodeTypeCode().equals("CSMPT") && !nodeDescription.getNodeTypeCode().equals("CHRNC") ))
             return nodeDescription.getChildCount()==1;
         return false;
-    }
-    public void openNext() {
-        AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
-        this.navigator.openAlgorithm(nodeDescription.getFirstChildNodeId());
     }
     private void OnConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);

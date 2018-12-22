@@ -78,25 +78,19 @@
                     android:paddingTop="@dimen/noPadding">
 
 
-                    <fragment class="com.moh.clinicalguideline.views.algorithm.fragment.OptionFragment"
+                    <fragment class="com.moh.clinicalguideline.views.algorithm.options.OptionsFragment"
                         android:id="@+id/optionsfragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         />
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvPostsLis"
+                    <fragment class="com.moh.clinicalguideline.views.algorithm.answers.AnswersFragment"
+                        android:id="@+id/answersfragment"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:adapter="@{answersAdapter}"
-                        android:nestedScrollingEnabled="false"
-                        app:itemAnimator="@{itemAnimator}"
-                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
+                        />
                 </LinearLayout>
-
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>

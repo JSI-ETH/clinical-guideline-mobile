@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.views.algorithm.fragment;
+package com.moh.clinicalguideline.views.algorithm.answers;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.ViewModelProvider;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.moh.clinicalguideline.R;
+import com.moh.clinicalguideline.core.AlgorithmDescription;
+import com.moh.clinicalguideline.databinding.AlgorithmFragmentAnswersBinding;
 import com.moh.clinicalguideline.databinding.AlgorithmFragmentOptionsBinding;
 import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseFragment;
@@ -21,49 +23,53 @@ import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
 
 import javax.inject.Inject;
 
-public class OptionFragment extends BaseFragment {
+public class AnswersFragment extends BaseFragment {
     @Inject
     public ViewModelProvider.Factory viewModelFactory;
-    private AlgorithmFragmentOptionsBinding viewModelBinding;
-    private OptionsViewModel viewModel;
+    private AlgorithmFragmentAnswersBinding binding;
+    private AnswersViewModel viewModel;
     private AlgorithmViewModel parentViewModel;
-    private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
+    private SimpleLayoutAdapter<AlgorithmDescription> adapter;
 
-    public static OptionFragment newInstance() {
-        return new OptionFragment();
+    public static AnswersFragment newInstance() {
+        return new AnswersFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        viewModelBinding = DataBindingUtil.inflate(inflater, R.layout.algorithm_fragment_options, container, false);
-        return viewModelBinding.getRoot();
-  }
+        binding = DataBindingUtil.inflate(inflater, R.layout.algorithm_fragment_answers, container, false);
+        return binding.getRoot();
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         parentViewModel = ViewModelProviders.of((FragmentActivity) getActivity()).get(AlgorithmViewModel.class);
-        viewModel = ViewModelProviders.of((FragmentActivity) getActivity(),viewModelFactory).get(OptionsViewModel.class);
-        viewModelBinding.setViewModel(viewModel);
+        viewModel = ViewModelProviders.of((FragmentActivity) getActivity(),viewModelFactory).get(AnswersViewModel.class);
+
+        binding.setViewModel(viewModel);
+
         //load child nodes when new node is selected
         parentViewModel.getSelectedItemId().observe((LifecycleOwner) getActivity(), Id -> {
             viewModel.loadNodes(Id);
         });
+
         //when a child node is selected inform parent
         viewModel.getSelectedId().observe((LifecycleOwner) getActivity(), Id -> {
             parentViewModel.selectedNewNode(Id);
         });
+
         initAdapters();
     }
 
     public void initAdapters(){
       adapter = new SimpleLayoutAdapter<>(R.layout.algorithm_fragment_options_list, item -> {
             viewModel.selectNode(item.getId());
-        });
-      viewModelBinding.setOptionsAdapter(adapter);
-      viewModel.getNodes().observe((LifecycleOwner) getActivity(), algorithmCardViewModels -> {
-          adapter.setData(algorithmCardViewModels);
-          viewModelBinding.notifyChange();
+      });
+      binding.setAdapter(adapter);
+      viewModel.getNodes().observe((LifecycleOwner) getActivity(), nodes -> {
+          adapter.setData(nodes);
+          binding.notifyChange();
       });
     }
 }

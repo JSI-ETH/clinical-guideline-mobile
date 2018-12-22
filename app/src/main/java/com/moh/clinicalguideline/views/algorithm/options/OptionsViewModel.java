@@ -1,4 +1,4 @@
-package com.moh.clinicalguideline.views.algorithm.fragment;
+package com.moh.clinicalguideline.views.algorithm.options;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;

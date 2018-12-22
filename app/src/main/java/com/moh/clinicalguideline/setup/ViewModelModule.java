@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import com.moh.clinicalguideline.helper.view.ViewModelFactory;
 import com.moh.clinicalguideline.setup.scope.ViewModelKey;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
-import com.moh.clinicalguideline.views.algorithm.fragment.OptionsViewModel;
+import com.moh.clinicalguideline.views.algorithm.options.OptionsViewModel;
 
 import dagger.Binds;
 import dagger.Module;

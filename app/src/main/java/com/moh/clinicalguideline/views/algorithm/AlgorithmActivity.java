@@ -44,25 +44,13 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
         //int page = getIntent().getExtras().getInt(Extra_PageId, 0);
-
         viewModel.loadNode(nodeid);
-//        else {
-//            viewModel.loadNodeByPage(page);
-//        }
-
         initViews();
         initAdapters();
-//        viewModel.getAlgorithmNodeDescription().observe(AlgorithmActivity.this, algorithmDescription -> {
-//            binding.setWebClient(new Client());
-//            binding.notifyChange();
-//        });
     }
 
     public void initAdapters(){
-
-
-
-        conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_clist, item -> {
+        conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.algorithm_fragment_answers_list, item -> {
             if(item.getHasDescription() || item.getChildCount()>1 || item.getFirstChildNodeId() == null)
             {
                 this.openAlgorithm(item.getId());
@@ -72,7 +60,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
             }
         });
         binding.setAnswersAdapter(conditionalAdapter);
-
         binding.getMenu().getAnswerNodes().observe(AlgorithmActivity.this, new Observer<List<AlgorithmDescription>>() {
             @Override
             public void onChanged(@Nullable List<AlgorithmDescription> algorithmDescriptions) {
@@ -81,7 +68,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
             }
         });
     }
-
     public void initViews(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

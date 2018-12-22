@@ -3,7 +3,7 @@ package com.moh.clinicalguideline.setup;
 
 import com.moh.clinicalguideline.setup.scope.ActivityScoped;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
-import com.moh.clinicalguideline.views.algorithm.fragment.OptionFragment;
+import com.moh.clinicalguideline.views.algorithm.options.OptionsFragment;
 import com.moh.clinicalguideline.views.main.MenuActivity;
 
 import dagger.Module;
@@ -29,5 +29,5 @@ public abstract class ActivityBindingModule {
 
         @ActivityScoped
         @ContributesAndroidInjector
-        abstract OptionFragment optionsFragment();
+        abstract OptionsFragment optionsFragment();
 }
