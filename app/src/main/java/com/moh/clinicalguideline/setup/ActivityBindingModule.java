@@ -3,6 +3,8 @@ package com.moh.clinicalguideline.setup;
 
 import com.moh.clinicalguideline.setup.scope.ActivityScoped;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
+import com.moh.clinicalguideline.views.algorithm.answers.AnswersFragment;
+import com.moh.clinicalguideline.views.algorithm.content.ContentFragment;
 import com.moh.clinicalguideline.views.algorithm.options.OptionsFragment;
 import com.moh.clinicalguideline.views.main.MenuActivity;
 
@@ -30,4 +32,12 @@ public abstract class ActivityBindingModule {
         @ActivityScoped
         @ContributesAndroidInjector
         abstract OptionsFragment optionsFragment();
+
+        @ActivityScoped
+        @ContributesAndroidInjector
+        abstract AnswersFragment answersFragment();
+
+        @ActivityScoped
+        @ContributesAndroidInjector
+        abstract ContentFragment contentFragment();
 }

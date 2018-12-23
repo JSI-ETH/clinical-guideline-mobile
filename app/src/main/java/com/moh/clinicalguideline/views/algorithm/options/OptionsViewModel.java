@@ -76,7 +76,7 @@ public class OptionsViewModel extends BaseViewModel {
 
     public void selectFirstNode() {
         if (nodes.getValue() != null && !nodes.getValue().isEmpty()) {
-            int firstNodeId = nodes.getValue().get(1).getId();
+            int firstNodeId = nodes.getValue().get(0).getId();
             selectNode(firstNodeId);
         }
     }

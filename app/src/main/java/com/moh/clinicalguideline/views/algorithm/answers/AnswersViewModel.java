@@ -5,7 +5,9 @@ import android.arch.lifecycle.MutableLiveData;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
+import com.moh.clinicalguideline.views.algorithm.AlgorithmCardViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,7 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class AnswersViewModel extends BaseViewModel {
     private final NodeRepository nodeRepository;
-    private MutableLiveData<List<AlgorithmDescription>> nodes;
+    private MutableLiveData<List<AlgorithmCardViewModel>> nodes;
     private MutableLiveData<Integer> selectedId;
 
     @Inject
@@ -25,7 +27,7 @@ public class AnswersViewModel extends BaseViewModel {
     }
 
     //region Bindable Properties
-    public MutableLiveData<List<AlgorithmDescription>> getNodes() {
+    public MutableLiveData<List<AlgorithmCardViewModel>> getNodes() {
         return nodes;
     }
 
@@ -44,7 +46,12 @@ public class AnswersViewModel extends BaseViewModel {
     }
 
     private void onLoaded(List<AlgorithmDescription> nodeDescriptionList) {
-        nodes.setValue(nodeDescriptionList);
+        List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
+        for (AlgorithmDescription aNodeDescription : nodeDescriptionList) {
+            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
+        }
+
+        nodes.setValue(algorithmNodeViewModels);
     }
 
     //endregion

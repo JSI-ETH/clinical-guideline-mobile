@@ -46,28 +46,8 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         //int page = getIntent().getExtras().getInt(Extra_PageId, 0);
         viewModel.loadNode(nodeid);
         initViews();
-        initAdapters();
     }
 
-    public void initAdapters(){
-        conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.algorithm_fragment_answers_list, item -> {
-            if(item.getHasDescription() || item.getChildCount()>1 || item.getFirstChildNodeId() == null)
-            {
-                this.openAlgorithm(item.getId());
-            }
-            else {
-                this.openAlgorithm(item.getFirstChildNodeId());
-            }
-        });
-        binding.setAnswersAdapter(conditionalAdapter);
-        binding.getMenu().getAnswerNodes().observe(AlgorithmActivity.this, new Observer<List<AlgorithmDescription>>() {
-            @Override
-            public void onChanged(@Nullable List<AlgorithmDescription> algorithmDescriptions) {
-                conditionalAdapter.setData(algorithmDescriptions);
-                binding.notifyChange();
-            }
-        });
-    }
     public void initViews(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

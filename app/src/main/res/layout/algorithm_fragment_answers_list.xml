@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.moh.clinicalguideline.core.AlgorithmDescription" />
+            type="com.moh.clinicalguideline.views.algorithm.AlgorithmCardViewModel" />
         <import type="android.text.Html"/>
 
         <import type="android.view.View" />
