@@ -6,6 +6,7 @@ import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
 import com.moh.clinicalguideline.views.algorithm.answers.AnswersFragment;
 import com.moh.clinicalguideline.views.algorithm.content.ContentFragment;
 import com.moh.clinicalguideline.views.algorithm.options.OptionsFragment;
+import com.moh.clinicalguideline.views.algorithm.timeline.TimeLineFragment;
 import com.moh.clinicalguideline.views.main.MenuActivity;
 
 import dagger.Module;
@@ -21,23 +22,27 @@ import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class ActivityBindingModule {
-        @ActivityScoped
-        @ContributesAndroidInjector
-        abstract MenuActivity menuActivity();
+    @ActivityScoped
+    @ContributesAndroidInjector
+    abstract MenuActivity menuActivity();
 
-        @ActivityScoped
-        @ContributesAndroidInjector
-        abstract AlgorithmActivity algorithmActivity();
+    @ActivityScoped
+    @ContributesAndroidInjector
+    abstract AlgorithmActivity algorithmActivity();
 
-        @ActivityScoped
-        @ContributesAndroidInjector
-        abstract OptionsFragment optionsFragment();
+    @ActivityScoped
+    @ContributesAndroidInjector
+    abstract OptionsFragment optionsFragment();
 
-        @ActivityScoped
-        @ContributesAndroidInjector
-        abstract AnswersFragment answersFragment();
+    @ActivityScoped
+    @ContributesAndroidInjector
+    abstract AnswersFragment answersFragment();
 
-        @ActivityScoped
-        @ContributesAndroidInjector
-        abstract ContentFragment contentFragment();
+    @ActivityScoped
+    @ContributesAndroidInjector
+    abstract ContentFragment contentFragment();
+
+    @ActivityScoped
+    @ContributesAndroidInjector
+    abstract TimeLineFragment timeLineFragment();
 }

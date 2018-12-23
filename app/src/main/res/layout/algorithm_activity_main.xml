@@ -90,6 +90,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         />
+                    <fragment class="com.moh.clinicalguideline.views.algorithm.timeline.TimeLineFragment"
+                        android:id="@+id/timelinefragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

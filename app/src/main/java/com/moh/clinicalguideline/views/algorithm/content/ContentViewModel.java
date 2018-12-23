@@ -27,7 +27,8 @@ public class ContentViewModel extends BaseViewModel {
 
     @Inject
     public ContentViewModel(){
-         algorithmNodeDescription = new MutableLiveData<>();
+         this.algorithmNodeDescription = new MutableLiveData<>();
+         this.selectedPageId = new MutableLiveData<>();
     }
 
     public void loadNode(AlgorithmDescription nodeDescription) {

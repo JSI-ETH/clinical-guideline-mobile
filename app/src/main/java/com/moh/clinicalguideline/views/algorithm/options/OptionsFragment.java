@@ -46,19 +46,19 @@ public class OptionsFragment extends BaseFragment {
         viewModel = ViewModelProviders.of((FragmentActivity) getActivity(),viewModelFactory).get(OptionsViewModel.class);
         binding.setViewModel(viewModel);
         //load child nodes when new node is selected
-        parentViewModel.getSelectedItemId().observe((LifecycleOwner) getActivity(), Id -> {
-            viewModel.loadNodes(Id);
+        parentViewModel.getNode().observe((LifecycleOwner) getActivity(), node -> {
+            viewModel.loadNodes(node.getId());
         });
         //when a child node is selected inform parent
-        viewModel.getSelectedId().observe((LifecycleOwner) getActivity(), Id -> {
-            parentViewModel.selectedNewNode(Id);
+        viewModel.getSelectedNode().observe((LifecycleOwner) getActivity(), node -> {
+            parentViewModel.SelectNode(node);
         });
         initAdapters();
     }
 
     public void initAdapters(){
       adapter = new SimpleLayoutAdapter<>(R.layout.algorithm_fragment_options_list, item -> {
-            viewModel.selectNode(item.getId());
+            viewModel.selectNode(item.getNode());
         });
       binding.setAdapter(adapter);
       viewModel.getNodes().observe((LifecycleOwner) getActivity(), algorithmCardViewModels -> {

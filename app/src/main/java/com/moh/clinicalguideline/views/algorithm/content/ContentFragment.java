@@ -13,14 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.moh.clinicalguideline.R;
-import com.moh.clinicalguideline.databinding.AlgorithmFragmentAnswersBinding;
 import com.moh.clinicalguideline.databinding.AlgorithmFragmentContentBinding;
 import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseFragment;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmCardViewModel;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
-
-import javax.inject.Inject;
 
 public class ContentFragment extends BaseFragment {
 
@@ -47,8 +44,12 @@ public class ContentFragment extends BaseFragment {
         viewModel = ViewModelProviders.of((FragmentActivity) getActivity()).get(ContentViewModel.class);
         binding.setViewModel(viewModel);
         //load algorithm content when new node is selected
-        parentViewModel.getAlgorithmNodeDescription().observe((LifecycleOwner) getActivity(), algorithmDescription -> {
+        parentViewModel.getNode().observe((LifecycleOwner) getActivity(), algorithmDescription -> {
             viewModel.loadNode(algorithmDescription);
+        });
+        //Open Url Clicked
+        viewModel.getSelectedPageId().observe((LifecycleOwner) getActivity(),page->{
+            parentViewModel.LoadPage(page);
         });
     }
 

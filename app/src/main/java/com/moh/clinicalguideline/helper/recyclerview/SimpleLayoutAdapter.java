@@ -1,4 +1,5 @@
 package com.moh.clinicalguideline.helper.recyclerview;
+import android.view.View;
 import android.widget.Button;
 
 import com.moh.clinicalguideline.R;
@@ -10,7 +11,7 @@ public class SimpleLayoutAdapter<T> extends BaseAdapter {
     private List<T> nResults;
     private final int layoutId;
 
-    private Button mapbtn;
+    private View mapbtn;
     private final OnItemClickListener<T> itemClickListener;
     public interface OnItemClickListener<T> {
         void onItemClick(T item);

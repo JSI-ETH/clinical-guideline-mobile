@@ -17,13 +17,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class AnswersViewModel extends BaseViewModel {
     private final NodeRepository nodeRepository;
     private MutableLiveData<List<AlgorithmCardViewModel>> nodes;
-    private MutableLiveData<Integer> selectedId;
+    private MutableLiveData<AlgorithmDescription> selectedNode;
 
     @Inject
     public AnswersViewModel(NodeRepository nodeRepository) {
         this.nodeRepository = nodeRepository;
         nodes = new MutableLiveData<>();
-        selectedId = new MutableLiveData<>();
+        selectedNode = new MutableLiveData<>();
     }
 
     //region Bindable Properties
@@ -32,8 +32,8 @@ public class AnswersViewModel extends BaseViewModel {
     }
 
 
-    public MutableLiveData<Integer> getSelectedId() {
-        return selectedId;
+    public MutableLiveData<AlgorithmDescription> getSelectedNode() {
+        return selectedNode;
     }
     //endregion
 
@@ -55,8 +55,8 @@ public class AnswersViewModel extends BaseViewModel {
     }
 
     //endregion
-    public void selectNode(int nodeId) {
-        selectedId.setValue(nodeId);
+    public void selectNode(AlgorithmDescription node) {
+        selectedNode.setValue(node);
     }
     //endregion
 }

@@ -20,14 +20,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class OptionsViewModel extends BaseViewModel {
     private final NodeRepository nodeRepository;
     private MutableLiveData<List<AlgorithmCardViewModel>> nodes;
-    private MutableLiveData<Integer> selectedId;
+    private MutableLiveData<AlgorithmDescription> selectedNode;
     private boolean isSingleNode;
 
     @Inject
     public OptionsViewModel(NodeRepository nodeRepository) {
         this.nodeRepository = nodeRepository;
         nodes = new MutableLiveData<>();
-        selectedId = new MutableLiveData<>();
+        selectedNode = new MutableLiveData<>();
     }
 
     //region Bindable Properties
@@ -45,8 +45,8 @@ public class OptionsViewModel extends BaseViewModel {
         notifyPropertyChanged(BR.isSingleNode);
     }
 
-    public MutableLiveData<Integer> getSelectedId() {
-        return selectedId;
+    public MutableLiveData<AlgorithmDescription> getSelectedNode() {
+        return selectedNode;
     }
     //endregion
 
@@ -70,14 +70,14 @@ public class OptionsViewModel extends BaseViewModel {
     }
 
     //endregion
-    public void selectNode(int nodeId) {
-        selectedId.setValue(nodeId);
+    public void selectNode(AlgorithmDescription algorithmDescription) {
+        selectedNode.setValue(algorithmDescription);
     }
 
     public void selectFirstNode() {
         if (nodes.getValue() != null && !nodes.getValue().isEmpty()) {
-            int firstNodeId = nodes.getValue().get(0).getId();
-            selectNode(firstNodeId);
+            AlgorithmDescription firstNode = nodes.getValue().get(0).getNode();
+            selectNode(firstNode);
         }
     }
     //endregion

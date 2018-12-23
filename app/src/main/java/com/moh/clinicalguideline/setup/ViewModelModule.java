@@ -9,6 +9,7 @@ import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
 import com.moh.clinicalguideline.views.algorithm.answers.AnswersViewModel;
 import com.moh.clinicalguideline.views.algorithm.content.ContentViewModel;
 import com.moh.clinicalguideline.views.algorithm.options.OptionsViewModel;
+import com.moh.clinicalguideline.views.algorithm.timeline.TimelineViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -34,8 +35,12 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ContentViewModel.class)
-    abstract ViewModel bindConentViewModel(ContentViewModel viewModel);
+    abstract ViewModel bindContentViewModel(ContentViewModel viewModel);
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(TimelineViewModel.class)
+    abstract ViewModel bindTimelineViewModel(TimelineViewModel viewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory viewModelFactory);

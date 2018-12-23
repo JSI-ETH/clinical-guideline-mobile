@@ -1,51 +1,53 @@
 package com.moh.clinicalguideline.views.algorithm;
 
-import android.util.Log;
-
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 
 public class AlgorithmCardViewModel {
 
-    private AlgorithmDescription algorithmDescription;
+    private AlgorithmDescription node;
 
-    public AlgorithmCardViewModel(AlgorithmDescription algorithmDescription){
-        this.algorithmDescription = algorithmDescription;
+    public AlgorithmCardViewModel(AlgorithmDescription node){
+        this.node = node;
     }
 
     public int getId(){
         if(getHasDescription() || getChildCount()>1 || getFirstChildNodeId() == null)
         {
-            return algorithmDescription.getId();
+            return node.getId();
         }
-        return algorithmDescription.getFirstChildNodeId();
+        return node.getFirstChildNodeId();
     }
 
     public String getTitle() {
-        return algorithmDescription.getTitle();
+        return node.getTitle();
     }
 
     public String getDescription() {
-        return algorithmDescription.getDescription();
+        return node.getDescription();
     }
 
     public boolean getHasDescription() {
-        return algorithmDescription.getHasDescription();
+        return node.getHasDescription();
     }
 
     public int getChildCount(){
-         return algorithmDescription.getChildCount();
+         return node.getChildCount();
     }
 
     private Integer getFirstChildNodeId(){
-        return algorithmDescription.getFirstChildNodeId();
+        return node.getFirstChildNodeId();
     }
 
     public boolean getHasTitle(){
-        return algorithmDescription.getHasTitle();
+        return node.getHasTitle();
     }
 
     public boolean getUrgent () {
-        return algorithmDescription.getNodeTypeCode().equalsIgnoreCase("URGNT");
+        return node.getNodeTypeCode().equalsIgnoreCase("URGNT");
 
+    }
+
+    public AlgorithmDescription getNode() {
+        return node;
     }
 }

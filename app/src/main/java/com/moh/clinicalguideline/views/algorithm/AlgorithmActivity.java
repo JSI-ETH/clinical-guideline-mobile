@@ -1,23 +1,16 @@
 package com.moh.clinicalguideline.views.algorithm;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.moh.clinicalguideline.R;
-import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.databinding.AlgorithmActivityMainBinding;
-import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
-import com.moh.clinicalguideline.views.main.MenuActivity;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,12 +20,8 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     private AlgorithmActivityMainBinding binding;
     private AlgorithmViewModel viewModel;
 
-    private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
-    private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
 
     public static String Extra_NodeId = "Extra_NodeId";
-    public static String Extra_ParentNodeId="Extra_ParentNodeId";
-    public static String Extra_PageId ="Extra_PageId";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +32,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         binding.setMenu(viewModel);
 
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
-        //int page = getIntent().getExtras().getInt(Extra_PageId, 0);
-        viewModel.loadNode(nodeid);
+        viewModel.LoadNode(nodeid);
         initViews();
     }
 
@@ -61,32 +49,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         });
     }
 
-    @Override
-    public void openAlgorithm(int nodeId) {
-        Intent intent = new Intent(this, AlgorithmActivity.class);
-        intent.putExtra(Extra_NodeId, nodeId);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_up,R.anim.nothing);
-    }
-
-    @Override
-    public void openAlgorithmByPage(int pageId,int nodeId) {
-        Intent intent = new Intent(this, AlgorithmActivity.class);
-        intent.putExtra(Extra_PageId, pageId);
-        intent.putExtra(Extra_ParentNodeId,nodeId);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_up,R.anim.nothing);
-    }
-
-    @Override
-    public void returnToPrevious(int parentNodeId) {
-        if(parentNodeId != 0) {
-            Intent intent = new Intent(this, AlgorithmActivity.class);
-            intent.putExtra(Extra_ParentNodeId,parentNodeId);
-            startActivity(intent);
-
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -95,10 +57,4 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
     }
 
-    @Override
-    public void returnHome() {
-        finish();
-        Intent intent = new Intent(this, MenuActivity.class);
-        startActivity(intent);
-    }
 }
