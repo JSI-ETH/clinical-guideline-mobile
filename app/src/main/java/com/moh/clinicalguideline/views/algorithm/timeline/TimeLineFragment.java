@@ -29,7 +29,7 @@ public class TimeLineFragment extends BaseFragment {
     private AlgorithmFragmentTimelineBinding binding;
     private TimelineViewModel viewModel;
     private AlgorithmViewModel parentViewModel;
-    private SimpleLayoutAdapter<TimeLineNodeViewModel> adapter;
+    private TimeLineAdapter<TimeLineNodeViewModel> adapter;
 
     public static TimeLineFragment newInstance() {
         return new TimeLineFragment();
@@ -59,7 +59,7 @@ public class TimeLineFragment extends BaseFragment {
     }
 
     public void initAdapters(){
-      adapter = new SimpleLayoutAdapter<>(R.layout.algorithm_fragment_timeline_list, item -> {
+      adapter = new TimeLineAdapter<>(R.layout.algorithm_fragment_timeline_list, item -> {
             viewModel.selectNode(item.getPositionId());
         });
       binding.setAdapter(adapter);
