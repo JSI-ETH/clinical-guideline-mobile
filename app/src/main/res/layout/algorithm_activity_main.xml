@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -19,7 +18,7 @@
 
         <variable
             name="answersAdapter"
-            type="com.moh.clinicalguideline.helper.recyclerview.BaseAdapter"/>
+            type="com.moh.clinicalguideline.helper.recyclerview.BaseAdapter" />
 
 
         <import type="android.view.View" />
@@ -29,14 +28,13 @@
         <import type="android.text.Html" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/container"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
@@ -46,58 +44,107 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:textColor="@color/white"
-                app:title="@{menu.title}"/>
-
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title="@{menu.symptomTitle}" />
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
-            <LinearLayout
+            android:layout_marginTop="56dp">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/backContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-                <fragment class="com.moh.clinicalguideline.views.algorithm.content.ContentFragment"
-                    android:id="@+id/contentfragment"
+                android:background="@color/primaryColor"
+                android:orientation="vertical"
+                android:paddingBottom="56dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <fragment
+                    android:id="@+id/timelinefragment"
+                    class="com.moh.clinicalguideline.views.algorithm.timeline.TimeLineFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    />
+                    android:gravity="center_horizontal" />
+            </android.support.v4.widget.NestedScrollView>
+
+            <LinearLayout
+                android:id="@+id/foregroundContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:behavior_peekHeight="56dp"
+                app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:paddingBottom="@dimen/noPadding"
-                    android:paddingLeft="@dimen/noPadding"
-                    android:paddingRight="@dimen/noPadding"
-                    android:paddingTop="@dimen/noPadding">
+                    android:background="@drawable/ic_list_header_background"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/activity_spacing">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
 
-                    <fragment class="com.moh.clinicalguideline.views.algorithm.options.OptionsFragment"
-                        android:id="@+id/optionsfragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        />
-                    <fragment class="com.moh.clinicalguideline.views.algorithm.answers.AnswersFragment"
-                        android:id="@+id/answersfragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        />
-                    <fragment class="com.moh.clinicalguideline.views.algorithm.timeline.TimeLineFragment"
-                        android:id="@+id/timelinefragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        />
                 </LinearLayout>
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <fragment
+                            android:id="@+id/contentfragment"
+                            class="com.moh.clinicalguideline.views.algorithm.content.ContentFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/noPadding"
+                            android:paddingTop="@dimen/noPadding"
+                            android:paddingRight="@dimen/noPadding"
+                            android:paddingBottom="@dimen/noPadding">
+
+                            <fragment
+                                android:id="@+id/optionsfragment"
+                                class="com.moh.clinicalguideline.views.algorithm.options.OptionsFragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+
+                            <fragment
+                                android:id="@+id/answersfragment"
+                                class="com.moh.clinicalguideline.views.algorithm.answers.AnswersFragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </LinearLayout>
+        </android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

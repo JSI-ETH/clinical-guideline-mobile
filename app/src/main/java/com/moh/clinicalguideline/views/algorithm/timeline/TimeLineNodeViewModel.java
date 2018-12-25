@@ -1,5 +1,7 @@
 package com.moh.clinicalguideline.views.algorithm.timeline;
 
+import android.util.Log;
+
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 
 public class TimeLineNodeViewModel {
@@ -24,10 +26,12 @@ public class TimeLineNodeViewModel {
         return node.getDescription();
     }
 
-    public boolean isActive() {return node.getHasDescription() || node.getChildCount()>1 || node.getFirstChildNodeId() == null;}
+    public boolean isActive() {return !node.isSkipable();}
 
     public boolean isSymptom () {
-        return node.getNodeTypeCode().equalsIgnoreCase("URGNT");
+        Log.d("type",  String.valueOf(node.isSymptom()));
+        return node.isSymptom();
+
 
     }
 

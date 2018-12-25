@@ -15,6 +15,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private final NodeRepository nodeRepository;
     private MutableLiveData<AlgorithmDescription> node;
     private OnNodeSelectedListener onNodeSelectedListener;
+    private MutableLiveData<String> title = new MutableLiveData<>();
+    private MutableLiveData<String> symptomTitle = new MutableLiveData<>();
 
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository) {
@@ -36,11 +38,13 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         nodeRepository.getNodeByPage(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNodeLoaded, this::onLoadError);
+
     }
 
     private void onNodeLoaded(AlgorithmDescription node) {
         this.node.setValue(node);
         this.onNodeSelectedListener.onNodeSelected(node);
+        symptomTitle.setValue(node.getTitle());
 
     }
 
@@ -74,9 +78,14 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         this.onNodeSelectedListener = onNodeSelectedListener;
     }
 
-    public String getTitle() {
-        return "Symptom Title ";
+    public MutableLiveData<String> getTitle() {
+        return title;
     }
+
+    public MutableLiveData<String> getSymptomTitle() {
+        return symptomTitle;
+    }
+
     //endregion
 
     //region Listeners

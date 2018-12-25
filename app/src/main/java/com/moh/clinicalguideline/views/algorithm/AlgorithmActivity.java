@@ -1,14 +1,19 @@
 package com.moh.clinicalguideline.views.algorithm;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.moh.clinicalguideline.R;
+import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.databinding.AlgorithmActivityMainBinding;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
 
@@ -22,6 +27,8 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
 
     public static String Extra_NodeId = "Extra_NodeId";
+    private BottomSheetBehavior<LinearLayout> sheetBehavior;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +44,32 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     }
 
     public void initViews(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            binding.appBarLayout.setOutlineProvider(null);
+        }
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        sheetBehavior = BottomSheetBehavior.from(binding.foregroundContainer);
+        sheetBehavior.setFitToContents(false);
+        sheetBehavior.setHideable(false);//prevents the boottom sheet from completely hiding off the screen
+        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);//initially state to fully expanded
+        viewModel.getNode().observe(this, new Observer<AlgorithmDescription>() {
+            @Override
+            public void onChanged(@Nullable AlgorithmDescription algorithmDescription) {
+                if(sheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                   // binding.toolbar.setNavigationIcon();
+                }
+
             }
         });
     }
@@ -52,9 +77,10 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_out_up,R.anim.nothing);
-
+        if(sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+        else {
+           super.onBackPressed();}
     }
-
 }

@@ -44,7 +44,7 @@ public class ContentViewModel extends BaseViewModel {
             return "";
         else
         {
-            String yourHtmlText = nodeDescription.getTitle().replace("span style=\"color:", "font color='").replace(";\"","'").replace("</span>", "</font>");
+            String yourHtmlText = nodeDescription.getTitle();
             return yourHtmlText;
         }
 

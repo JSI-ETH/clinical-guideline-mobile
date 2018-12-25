@@ -114,4 +114,22 @@ public class AlgorithmDescription implements BaseModel {
     public void setPage(int page) {
         Page = page;
     }
+
+    public boolean isSymptom(){
+        return getNodeTypeCode().equalsIgnoreCase("ASMPT")
+                || getNodeTypeCode().equalsIgnoreCase("CSMPT")
+                || getNodeTypeCode().equalsIgnoreCase("CHRNC");
+    }
+    public boolean isUrgent(){
+        return getNodeTypeCode().equalsIgnoreCase("URGNT");
+    }
+    public boolean isNonUrgent(){
+        return getNodeTypeCode().equalsIgnoreCase("NTURG");
+    }
+    public boolean isAlgorithm(){
+        return getNodeTypeCode().equalsIgnoreCase("ALGTM");
+    }
+    public boolean isSkipable(){
+        return (!HasDescription && ChildCount <= 1 && FirstChildNodeId != null);
+    }
 }

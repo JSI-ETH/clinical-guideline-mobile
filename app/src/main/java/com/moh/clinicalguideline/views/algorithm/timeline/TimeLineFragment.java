@@ -60,7 +60,10 @@ public class TimeLineFragment extends BaseFragment {
 
     public void initAdapters(){
       adapter = new TimeLineAdapter<>(R.layout.algorithm_fragment_timeline_list, item -> {
-            viewModel.selectNode(item.getPositionId());
+          if(item.isActive())
+              {
+                viewModel.selectNode(item.getPositionId());
+              }
         });
       binding.setAdapter(adapter);
       viewModel.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
