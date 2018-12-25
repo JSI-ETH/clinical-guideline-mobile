@@ -7,6 +7,7 @@ import java.util.UUID;
 public class AlgorithmDescription implements BaseModel {
     private int Id;
     private String Title;
+    private String FullTitle;
     private String Description;
     private boolean HasDescription;
     private boolean HasTitle;
@@ -30,7 +31,12 @@ public class AlgorithmDescription implements BaseModel {
     }
 
     public void setTitle(String title) {
-        Title = title;
+        FullTitle = title;
+        String Title = FullTitle.split("/")[0];
+    }
+
+    public String getFullTitle() {
+        return FullTitle;
     }
 
     public String getDescription() {
