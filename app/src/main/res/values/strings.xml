@@ -94,6 +94,7 @@
     <string name="adult_s">Adult Symptoms</string>
     <string name="child_s">Child Symptoms</string>
     <string name="chronic_c">Chronic Care</string>
+    <string name="all_s">All Symptoms</string>
     <string name="title_activity_menu_activity">Clinical Guidline</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

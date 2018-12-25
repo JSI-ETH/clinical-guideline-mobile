@@ -15,43 +15,67 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingRight="16dp">
 
-            <TextView
-                android:id="@+id/singleText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/image"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_toStartOf="@+id/image"
-                android:layout_toLeftOf="@+id/image"
-                android:text="@{item.title }"
-                android:textSize="6.5pt"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                >
 
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:gravity="center_vertical|center_horizontal"
-                app:srcCompat="@drawable/baseline_keyboard_arrow_right_24" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="12dp"
+                    android:text="@{item.title }"
+                    android:id="@+id/singleText"
+                    android:textStyle="bold"
+                    />
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:layout_marginRight="30dp"
+                    android:text="Wed"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23 views"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="15dp"
+                    />
+
+                <Button
+
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:padding="2dp"
+                    />
+
+            </RelativeLayout>
+
+            </LinearLayout>
 
         <View xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/divider_line"

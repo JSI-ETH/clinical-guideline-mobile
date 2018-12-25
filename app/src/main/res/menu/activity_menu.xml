@@ -16,4 +16,9 @@
         android:icon="@drawable/baseline_local_hospital_black_24dp"
         android:title="@string/chronic_c" />
 
+    <item
+        android:id="@+id/all_symptom"
+        android:icon="@drawable/baseline_local_hospital_black_24dp"
+        android:title="@string/all_s" />
+
 </menu>

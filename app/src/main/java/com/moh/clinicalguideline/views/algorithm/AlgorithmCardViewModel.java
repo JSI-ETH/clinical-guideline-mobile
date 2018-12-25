@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.views.algorithm;
 
+
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 
 public class AlgorithmCardViewModel {
