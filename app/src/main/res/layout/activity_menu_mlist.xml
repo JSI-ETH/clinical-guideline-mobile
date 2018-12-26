@@ -31,6 +31,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:layout_marginLeft="12dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@id/last_read_label"
                     android:text="@{item.title }"
                     android:id="@+id/singleText"
                     android:textStyle="bold"
@@ -39,9 +41,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
+                    android:id="@+id/last_read_label"
+                    android:textSize="12sp"
                     android:layout_marginRight="30dp"
                     android:text="Wed"
+                    android:layout_marginLeft="@dimen/averageMargin"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     />
@@ -62,10 +66,11 @@
                     android:layout_marginLeft="15dp"
                     />
 
-                <Button
-
+                <ImageButton
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:src="@drawable/push_pin"
+                    android:background="@color/white"
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentEnd="true"
