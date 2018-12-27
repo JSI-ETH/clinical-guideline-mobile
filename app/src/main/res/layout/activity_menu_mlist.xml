@@ -58,7 +58,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:paddingBottom="5dp">
 
                 <TextView
@@ -72,8 +71,8 @@
                 <ImageButton
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/push_pin"
-                    android:background="@color/white"
+                    android:src="@{item.Pinned? @drawable/push_pin_on:@drawable/push_pin_off}"
+                    android:background="@android:color/transparent"
                     android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_alignParentEnd="true"

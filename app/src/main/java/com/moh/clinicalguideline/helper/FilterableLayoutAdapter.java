@@ -1,6 +1,11 @@
 package com.moh.clinicalguideline.helper;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
+
+import com.moh.clinicalguideline.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +42,12 @@ public class FilterableLayoutAdapter<T> extends BaseAdapter implements Filterabl
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         @SuppressWarnings("unchecked") BaseModel item = (BaseModel) getObjForPosition(position);
+        View view = holder.itemView;
+        if (position % 2 == 1) {
+            view.setBackgroundColor(Color.parseColor("#ffffff"));
+        } else {
+            view.setBackgroundColor(Color.parseColor("#f3f3f3"));
+        }
         holder.bind(item);
         holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
     }

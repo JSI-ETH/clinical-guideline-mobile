@@ -58,7 +58,8 @@
                 android:drawableEnd="@drawable/ic_arrow_forward_next_black_24dp"
                 android:iconifiedByDefault="false"
                 android:layout_gravity="center_horizontal"
-                android:queryHint="Search" />
+                android:queryHint="Search"
+                />
 
         </LinearLayout>
 
@@ -91,6 +92,7 @@
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:adapter="@{menu.adapter}"
                     tools:listitem="@android:layout/activity_list_item"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     />
 
             </android.support.design.widget.CoordinatorLayout>

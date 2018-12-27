@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/all_symptom"
+        android:icon="@drawable/select_all_24dp"
+        android:title="@string/all_s" />
+
+    <item
         android:id="@+id/adult_symptom"
         android:icon="@drawable/baseline_person_black_24dp"
         android:title="@string/adult_s" />
@@ -16,9 +21,5 @@
         android:icon="@drawable/baseline_local_hospital_black_24dp"
         android:title="@string/chronic_c" />
 
-    <item
-        android:id="@+id/all_symptom"
-        android:icon="@drawable/select_all_24dp"
-        android:title="@string/all_s" />
 
 </menu>

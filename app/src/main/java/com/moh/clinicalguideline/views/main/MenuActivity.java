@@ -53,7 +53,7 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
         viewModelBinding.setMenu(viewModel);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.adult_symptom);
+        navigation.setSelectedItemId(R.id.all_symptom);
 
     }
 
