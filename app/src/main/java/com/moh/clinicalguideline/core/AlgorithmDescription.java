@@ -16,6 +16,8 @@ public class AlgorithmDescription implements BaseModel {
     private int ChildCount;
     private Integer  FirstChildNodeId;
     private UUID rowguid;
+    private Boolean pinned;
+    //private String FullTitle;
 
     public int getId() {
         return Id;
@@ -30,7 +32,25 @@ public class AlgorithmDescription implements BaseModel {
     }
 
     public void setTitle(String title) {
-        Title = title;
+      //  FullTitle = title;
+        String[] splited = title.split("/");
+        if(splited.length > 2)
+            Title = splited[0]+"/"+splited[1];
+        else
+            Title=title;
+    }
+
+//    public String getFullTitle()
+//    {
+//        return FullTitle;
+//    }
+
+    public Boolean getPinned() {
+        return pinned;
+    }
+
+    public void setPinned(Boolean pinned) {
+        this.pinned = pinned;
     }
 
     public String getDescription() {

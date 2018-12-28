@@ -50,6 +50,12 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
                 .subscribe(this::OnChildSymptomLoaded,this::onLoadError);
     }
 
+    public void loadAll() {
+        setLoading(true);
+        nodeRepository.getAllSymptoms()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::OnAllSymptomLoaded,this::onLoadError);
+    }
     public FilterableLayoutAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }
@@ -64,6 +70,13 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
         //notifyChange();
+    }
+
+
+    private void OnAllSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
+        setLoading(false);
+        adapter.setData(nodeDescriptionList);
+        notifyChange();
     }
 
     public void onLoadError(Throwable throwable) {

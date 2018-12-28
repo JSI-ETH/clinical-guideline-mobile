@@ -47,6 +47,17 @@ public class NodeLocalRepository implements NodeRepository {
             return Observable.just(list);
         }).subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<List<AlgorithmDescription>> getAllSymptoms() {
+        return Observable.defer(() -> {
+            List<AlgorithmDescription> childList = nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
+            List<AlgorithmDescription> adultList = nodeDao.getNodesWithDescriptionByNodeTypeCode(ADULT_SYMPTOM);
+            adultList.addAll(childList);
+            return Observable.just(adultList);
+        }).subscribeOn(Schedulers.io());
+    }
+
     @Override
     public Observable<AlgorithmDescription> getNode(int nodeId) {
         return Observable.defer(() -> {

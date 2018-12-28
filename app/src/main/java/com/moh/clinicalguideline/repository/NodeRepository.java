@@ -13,6 +13,7 @@ public interface NodeRepository {
    Observable<List<AlgorithmDescription>> getAdultSymptom();
    Observable<List<AlgorithmDescription>> getChildSymptom();
    Observable<List<AlgorithmDescription>> getChronicCare();
+   Observable<List<AlgorithmDescription>> getAllSymptoms();
    Observable<List<AlgorithmDescription>> getChildNode(int nodeId);
 
     Observable<AlgorithmDescription> getNodeByPage(int pageId);

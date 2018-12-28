@@ -104,4 +104,8 @@
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
     <string name="title_activity_symptom">SymptomActivity</string>
+
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
 </resources>
