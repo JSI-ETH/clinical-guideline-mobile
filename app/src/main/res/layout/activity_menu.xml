@@ -41,8 +41,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:elevation="8dp">
+            android:paddingTop="3dp">
 
             <SearchView
                 android:id="@+id/simpleSearchView"
@@ -59,6 +58,7 @@
                 android:iconifiedByDefault="false"
                 android:layout_gravity="center_horizontal"
                 android:queryHint="Search"
+                android:elevation="8dp"
                 />
 
         </LinearLayout>
@@ -95,16 +95,16 @@
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     />
 
+                <android.support.design.widget.BottomNavigationView
+                    android:id="@+id/navigation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="?android:attr/windowBackground"
+                    app:menu="@menu/activity_menu"/>
             </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="?android:attr/windowBackground"
-            app:menu="@menu/activity_menu"/>
     </FrameLayout>
 
    </LinearLayout>
