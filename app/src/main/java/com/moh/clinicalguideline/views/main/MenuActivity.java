@@ -5,8 +5,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.SearchView;
 
 import com.moh.clinicalguideline.R;
@@ -22,6 +26,8 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
     public MenuViewModel viewModel;
 
     private ActivityMenuBinding viewModelBinding;
+
+    private RecyclerView symptomsListView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -53,6 +59,39 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.all_symptom);
 
+        SearchView searchView = (SearchView) findViewById(R.id.simpleSearchView);
+
+        symptomsListView = (RecyclerView) findViewById(R.id.recycler_view);
+        if (symptomsListView.getLayoutManager() instanceof LinearLayoutManager) {
+
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) symptomsListView
+                    .getLayoutManager();
+            final int[] firstVisibleInListview = {linearLayoutManager.findFirstVisibleItemPosition()};
+
+            symptomsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView,
+                                       int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int currentFirstVisible = linearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (currentFirstVisible > firstVisibleInListview[0])
+                    {
+                        Log.e("RecyclerView scrolled: ", "scroll down!");
+                        searchView.setVisibility(View.GONE);
+                    }
+                    else  if (currentFirstVisible < firstVisibleInListview[0])
+                    {
+                        Log.e("RecyclerView scrolled: ", "scroll up!");
+                        searchView.setVisibility(View.VISIBLE);
+                    }
+
+                    firstVisibleInListview[0] = currentFirstVisible;
+
+                }
+            });
+
+        }
     }
 
     @Override
