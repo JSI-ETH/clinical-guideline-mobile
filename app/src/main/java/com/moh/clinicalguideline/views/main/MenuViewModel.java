@@ -34,46 +34,33 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
         setLoading(true);
         nodeRepository.getAdultSymptom()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnAdultSymptomLoaded,this::onLoadError);
+                .subscribe(this::OnLoaded,this::onLoadError);
     }
 
     public void loadChildSymptom() {
         setLoading(true);
         nodeRepository.getChildSymptom()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnChildSymptomLoaded,this::onLoadError);
+                .subscribe(this::OnLoaded,this::onLoadError);
     }
     public void loadChronic() {
         setLoading(true);
         nodeRepository.getChronicCare()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnChildSymptomLoaded,this::onLoadError);
+                .subscribe(this::OnLoaded,this::onLoadError);
     }
 
     public void loadAll() {
         setLoading(true);
         nodeRepository.getAllSymptoms()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnAllSymptomLoaded,this::onLoadError);
+                .subscribe(this::OnLoaded,this::onLoadError);
     }
     public FilterableLayoutAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }
 
-    private void OnAdultSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
-        setLoading(false);
-        adapter.setData(nodeDescriptionList);
-        //notifyChange();
-    }
-
-    private void OnChildSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
-        setLoading(false);
-        adapter.setData(nodeDescriptionList);
-        //notifyChange();
-    }
-
-
-    private void OnAllSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
+    private void OnLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
         notifyChange();

@@ -136,18 +136,16 @@ public class AlgorithmDescription implements BaseModel {
     }
 
     public boolean isSymptom(){
-        return getNodeTypeCode().equalsIgnoreCase("ASMPT")
-                || getNodeTypeCode().equalsIgnoreCase("CSMPT")
-                || getNodeTypeCode().equalsIgnoreCase("CHRNC");
+        return NodeCode.isSymptomOrCare(getNodeTypeCode());
     }
     public boolean isUrgent(){
-        return getNodeTypeCode().equalsIgnoreCase("URGNT");
+        return NodeCode.isUrgent(getNodeTypeCode());
     }
     public boolean isNonUrgent(){
-        return getNodeTypeCode().equalsIgnoreCase("NTURG");
+        return NodeCode.isNonUrgent(getNodeTypeCode());
     }
     public boolean isAlgorithm(){
-        return getNodeTypeCode().equalsIgnoreCase("ALGTM");
+        return NodeCode.isAlgorithm(getNodeTypeCode());
     }
     public boolean isSkipable(){
         return (!HasDescription && ChildCount <= 1 && FirstChildNodeId != null);
