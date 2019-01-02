@@ -58,7 +58,6 @@
                 android:iconifiedByDefault="false"
                 android:layout_gravity="center_horizontal"
                 android:queryHint="Search"
-                android:elevation="8dp"
                 />
 
         </LinearLayout>
@@ -102,6 +101,7 @@
                     android:layout_gravity="bottom"
                     android:background="?android:attr/windowBackground"
                     app:menu="@menu/activity_menu"/>
+
             </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
