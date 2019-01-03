@@ -77,17 +77,16 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
                     if (currentFirstVisible > firstVisibleInListview[0])
                     {
-                        Log.e("RecyclerView scrolled: ", "scroll down!");
+                        Log.d("RecyclerView scrolled: ", "scroll down!");
                         searchView.setVisibility(View.GONE);
                     }
                     else  if (currentFirstVisible < firstVisibleInListview[0])
                     {
-                        Log.e("RecyclerView scrolled: ", "scroll up!");
+                        Log.d("RecyclerView scrolled: ", "scroll up!");
                         searchView.setVisibility(View.VISIBLE);
                     }
 
                     firstVisibleInListview[0] = currentFirstVisible;
-
                 }
             });
 
