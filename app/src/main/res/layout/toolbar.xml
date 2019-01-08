@@ -8,8 +8,8 @@
     android:background="@color/primaryColor">
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/your_icon"
         android:src="@drawable/main_icon"
         android:layout_margin="10dp"
