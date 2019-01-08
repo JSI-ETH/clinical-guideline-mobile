@@ -34,6 +34,23 @@ public interface NodeDao {
             "    Where nt.NodeTypeCode =:code " +
             "Order by ifnull(nd.Title,n.NodeName)")
     List<AlgorithmDescription> getNodesWithDescriptionByNodeTypeCode(String code);
+    @Query("Select n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  ifnull(nd.Description,'') Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "  nt.NodeTypeCode \n," +
+            "  n.Page, "+
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
+            " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
+            " (select y.ChildNodeId from noderelation y where y.ParentNodeId =n.Id LIMIT 1) FirstChildNodeId \n"+
+            "    from node n \n" +
+            "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
+            "    Left join nodeDescription nd on nd.id = n.Id\n" +
+            "   Where nt.NodeTypeCode in ('ASMPT','CSMPT','CHRNC')" +
+            "Order by ifnull(nd.Title,n.NodeName)")
+    List<AlgorithmDescription> getNodesWithDescription();
 
     @Query("Select  n.Id,\n" +
             "  ifnull(nd.Title,n.NodeName) Title,\n" +
