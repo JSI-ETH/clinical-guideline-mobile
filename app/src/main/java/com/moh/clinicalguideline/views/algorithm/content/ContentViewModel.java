@@ -61,6 +61,7 @@ public class ContentViewModel extends BaseViewModel {
     @Bindable
     public String getDescription(){
 
+        String description;
         AlgorithmDescription nodeDescription = algorithmNodeDescription.getValue();
         if(nodeDescription==null)
             return "";
@@ -72,10 +73,12 @@ public class ContentViewModel extends BaseViewModel {
             } else {
                 title = "<h4>" +getTitle() +"</h4>";
             }
-            return title+nodeDescription.getDescription();
+            description = title+nodeDescription.getDescription().replace("http://35.184.137.237:8915/MyImages/","file:///android_asset/img/");
+            return description;
         }
-        return  nodeDescription.getDescription();
-    }
+        description = nodeDescription.getDescription().replace("http://35.184.137.237:8915/MyImages/","file:///android_asset/img/");
+
+        return description;  }
 
     public MutableLiveData<Integer> getSelectedPageId() {
         return selectedPageId;
