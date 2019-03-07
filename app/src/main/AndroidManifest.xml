@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".views.main.MenuActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
