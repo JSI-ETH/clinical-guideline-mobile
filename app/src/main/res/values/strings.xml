@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Clinical Guideline</string>
+    <string name="company">Federal Democratic Republic of Ethiopia</string>
+    <string name="company_sub">Ministry of Health</string>
+    <string name="app_title">Ethiopian primary health care clinical guidelines </string>
+    <string name="app_subtitle">Care of children 5-14 years and Adults 15 years or older in Health Centers</string>
+    <string name="city">Addis Ababa</string>
+    <string name="pub_date">2010(EC) | 2017(GC)</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

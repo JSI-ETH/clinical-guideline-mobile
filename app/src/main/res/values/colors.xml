@@ -13,6 +13,9 @@
     <color name="accentColor">#ffffff</color>
     <color name="dividerColor">#BDBDBD</color>
     <color name="iconColor">#FFFFFF</color>
+    <color name="splash_bg">#6C6D70</color>
+    <color name="splash_text">#FFFFFF</color>
+    <color name="splash_bar">#1C89CA</color>
 
 
     <!--Spark Line Color-->
