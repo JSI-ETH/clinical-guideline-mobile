@@ -16,7 +16,6 @@ public class AlgorithmDescription implements BaseModel {
     private int ChildCount;
     private Integer  FirstChildNodeId;
     private UUID rowguid;
-    private Boolean pinned;
     //private String FullTitle;
 
     public int getId() {
@@ -44,14 +43,6 @@ public class AlgorithmDescription implements BaseModel {
 //    {
 //        return FullTitle;
 //    }
-
-    public Boolean getPinned() {
-        return pinned;
-    }
-
-    public void setPinned(Boolean pinned) {
-        this.pinned = pinned;
-    }
 
     public String getDescription() {
         return Description;
