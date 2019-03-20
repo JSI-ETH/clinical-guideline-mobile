@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Clinical Guideline</string>
+    <string name="app_name">EPCHG</string>
     <string name="company">Federal Democratic Republic of Ethiopia</string>
     <string name="company_sub">Ministry of Health</string>
     <string name="app_title">Ethiopian primary health care clinical guidelines </string>
@@ -101,7 +101,7 @@
     <string name="child_s">Child Symptoms</string>
     <string name="chronic_c">Chronic Care</string>
     <string name="all_s">All Symptoms</string>
-    <string name="title_activity_menu_activity">Clinical Guidline</string>
+    <string name="title_activity_menu_activity">EPCHG</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
