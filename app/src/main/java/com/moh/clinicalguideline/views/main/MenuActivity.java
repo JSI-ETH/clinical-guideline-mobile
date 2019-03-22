@@ -2,6 +2,7 @@ package com.moh.clinicalguideline.views.main;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import com.moh.clinicalguideline.R;
@@ -60,6 +62,15 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.all_symptom);
+
+        ImageView videoIcon = (ImageView) findViewById(R.id.video_icon);
+        videoIcon.setOnClickListener((view)-> {
+            // play video using users preferred video player
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            int rawId = getResources().getIdentifier("guide_small",  "raw", getPackageName());
+            intent.setDataAndType(Uri.parse("android.resource://" + getPackageName() + "/" + rawId), "video/*");
+            startActivity(Intent.createChooser(intent, "pick an app to play video..."));
+        });
 
         searchView = (SearchView) findViewById(R.id.simpleSearchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
