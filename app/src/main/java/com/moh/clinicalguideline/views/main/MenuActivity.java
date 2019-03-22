@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.ActivityMenuBinding;
-import com.moh.clinicalguideline.helper.BaseActivity;
+import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
 
 import javax.inject.Inject;
@@ -23,6 +27,10 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
     private ActivityMenuBinding viewModelBinding;
 
+    private RecyclerView symptomsListView;
+
+    private SearchView searchView;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
                 switch (item.getItemId()) {
@@ -33,7 +41,11 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
                         viewModel.loadChildSymptom();
                          return true;
                     case R.id.chronic_care:
+                        viewModel.loadChronic();
                          return true;
+                    case R.id.all_symptom:
+                        viewModel.loadAll();
+                        return true;
                 }
                 return false;
             };
@@ -47,25 +59,9 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
         viewModelBinding.setMenu(viewModel);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.adult_symptom);
-    }
+        navigation.setSelectedItemId(R.id.all_symptom);
 
-    @Override
-    public void openSymptom(int nodeId) {
-        Intent intent = new Intent(this, AlgorithmActivity.class);
-        intent.putExtra(AlgorithmActivity.Extra_NodeId, nodeId);
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_search, menu);
-        MenuItem item = menu.findItem(R.id.menu_search);
-
-        SearchView searchView = (SearchView) item.getActionView();
+        searchView = (SearchView) findViewById(R.id.simpleSearchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -80,6 +76,54 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
                 return false;
             }
         });
+        symptomsListView = (RecyclerView) findViewById(R.id.recycler_view);
+        if (symptomsListView.getLayoutManager() instanceof LinearLayoutManager) {
+
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) symptomsListView
+                    .getLayoutManager();
+            final int[] firstVisibleInListview = {linearLayoutManager.findFirstVisibleItemPosition()};
+
+//            symptomsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                @Override
+//                public void onScrolled(RecyclerView recyclerView,
+//                                       int dx, int dy) {
+//                    super.onScrolled(recyclerView, dx, dy);
+//                    int currentFirstVisible = linearLayoutManager.findFirstVisibleItemPosition();
+//
+//                    if (currentFirstVisible > firstVisibleInListview[0] && firstVisibleInListview[0]> -1 )
+//                    {
+//                        Log.d("RecyclerView scrolled: ", "scroll down!");
+//                        searchView.setVisibility(View.GONE);
+//                    }
+//                    else  if (currentFirstVisible < firstVisibleInListview[0])
+//                    {
+//                        Log.d("RecyclerView scrolled: ", "scroll up!");
+//                        searchView.setVisibility(View.VISIBLE);
+//                    }
+//
+//                    firstVisibleInListview[0] = currentFirstVisible;
+//                }
+//            });
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchView.clearFocus();
+    }
+
+    @Override
+    public void openSymptom(int nodeId) {
+        Intent intent = new Intent(this, AlgorithmActivity.class);
+        intent.putExtra(AlgorithmActivity.Extra_NodeId, nodeId);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
         return super.onCreateOptionsMenu(menu);
 
     }

@@ -16,6 +16,7 @@ public class AlgorithmDescription implements BaseModel {
     private int ChildCount;
     private Integer  FirstChildNodeId;
     private UUID rowguid;
+    //private String FullTitle;
 
     public int getId() {
         return Id;
@@ -30,8 +31,18 @@ public class AlgorithmDescription implements BaseModel {
     }
 
     public void setTitle(String title) {
-        Title = title;
+      //  FullTitle = title;
+        String[] splited = title.split("/");
+        if(splited.length > 2)
+            Title = splited[0]+"/"+splited[1];
+        else
+            Title=title;
     }
+
+//    public String getFullTitle()
+//    {
+//        return FullTitle;
+//    }
 
     public String getDescription() {
         return Description;
@@ -113,5 +124,21 @@ public class AlgorithmDescription implements BaseModel {
 
     public void setPage(int page) {
         Page = page;
+    }
+
+    public boolean isSymptom(){
+        return NodeCode.isSymptomOrCare(getNodeTypeCode());
+    }
+    public boolean isUrgent(){
+        return NodeCode.isUrgent(getNodeTypeCode());
+    }
+    public boolean isNonUrgent(){
+        return NodeCode.isNonUrgent(getNodeTypeCode());
+    }
+    public boolean isAlgorithm(){
+        return NodeCode.isAlgorithm(getNodeTypeCode());
+    }
+    public boolean isSkipable(){
+        return (!HasDescription && ChildCount <= 1 && FirstChildNodeId != null);
     }
 }

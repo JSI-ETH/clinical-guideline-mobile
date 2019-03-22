@@ -32,18 +32,21 @@ ext {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:28.0.0-alpha3'
     implementation 'com.android.support:support-vector-drawable:28.0.0-alpha3'
-    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0-alpha3'
     //region Install Room: SQLLite based Database persitance library
+    implementation 'com.android.support:support-v4:28.0.0-alpha3'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
     annotationProcessor "android.arch.persistence.room:compiler:${roomVersion}"
     implementation "android.arch.persistence.room:runtime:${roomVersion}"
     implementation "android.arch.persistence.room:rxjava2:${roomVersion}"
     testImplementation "android.arch.persistence.room:testing:${roomVersion}"
     //endregion
-
+    implementation "android.arch.lifecycle:extensions:${roomVersion}"
+    implementation "android.arch.lifecycle:viewmodel:${roomVersion}"
     //region Install Dagger: Dependency Injenction library
     implementation "com.google.dagger:dagger-android:${daggerVer}"
     implementation "com.google.dagger:dagger-android-support:${daggerVer}"

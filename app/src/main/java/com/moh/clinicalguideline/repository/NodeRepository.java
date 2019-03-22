@@ -13,8 +13,12 @@ public interface NodeRepository {
    Observable<List<AlgorithmDescription>> getAdultSymptom();
    Observable<List<AlgorithmDescription>> getChildSymptom();
    Observable<List<AlgorithmDescription>> getChronicCare();
+   Observable<List<AlgorithmDescription>> getAllSymptoms();
    Observable<List<AlgorithmDescription>> getChildNode(int nodeId);
-   Observable<List<AlgorithmDescription>> getChildNode(int nodeId,boolean isConditional);
+
+    Observable<AlgorithmDescription> getNodeByPage(int pageId);
+
+    Observable<List<AlgorithmDescription>> getChildNode(int nodeId, boolean isConditional);
    Observable<AlgorithmDescription>getNode(int nodeId);
 
 }

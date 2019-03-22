@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="menu"
@@ -11,26 +12,57 @@
             type="android.support.v7.widget.RecyclerView.ItemAnimator" />
 
         <variable
-            name="itemDecorator"
-            type="com.moh.clinicalguideline.helper.SimpleDividerItemDecoration" />
-        <import type="android.view.View" />
+            name="simpleItemDecorator"
+            type="com.moh.clinicalguideline.helper.recyclerview.SimpleDividerItemDecoration"/>
 
-        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters" />
+
+        <import type="com.moh.clinicalguideline.helper.DataBindingAdapters"/>
+        <import type="android.widget.LinearLayout" />
+        <import type="android.view.View" />
     </data>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       >
+       <include layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
 
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigation"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="0dp"
-            android:background="?android:attr/windowBackground"
-            app:menu="@menu/activity_menu" />
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp">
+
+            <SearchView
+                android:id="@+id/simpleSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                android:paddingTop="3dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:textColor="@color/write_black"
+                android:background="@drawable/search_box"
+                android:drawableRight="@drawable/ic_arrow_forward_next_black_24dp"
+                android:drawableEnd="@drawable/ic_arrow_forward_next_black_24dp"
+                android:iconifiedByDefault="false"
+                android:layout_gravity="center_horizontal"
+                android:queryHint="Search"
+                />
+
+        </LinearLayout>
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
@@ -51,16 +83,30 @@
                 android:paddingTop="@dimen/noPadding">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvPostsLis"
+                    android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     app:itemAnimator="@{itemAnimator}"
-                    android:itemDecoration="@{itemDecorator}"
+                    app:itemDecoration="@{simpleItemDecorator}"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    android:adapter="@{menu.adapter}"/>
+                    android:adapter="@{menu.adapter}"
+                    tools:listitem="@android:layout/activity_list_item"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    />
+
+                <android.support.design.widget.BottomNavigationView
+                    android:id="@+id/navigation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="?android:attr/windowBackground"
+                    app:menu="@menu/activity_menu"/>
 
             </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
+    </FrameLayout>
+
+   </LinearLayout>
 </layout>

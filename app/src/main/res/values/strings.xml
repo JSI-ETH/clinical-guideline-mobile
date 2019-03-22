@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">Clinical Guideline</string>
+    <string name="app_name">EPCHG</string>
+    <string name="company">Federal Democratic Republic of Ethiopia</string>
+    <string name="company_sub">Ministry of Health</string>
+    <string name="app_title">Ethiopian primary health care clinical guidelines </string>
+    <string name="app_subtitle">Care of children 5-14 years and Adults 15 years or older in Health Centers</string>
+    <string name="city">Addis Ababa</string>
+    <string name="pub_date">2010(EC) | 2017(GC)</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -94,7 +100,8 @@
     <string name="adult_s">Adult Symptoms</string>
     <string name="child_s">Child Symptoms</string>
     <string name="chronic_c">Chronic Care</string>
-    <string name="title_activity_menu_activity">Clinical Guidline</string>
+    <string name="all_s">All Symptoms</string>
+    <string name="title_activity_menu_activity">EPCHG</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -103,4 +110,8 @@
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
     <string name="title_activity_symptom">SymptomActivity</string>
+
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
 </resources>

@@ -32,8 +32,27 @@ public interface NodeDao {
                 "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
                 "    Left join nodeDescription nd on nd.id = n.Id\n" +
             "    Where nt.NodeTypeCode =:code " +
+            "   AND  ifnull(nd.Title, '') != ''" +
             "Order by ifnull(nd.Title,n.NodeName)")
     List<AlgorithmDescription> getNodesWithDescriptionByNodeTypeCode(String code);
+    @Query("Select n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  ifnull(nd.Description,'') Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "  nt.NodeTypeCode \n," +
+            "  n.Page, "+
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
+            " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
+            " (select y.ChildNodeId from noderelation y where y.ParentNodeId =n.Id LIMIT 1) FirstChildNodeId \n"+
+            "    from node n \n" +
+            "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
+            "    Left join nodeDescription nd on nd.id = n.Id\n" +
+            "   Where nt.NodeTypeCode in ('ASMPT','CSMPT','CHRNC')" +
+            "   AND  ifnull(nd.Title, '') != ''" +
+            "Order by ifnull(nd.Title,n.NodeName)")
+    List<AlgorithmDescription> getNodesWithDescription();
 
     @Query("Select  n.Id,\n" +
             "  ifnull(nd.Title,n.NodeName) Title,\n" +
@@ -90,6 +109,24 @@ public interface NodeDao {
             "       Left Join nodeDescription nd on n.id = nd.Id" +
             "    Where n.Id =:parentId")
     AlgorithmDescription getNodesWithDescription(int parentId);
+
+    @Query("Select  n.Id,\n" +
+            "  ifnull(nd.Title,n.NodeName) Title,\n" +
+            "  ifnull(nd.Description,'') Description,\n" +
+            "  ifnull(nd.IsCondition,0) IsCondition,\n" +
+            "  nd.rowguid, \n" +
+            "  nt.NodeTypeCode, \n" +
+            "  n.Page, "+
+            " CASE When ifnull(nd.Title, '') = ''  Then 0 else 1 END HasTitle,  \n"+
+            " CASE When ifnull(nd.Description, '') = ''  Then 0 else 1 END HasDescription, \n" +
+            " (select count(y.id) from noderelation y where y.ParentNodeId =n.Id ) ChildCount,\n" +
+            " (select y.ChildNodeId from noderelation y where y.ParentNodeId =n.Id LIMIT 1) FirstChildNodeId \n"+
+            "    From node n \n" +
+            "       Join nodeType nt on nt.id = n.NodeTypeId" +
+            "       Left Join nodeDescription nd on n.id = nd.Id" +
+            "    Where n.page =:page and (NodeTypeCode ='ASMPT' OR NodeTypeCode='CSMPT' OR NodeTypeCode = 'CHRNC') LIMIT 1" +
+            "")
+    AlgorithmDescription getNodesWithDescriptionByPage(int page);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Node... nodes);

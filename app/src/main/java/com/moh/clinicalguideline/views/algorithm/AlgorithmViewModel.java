@@ -1,224 +1,97 @@
 package com.moh.clinicalguideline.views.algorithm;
 
-import android.databinding.Bindable;
-import android.graphics.Bitmap;
-import android.util.Log;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.arch.lifecycle.MutableLiveData;
 
-import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
-import com.moh.clinicalguideline.helper.ViewModel;
+import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class AlgorithmViewModel extends ViewModel<AlgorithmNavigator> {
+public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
-    private SimpleLayoutAdapter<AlgorithmCardViewModel> adapter;
-    private SimpleLayoutAdapter<AlgorithmDescription> conditionalAdapter;
-    private SimpleLayoutAdapter<AlgorithmDescription> optionsAdapter;
     private final NodeRepository nodeRepository;
-    private AlgorithmDescription nodeDescription;
-
-    private boolean loading;
+    private MutableLiveData<AlgorithmDescription> node;
+    private OnNodeSelectedListener onNodeSelectedListener;
+    private MutableLiveData<String> title = new MutableLiveData<>();
+    private MutableLiveData<String> symptomTitle = new MutableLiveData<>();
 
     @Inject
-    public AlgorithmViewModel(NodeRepository nodeRepository){
+    public AlgorithmViewModel(NodeRepository nodeRepository) {
+        this.nodeRepository = nodeRepository;
+        this.node = new MutableLiveData<>();
+        this.onNodeSelectedListener = algorithmDescription -> {
 
-         this.nodeRepository = nodeRepository;
-         this.adapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_list, item -> {
-             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() != null)
-             {
-                 navigator.openAlgorithm(item.getId(),nodeDescription.getId());
-             }
-             else {
-                 navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
-             }
-         });
-
-         this.conditionalAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_clist, item -> {
-             if(item.getHasDescription() || item.getChildCount()>1 || nodeDescription.getFirstChildNodeId() == null)
-             {
-                 navigator.openAlgorithm(item.getId(),nodeDescription.getId());
-             }
-             else {
-                 navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
-             }
-         });
-
-
-        this.optionsAdapter = new SimpleLayoutAdapter<>(R.layout.activity_algorithm_option_layout, item -> {
-            if(item.getIsSingle() && item.getChildCount()> 2 && nodeDescription.getFirstChildNodeId() == null)
-            {
-                navigator.openAlgorithm(item.getId(),nodeDescription.getId());
-            }
-            else {
-                navigator.openAlgorithm(item.getFirstChildNodeId(),nodeDescription.getId());
-            }
-        });
+        };
 
     }
 
-
-    public void loadNode(int nodeId,int parentId) {
-        setLoading(true);
-        loadAlgorithmDescription(nodeId);
-      //  loadNonConditionalChildNodes(nodeId);
-      //  loadConditionalChildNodes(nodeId);
-    }
-
-    private void loadAlgorithmDescription(int nodeId){
-        setLoading(true);
+    public void LoadNode(int nodeId) {
         nodeRepository.getNode(nodeId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnAlgorithmNodeLoaded,this::onLoadError);
+                .subscribe(this::onNodeLoaded, this::onLoadError);
     }
 
-    private void loadNonConditionalChildNodes(int nodeId) {
-        setLoading(true);
-        nodeRepository.getChildNode(nodeId,false)
+    public void LoadPage(int page) {
+        nodeRepository.getNodeByPage(page)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onNonConditionalChildNodesLoaded,this::onLoadError);
-    }
-
-    private void loadConditionalChildNodes(int nodeId) {
-        setLoading(true);
-        nodeRepository.getChildNode(nodeId,true)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnConditionalChildNodesLoaded,this::onLoadError);
-    }
-
-    public SimpleLayoutAdapter<AlgorithmCardViewModel> getAdapter(){
-         return adapter;
-    }
-
-    public SimpleLayoutAdapter<AlgorithmDescription> getConditionalAdapter(){
-        return conditionalAdapter;
-    }
-
-    public SimpleLayoutAdapter<AlgorithmDescription> getOptionsAdapter(){
-        return optionsAdapter;
-    }
-
-    private void OnAlgorithmNodeLoaded(AlgorithmDescription nodeDescription) {
-        setLoading(false);
-        this.nodeDescription = nodeDescription;
-        loadNonConditionalChildNodes(this.nodeDescription.getId());
-       // notifyChange();
-    }
-
-    public Boolean oneChild ()
-    {
-        if(nodeDescription!=null)
-            return nodeDescription.getChildCount()==1;
-        return false;
-    }
-
-    public void openNext() {
-        this.navigator.openAlgorithm(nodeDescription.getFirstChildNodeId(),nodeDescription.getId());
-    }
-
-    private void onNonConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
-        setLoading(false);
-        List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
-        for (AlgorithmDescription nodeDescription: nodeDescriptionList) {
-            algorithmNodeViewModels.add(new AlgorithmCardViewModel(nodeDescription));
-            }
-        loadConditionalChildNodes(this.nodeDescription.getId());
-        adapter.setData(algorithmNodeViewModels);
-      //  notifyChange();
-    }
-
-    private void OnConditionalChildNodesLoaded(List<AlgorithmDescription> nodeDescriptionList) {
-        setLoading(false);
-
-        conditionalAdapter.setData(nodeDescriptionList);
-        notifyChange();
-    }
-
-    public void onLoadError(Throwable throwable) {
-        Log.e("Error Fetching data", throwable.getMessage());
-        setLoading(false);
-    }
-    @Bindable
-    public boolean isLoading() {
-        return loading;
-    }
-
-    public void setLoading(boolean loading) {
-        this.loading = loading;
-    }
-
-    public String getTitle(){
-        if(nodeDescription==null || !nodeDescription.getHasTitle())
-            return "";
-        else
-        {
-            String yourHtmlText = nodeDescription.getTitle().replace("span style=\"color:", "font color='").replace(";\"","'").replace("</span>", "</font>");
-            return yourHtmlText;
-        }
+                .subscribe(this::onNodeLoaded, this::onLoadError);
 
     }
 
-    public String getDescription(){
-        if(nodeDescription==null)
-            return "";
-        if(nodeDescription.getHasTitle())
-        {
-            String title= "";
-               if(nodeDescription.getNodeTypeCode().equalsIgnoreCase("URGNT")) {
-                   title = "<h4 class=\"urgent\">" + getTitle() + "</h4>";
-               } else {
-                   title = "<h4>" +getTitle() +"</h4>";
-               }
-            return title+nodeDescription.getDescription();
-        }
-        return  nodeDescription.getDescription();
-    }
+    private void onNodeLoaded(AlgorithmDescription node) {
+        this.node.setValue(node);
+        this.onNodeSelectedListener.onNodeSelected(node);
+        symptomTitle.setValue(node.getTitle());
 
-    public boolean getHasDescription(){
-        if(nodeDescription==null)
-            return false;
-        return nodeDescription.getHasDescription();
-    }
-    public boolean IsChildNode(){
-        return nodeDescription.getNodeTypeCode().equalsIgnoreCase("URGNT")
-                || nodeDescription.getNodeTypeCode().equalsIgnoreCase("NTURG")
-                || nodeDescription.getNodeTypeCode().equalsIgnoreCase("ALGTM");
     }
 
 
-    public WebViewClient getClient() {
-        return new Client();
+    public void PreviewNode(AlgorithmDescription node) {
+        this.node.setValue(node);
     }
 
-    private class Client extends WebViewClient {
+    public void SelectNode(AlgorithmDescription node) {
+        SelectNode(node, true);
+    }
 
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return true;
-        }
+    public void SelectNode(AlgorithmDescription node, boolean skipSingleNode) {
 
-        @Override
-        public void onReceivedError(WebView view, WebResourceRequest request,
-                                    WebResourceError error) {
-            super.onReceivedError(view, request, error);
+        if (!skipSingleNode || node.getHasDescription() || node.getChildCount() > 1 || node.getFirstChildNodeId() == null) {
 
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-
+            onNodeLoaded(node);
+        } else {
+            this.onNodeSelectedListener.onNodeSelected(node);
+            LoadNode(node.getFirstChildNodeId());
         }
     }
+
+    //region Properties
+    public MutableLiveData<AlgorithmDescription> getNode() {
+
+        return node;
+    }
+
+    public void setOnNodeSelectedListener(OnNodeSelectedListener onNodeSelectedListener) {
+        this.onNodeSelectedListener = onNodeSelectedListener;
+    }
+
+    public MutableLiveData<String> getTitle() {
+        return title;
+    }
+
+    public MutableLiveData<String> getSymptomTitle() {
+        return symptomTitle;
+    }
+
+    //endregion
+
+    //region Listeners
+    public interface OnNodeSelectedListener {
+        void onNodeSelected(AlgorithmDescription algorithmDescription);
+    }
+    //endregion
+
 }

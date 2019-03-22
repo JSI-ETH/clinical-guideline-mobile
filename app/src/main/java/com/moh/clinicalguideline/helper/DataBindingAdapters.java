@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -49,18 +50,15 @@ public class DataBindingAdapters {
             view.addItemDecoration(newVal);
         }
     }
-
     @BindingAdapter("android:error")
     public static void setErrorTextMessage(TextInputLayout view, String errorMessage) {
 
         view.setError(errorMessage);
     }
-
     @BindingAdapter("android:vpadapter")
     public static void setPagerAdapter(ViewPager view, FragmentPagerAdapter fragmentPagerAdapter) {
         view.setAdapter(fragmentPagerAdapter);
     }
-
     @BindingAdapter("android:onPageChangeListener")
     public static void setOnPageChangeListener(ViewPager viewPager, ViewPager.OnPageChangeListener listener) {
         viewPager.clearOnPageChangeListeners();
@@ -73,17 +71,28 @@ public class DataBindingAdapters {
         view.getSettings().setDomStorageEnabled(true);
         view.getSettings().setDefaultTextEncodingName("utf-8");
     }
-
     @BindingAdapter({ "android:load" })
     public static void load(WebView view, String data) {
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <html><head> " +
-                //"<link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap.min.css\" />" +
-                "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />" +
-                "</head><body>";
-        String footer = "</body><html>";
+       if(data == null || data == "")
+       {
+            return;
+       }
+           String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <html><head> " +
+                   "<link rel=\"stylesheet\" type=\"text/css\" href=\"font/css/all.min.css\" />" +
+                   "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />" +
+                   "</head><body>";
+           String footer = "</body><html>";
+           data = data.replace("&hArr;", "<i class=\"fas fa-reply\"></i>");
+           data = data.replace("&rArr;", "<i class=\"fas fa-share\"></i>");
+
         String html = header+data+footer;
 
 
         view.loadDataWithBaseURL("file:///android_asset/styles/",html, "text/html;","utf-8", null);
+    }
+
+    @BindingAdapter({"android:visible"})
+    public static void isVisible(View view, boolean isVisible){
+        view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

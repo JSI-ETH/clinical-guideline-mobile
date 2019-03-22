@@ -14,8 +14,5 @@ import dagger.Provides;
 public abstract class RepositoryModule {
     @Binds
     public abstract NodeRepository getNodeRepository(NodeLocalRepository nodeLocalRepository);
-//   @Binds
-//    public abstract NodeRepository getNodeRepository(NodeTestRepository nodeLocalRepository);
-
 }
 
