@@ -47,7 +47,10 @@ public class AlgorithmCardViewModel {
         return node.getNodeTypeCode().equalsIgnoreCase("URGNT");
 
     }
+    public boolean getUrgentOrNonUrgent () {
+        return node.isNonUrgent() || node.isUrgent();
 
+    }
     public AlgorithmDescription getNode() {
         return node;
     }

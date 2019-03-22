@@ -3,6 +3,7 @@ package com.moh.clinicalguideline.views.algorithm;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.moh.clinicalguideline.core.AlgorithmDescription;
+import com.moh.clinicalguideline.data.entities.Node;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
@@ -42,10 +43,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     private void onNodeLoaded(AlgorithmDescription node) {
-        this.node.setValue(node);
-        this.onNodeSelectedListener.onNodeSelected(node);
-        symptomTitle.setValue(node.getTitle());
-
+        SelectNode(node,true);
     }
 
 
@@ -61,7 +59,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
         if (!skipSingleNode || node.getHasDescription() || node.getChildCount() > 1 || node.getFirstChildNodeId() == null) {
 
-            onNodeLoaded(node);
+            this.node.setValue(node);
+            symptomTitle.setValue(node.getTitle());
+            this.onNodeSelectedListener.onNodeSelected(node);
         } else {
             this.onNodeSelectedListener.onNodeSelected(node);
             LoadNode(node.getFirstChildNodeId());

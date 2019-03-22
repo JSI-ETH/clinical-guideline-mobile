@@ -31,7 +31,7 @@ public class DatabaseCopier {
     }
     public CgDatabase build() {
         //call method that check if database not exists and copy prepopulated file from assets
-        copyAttachedDatabase(appContext, DATABASE_NAME);
+        copyAttachedDatabase(appContext, DATABASE_NAME,true);
         mAppDataBase = Room.databaseBuilder(appContext,
                 CgDatabase.class, DATABASE_NAME)
                 .addMigrations(new Migration_1_2(), new Migration_2_3(), new Migration_3_4())
@@ -44,12 +44,22 @@ public class DatabaseCopier {
     }
 
 
-    private void copyAttachedDatabase(Context context, String databaseName) {
+    private void copyAttachedDatabase(Context context, String databaseName){
+        copyAttachedDatabase(context,databaseName,false);
+    }
+
+    public static void copyAttachedDatabase(Context context, String databaseName,boolean reinstall) {
         final File dbPath = context.getDatabasePath(databaseName);
 
         // If the database already exists, return
         if (dbPath.exists()) {
-            return;
+
+            if(reinstall){
+            dbPath.delete();
+            }
+            else {
+                return;
+            }
         }
 
         // Make sure we have a path to the file
