@@ -19,6 +19,7 @@
     <dimen name="card_elevation">8dp</dimen>
     <dimen name="corner_radius_10">10dp</dimen>
     <dimen name="bottom">16dp</dimen>
+    <dimen name="activity_spacing">10dp</dimen>
 
 
 </resources>

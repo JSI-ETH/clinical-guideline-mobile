@@ -12,12 +12,12 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.moh.clinicalguideline.core.NodeCode.ADULT_SYMPTOM;
+import static com.moh.clinicalguideline.core.NodeCode.CHILD_SYMPTOM;
+import static com.moh.clinicalguideline.core.NodeCode.CHRONIC_CARE;
+
 public class NodeLocalRepository implements NodeRepository {
-        public static String ADULT_SYMPTOM ="ASMPT";
-        public static String CHILD_SYMPTOM ="CSMPT";
-        public static String URGENT ="URGNT";
-        public static String NOT_URGENT ="NTURG";
-        public static String ALGORITHM ="ALGTM";
+
     private final NodeDao nodeDao;
 
     @Inject
@@ -43,14 +43,30 @@ public class NodeLocalRepository implements NodeRepository {
     @Override
     public Observable<List<AlgorithmDescription>> getChronicCare() {
         return Observable.defer(() -> {
-            List<AlgorithmDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(CHILD_SYMPTOM);
+            List<AlgorithmDescription> list = nodeDao.getNodesWithDescriptionByNodeTypeCode(CHRONIC_CARE);
             return Observable.just(list);
         }).subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Observable<List<AlgorithmDescription>> getAllSymptoms() {
+        return Observable.defer(() -> {
+            List<AlgorithmDescription> list = nodeDao.getNodesWithDescription();
+            return Observable.just(list);
+        }).subscribeOn(Schedulers.io());
+    }
+
     @Override
     public Observable<AlgorithmDescription> getNode(int nodeId) {
         return Observable.defer(() -> {
             AlgorithmDescription item = nodeDao.getNodesWithDescription(nodeId);
+            return Observable.just(item);
+        }).subscribeOn(Schedulers.io());
+    }
+    @Override
+    public Observable<AlgorithmDescription> getNodeByPage(int pageId) {
+        return Observable.defer(() -> {
+            AlgorithmDescription item = nodeDao.getNodesWithDescriptionByPage(pageId);
             return Observable.just(item);
         }).subscribeOn(Schedulers.io());
     }

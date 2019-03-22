@@ -1,13 +1,13 @@
 package com.moh.clinicalguideline.views.main;
 
+import android.databinding.BindingAdapter;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.data.entities.NodeDescription;
-import com.moh.clinicalguideline.helper.FilterableLayoutAdapter;
-import com.moh.clinicalguideline.helper.SimpleLayoutAdapter;
-import com.moh.clinicalguideline.helper.ViewModel;
+import com.moh.clinicalguideline.helper.recyclerview.FilterableLayoutAdapter;
+import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class MenuViewModel extends ViewModel<MenuNavigator> {
+public class MenuViewModel extends BaseViewModel<MenuNavigator> {
 
     private FilterableLayoutAdapter<AlgorithmDescription> adapter;
     private final NodeRepository nodeRepository;
@@ -34,27 +34,33 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
         setLoading(true);
         nodeRepository.getAdultSymptom()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnAdultSymptomLoaded,this::onLoadError);
+                .subscribe(this::OnLoaded,this::onLoadError);
     }
 
     public void loadChildSymptom() {
         setLoading(true);
         nodeRepository.getChildSymptom()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::OnChildSymptomLoaded,this::onLoadError);
+                .subscribe(this::OnLoaded,this::onLoadError);
+    }
+    public void loadChronic() {
+        setLoading(true);
+        nodeRepository.getChronicCare()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::OnLoaded,this::onLoadError);
     }
 
+    public void loadAll() {
+        setLoading(true);
+        nodeRepository.getAllSymptoms()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::OnLoaded,this::onLoadError);
+    }
     public FilterableLayoutAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }
 
-    private void OnAdultSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
-        setLoading(false);
-        adapter.setData(nodeDescriptionList);
-        notifyChange();
-    }
-
-    private void OnChildSymptomLoaded(List<AlgorithmDescription> nodeDescriptionList) {
+    private void OnLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         setLoading(false);
         adapter.setData(nodeDescriptionList);
         notifyChange();
@@ -70,6 +76,16 @@ public class MenuViewModel extends ViewModel<MenuNavigator> {
 
     public void setLoading(boolean loading) {
         this.loading = loading;
-        notifyChange();
+        //notifyChange();
     }
+    @BindingAdapter("itemDecoration")
+    public static void setItemDecoration(RecyclerView view, RecyclerView.ItemDecoration old, RecyclerView.ItemDecoration newVal) {
+        if (old != null) {
+            view.removeItemDecoration(old);
+        }
+        if (newVal != null) {
+            view.addItemDecoration(newVal);
+        }
+    }
+
 }

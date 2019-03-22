@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#02524f</color>
     <color name="secondaryColor">#5c6bc0</color>
-    <color name="primaryDarkColor">#00796B</color>
+
+    <color name="primaryColor">#3c779f</color>
+    <color name="primaryDarkColor">#32688c</color>
+    <!--<color name="primaryDarkColor">#00796B</color>-->
+    <!--<color name="primaryColor">#02524f</color>-->
+    <!--<color name="primaryTextColor">#ffffff</color>-->
     <color name="primaryTextColor">#212121</color>
     <color name="secondaryTextColor">#757575</color>
     <color name="primaryLightColor">#B2DFDB</color>
     <color name="accentColor">#ffffff</color>
     <color name="dividerColor">#BDBDBD</color>
     <color name="iconColor">#FFFFFF</color>
+    <color name="splash_bg">#6C6D70</color>
+    <color name="splash_text">#FFFFFF</color>
+    <color name="splash_bar">#1C89CA</color>
 
 
     <!--Spark Line Color-->
@@ -19,12 +26,14 @@
     <color name="gray">#D4D4D4</color>
     <color name="gray2">#F1F1F1</color>
     <color name="gray3">#d8d8d8</color>
+    <color name="gray34">#b8b8b8</color>
     <color name="gray4">#a2a2a2</color>
     <color name="gray7">#5c5353</color>
     <color name="gray6">#797979</color>
     <color name="black">#000000</color>
     <color name="write_black">#333333</color>
     <color name="lighter_black">#555555</color>
+    <color name="light_red">#F0584B</color>
     <color name="red">#bb0000</color>
     <color name="dark_red">#ff990000</color>
     <color name="white">#ffffff</color>
