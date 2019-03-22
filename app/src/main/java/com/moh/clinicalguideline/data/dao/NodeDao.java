@@ -32,6 +32,7 @@ public interface NodeDao {
                 "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
                 "    Left join nodeDescription nd on nd.id = n.Id\n" +
             "    Where nt.NodeTypeCode =:code " +
+            "   AND  ifnull(nd.Title, '') != ''" +
             "Order by ifnull(nd.Title,n.NodeName)")
     List<AlgorithmDescription> getNodesWithDescriptionByNodeTypeCode(String code);
     @Query("Select n.Id,\n" +
@@ -49,6 +50,7 @@ public interface NodeDao {
             "    Join nodetype nt on n.NodeTypeId = nt.Id\n" +
             "    Left join nodeDescription nd on nd.id = n.Id\n" +
             "   Where nt.NodeTypeCode in ('ASMPT','CSMPT','CHRNC')" +
+            "   AND  ifnull(nd.Title, '') != ''" +
             "Order by ifnull(nd.Title,n.NodeName)")
     List<AlgorithmDescription> getNodesWithDescription();
 

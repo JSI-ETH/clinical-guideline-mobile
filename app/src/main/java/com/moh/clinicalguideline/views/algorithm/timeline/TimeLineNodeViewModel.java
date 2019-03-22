@@ -26,8 +26,6 @@ public class TimeLineNodeViewModel {
         return node.getDescription();
     }
 
-    public boolean isActive() {return !node.isSkipable();}
-
     public boolean isSymptom () {
         Log.d("type",  String.valueOf(node.isSymptom()));
         return node.isSymptom();

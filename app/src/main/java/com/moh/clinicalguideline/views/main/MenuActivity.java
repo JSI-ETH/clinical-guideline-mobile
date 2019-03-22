@@ -29,6 +29,8 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
     private RecyclerView symptomsListView;
 
+    private SearchView searchView;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
                 switch (item.getItemId()) {
@@ -59,7 +61,7 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.all_symptom);
 
-        SearchView searchView = (SearchView) findViewById(R.id.simpleSearchView);
+        searchView = (SearchView) findViewById(R.id.simpleSearchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -104,6 +106,12 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 //            });
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchView.clearFocus();
     }
 
     @Override
