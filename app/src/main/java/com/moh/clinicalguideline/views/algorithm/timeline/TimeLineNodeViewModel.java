@@ -41,4 +41,6 @@ public class TimeLineNodeViewModel {
         return node;
     }
 
+    public boolean isActive() {return !node.isSkipable();}
+
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,15 @@ public class TimeLineFragment extends BaseFragment {
 
     public void initAdapters(){
       adapter = new TimeLineAdapter<>(R.layout.algorithm_fragment_timeline_list, item -> {
-            viewModel.selectNode(item.getPositionId());
+          if(item.isActive())
+              viewModel.selectNode(item.getPositionId());
+          else{
+              try {
+                  viewModel.selectNode(item.getPositionId() + 1);
+              } catch (IndexOutOfBoundsException obe){
+                  Log.e("TimeLineFragment", "Unable to navigate to that node", obe);
+              }
+          }
         });
       binding.setAdapter(adapter);
       viewModel.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
