@@ -1,22 +1,32 @@
 package com.moh.clinicalguideline.views.main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.ActivityMenuBinding;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmActivity;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.inject.Inject;
 
@@ -30,6 +40,15 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
     private RecyclerView symptomsListView;
 
     private SearchView searchView;
+
+    private String videoUrl;
+
+    private Handler handler;
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -50,9 +69,25 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
                 return false;
             };
 
+    private Runnable videoCopier = () -> {
+        videoUrl = createVideoOnStorage();
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+
         setContentView(R.layout.activity_menu);
         viewModel.setNavigator(this);
         viewModelBinding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
@@ -112,6 +147,48 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
     protected void onResume() {
         super.onResume();
         searchView.clearFocus();
+        postVideoCopier();
+    }
+
+    private String createVideoOnStorage(){
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + R.raw.guide + ".mp4";
+        File file = new File(path);
+        if(!file.exists()){
+            try {
+                OutputStream out = new FileOutputStream(file);
+                InputStream in = getResources().openRawResource(R.raw.guide);
+
+                int buffer_size = 1024*1024;
+                byte[] bytes = new byte[buffer_size];
+                for (;;)
+                {
+                    int count = in.read(bytes, 0, buffer_size);
+                    if (count == -1)
+                        break;
+                    out.write(bytes, 0, count);
+                }
+                in.close();
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return file.getPath();
+    }
+
+    public void launchVideo(View view){
+
+        if(videoUrl != null){
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse(new File(videoUrl).getAbsolutePath()), "video/mp4");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivity(Intent.createChooser(intent, "Choose player to see PACK user guide video"));
+        } else {
+            Toast.makeText(this, "Couldn't play video. Please grant write to storage permission for this application and try again.", Toast.LENGTH_LONG).show();
+
+        }
     }
 
     @Override
@@ -126,5 +203,20 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
         return super.onCreateOptionsMenu(menu);
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        postVideoCopier();
+
+    }
+
+    private void postVideoCopier(){
+        if(PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            handler = new Handler();
+            handler.post(videoCopier);
+        }
     }
 }
