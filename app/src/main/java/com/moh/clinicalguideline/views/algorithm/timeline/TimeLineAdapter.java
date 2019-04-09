@@ -39,7 +39,6 @@ public class TimeLineAdapter<T> extends BaseAdapter {
         holder.bind(item);
 
         line = (View) holder.itemView.findViewById(R.id.tl_line);
-        LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) line.getLayoutParams();
         //tl_s_circle
 
         holder.itemView.setOnClickListener(v -> {
