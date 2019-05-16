@@ -1,6 +1,7 @@
 package com.moh.clinicalguideline.views.algorithm;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.entities.Node;
@@ -19,6 +20,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private MutableLiveData<String> title = new MutableLiveData<>();
     private MutableLiveData<String> symptomTitle = new MutableLiveData<>();
 
+    private static final String TAG = AlgorithmViewModel.class.getSimpleName();
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository) {
         this.nodeRepository = nodeRepository;
@@ -66,6 +68,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             this.onNodeSelectedListener.onNodeSelected(node);
             LoadNode(node.getFirstChildNodeId());
         }
+
+        Log.i(TAG, "Node id: " + node.getId() + "\tNode title: " + node.getTitle());
     }
 
     //region Properties
