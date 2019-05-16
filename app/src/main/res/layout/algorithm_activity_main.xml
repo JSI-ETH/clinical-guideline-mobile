@@ -43,12 +43,22 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:textColor="@color/white"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@{menu.symptomTitle}" />
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <TextView
+                    android:id="@+id/symptom_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:text="@{menu.symptomTitle}"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+            </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.design.widget.CoordinatorLayout
@@ -93,8 +103,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:maxLines="1"
-                        android:ellipsize="end" />
+                        android:ellipsize="end"
+                        android:maxLines="1" />
 
                 </LinearLayout>
 

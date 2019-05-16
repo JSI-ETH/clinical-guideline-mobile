@@ -33,6 +33,7 @@ public class ContentViewModel extends BaseViewModel {
 
     public void loadNode(AlgorithmDescription nodeDescription) {
 
+
         this.algorithmNodeDescription.setValue(nodeDescription);
         notifyChange();
     }
