@@ -34,7 +34,7 @@ public class DatabaseCopier {
         copyAttachedDatabase(appContext, DATABASE_NAME,true);
         mAppDataBase = Room.databaseBuilder(appContext,
                 CgDatabase.class, DATABASE_NAME)
-                .addMigrations(new Migration_1_2(), new Migration_2_3(), new Migration_3_4())
+                .addMigrations(new Migration_1_2(), new Migration_2_3(), new Migration_3_4(), new Migration_4_5())
                 .build();
         return mAppDataBase;
     }
