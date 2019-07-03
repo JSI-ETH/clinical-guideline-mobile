@@ -37,7 +37,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .subscribe(this::onNodeLoaded, this::onLoadError);
     }
 
-    public void LoadPage(int page) {
+    public void LoadPage(double page) {
         nodeRepository.getNodeByPage(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNodeLoaded, this::onLoadError);

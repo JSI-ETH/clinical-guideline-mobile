@@ -52,22 +52,22 @@ public class DatabaseCopier {
         final File dbPath = context.getDatabasePath(databaseName);
 
         // If the database already exists, return
-        if (dbPath.exists()) {
-
-            if(reinstall){
-            dbPath.delete();
-            }
-            else {
-                return;
-            }
-        }
+//        if (dbPath.exists()) {
+//
+//            if(reinstall){
+//            dbPath.delete();
+//            }
+//            else {
+//                return;
+//            }
+//        }
 
         // Make sure we have a path to the file
         dbPath.getParentFile().mkdirs();
 
         // Try to copy database file
         try {
-            final InputStream inputStream = context.getAssets().open("databases/" + databaseName);
+            final InputStream inputStream = context.getAssets().open("db/" + databaseName);
             final OutputStream output = new FileOutputStream(dbPath);
 
             byte[] buffer = new byte[8192];

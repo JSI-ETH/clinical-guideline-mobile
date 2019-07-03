@@ -126,7 +126,7 @@ public interface NodeDao {
             "       Left Join nodeDescription nd on n.id = nd.Id" +
             "    Where n.page =:page LIMIT 1" +
             "")
-    AlgorithmDescription getNodesWithDescriptionByPage(int page);
+    AlgorithmDescription getNodesWithDescriptionByPage(double page);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Node... nodes);

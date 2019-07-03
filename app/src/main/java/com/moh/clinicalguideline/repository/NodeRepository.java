@@ -16,7 +16,7 @@ public interface NodeRepository {
    Observable<List<AlgorithmDescription>> getAllSymptoms();
    Observable<List<AlgorithmDescription>> getChildNode(int nodeId);
 
-    Observable<AlgorithmDescription> getNodeByPage(int pageId);
+    Observable<AlgorithmDescription> getNodeByPage(double pageId);
 
     Observable<List<AlgorithmDescription>> getChildNode(int nodeId, boolean isConditional);
    Observable<AlgorithmDescription>getNode(int nodeId);

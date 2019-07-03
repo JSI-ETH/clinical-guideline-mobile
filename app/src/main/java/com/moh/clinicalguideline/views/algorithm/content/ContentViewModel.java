@@ -23,7 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class ContentViewModel extends BaseViewModel {
 
     private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
-    private MutableLiveData<Integer> selectedPageId;
+    private MutableLiveData<Double> selectedPageId;
 
     @Inject
     public ContentViewModel(){
@@ -81,7 +81,7 @@ public class ContentViewModel extends BaseViewModel {
 
         return description;  }
 
-    public MutableLiveData<Integer> getSelectedPageId() {
+    public MutableLiveData<Double> getSelectedPageId() {
         return selectedPageId;
     }
 
@@ -98,7 +98,7 @@ public class ContentViewModel extends BaseViewModel {
             String pages =  url.replace("http://page/","")
                     .replace("file:///android_asset/styles/page/","");
 
-            int page = Integer.valueOf(pages.split("/")[0]);
+            double page = Double.valueOf(pages.split("/")[0]);
             selectedPageId.setValue(page);
             return true;
 
