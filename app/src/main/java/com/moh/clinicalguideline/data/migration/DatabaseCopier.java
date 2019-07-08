@@ -51,16 +51,16 @@ public class DatabaseCopier {
     public static void copyAttachedDatabase(Context context, String databaseName,boolean reinstall) {
         final File dbPath = context.getDatabasePath(databaseName);
 
-        // If the database already exists, return
-//        if (dbPath.exists()) {
-//
-//            if(reinstall){
-//            dbPath.delete();
-//            }
-//            else {
-//                return;
-//            }
-//        }
+//         If the database already exists, return
+        if (dbPath.exists()) {
+
+            if(reinstall){
+            dbPath.delete();
+            }
+            else {
+                return;
+            }
+        }
 
         // Make sure we have a path to the file
         dbPath.getParentFile().mkdirs();
@@ -76,7 +76,6 @@ public class DatabaseCopier {
             while ((length = inputStream.read(buffer, 0, 8192)) > 0) {
                 output.write(buffer, 0, length);
             }
-
             output.flush();
             output.close();
             inputStream.close();
