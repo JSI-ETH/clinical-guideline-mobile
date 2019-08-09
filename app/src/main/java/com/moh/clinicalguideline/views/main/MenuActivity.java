@@ -1,6 +1,9 @@
 package com.moh.clinicalguideline.views.main;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -30,7 +33,7 @@ import java.io.OutputStream;
 
 import javax.inject.Inject;
 
-public class MenuActivity extends BaseActivity implements MenuNavigator{
+public class MenuActivity extends BaseActivity implements MenuNavigator {
 
     @Inject
     public MenuViewModel viewModel;
@@ -45,6 +48,8 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
     private Handler handler;
 
+    private AlertDialog alertDialog;
+
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -52,22 +57,22 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-                switch (item.getItemId()) {
-                    case R.id.adult_symptom:
-                        viewModel.loadAdultSymptom();
-                         return true;
-                    case R.id.child_symptom:
-                        viewModel.loadChildSymptom();
-                         return true;
-                    case R.id.chronic_care:
-                        viewModel.loadChronic();
-                         return true;
-                    case R.id.all_symptom:
-                        viewModel.loadAll();
-                        return true;
-                }
-                return false;
-            };
+        switch (item.getItemId()) {
+            case R.id.adult_symptom:
+                viewModel.loadAdultSymptom();
+                return true;
+            case R.id.child_symptom:
+                viewModel.loadChildSymptom();
+                return true;
+            case R.id.chronic_care:
+                viewModel.loadChronic();
+                return true;
+            case R.id.all_symptom:
+                viewModel.loadAll();
+                return true;
+        }
+        return false;
+    };
 
     private Runnable videoCopier = () -> {
         videoUrl = createVideoOnStorage();
@@ -87,6 +92,30 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+        // Display Policy
+        // Must agree to continue to use the app
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Policy and agreement");
+        builder.setMessage(R.string.agreement);
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                System.exit(1);
+            }
+        });
+
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "Welcome", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.setCancelable(false);
+        alertDialog = builder.create();
+        alertDialog.getWindow().setLayout(RecyclerView.LayoutParams.FILL_PARENT, RecyclerView.LayoutParams.FILL_PARENT);
+        alertDialog.show();
 
         setContentView(R.layout.activity_menu);
         viewModel.setNavigator(this);
@@ -150,18 +179,17 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
         postVideoCopier();
     }
 
-    private String createVideoOnStorage(){
+    private String createVideoOnStorage() {
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + R.raw.guide + ".mp4";
         File file = new File(path);
-        if(!file.exists()){
+        if (!file.exists()) {
             try {
                 OutputStream out = new FileOutputStream(file);
                 InputStream in = getResources().openRawResource(R.raw.guide);
 
-                int buffer_size = 1024*1024;
+                int buffer_size = 1024 * 1024;
                 byte[] bytes = new byte[buffer_size];
-                for (;;)
-                {
+                for (; ; ) {
                     int count = in.read(bytes, 0, buffer_size);
                     if (count == -1)
                         break;
@@ -177,9 +205,9 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
         return file.getPath();
     }
 
-    public void launchVideo(View view){
+    public void launchVideo(View view) {
 
-        if(videoUrl != null){
+        if (videoUrl != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.parse(new File(videoUrl).getAbsolutePath()), "video/mp4");
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -213,8 +241,8 @@ public class MenuActivity extends BaseActivity implements MenuNavigator{
 
     }
 
-    private void postVideoCopier(){
-        if(PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+    private void postVideoCopier() {
+        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             handler = new Handler();
             handler.post(videoCopier);
         }
