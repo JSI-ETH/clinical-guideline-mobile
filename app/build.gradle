@@ -16,8 +16,8 @@ android {
         applicationId "com.moh.clinicalguideline"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.0.5"
         signingConfig signingConfigs.config
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
