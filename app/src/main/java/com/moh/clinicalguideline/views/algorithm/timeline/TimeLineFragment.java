@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.AlgorithmFragmentTimelineBinding;
-import com.moh.clinicalguideline.generated.callback.OnClickListener;
 import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseFragment;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;

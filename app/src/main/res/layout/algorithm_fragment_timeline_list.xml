@@ -14,7 +14,7 @@
         <import type="android.graphics.Typeface"/>
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="72dp"
@@ -30,62 +30,64 @@
         <FrameLayout
             android:layout_width="24dp"
             android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
             android:id="@+id/item_line">
             <View
                 android:id="@+id/tl_line"
                 android:layout_width="2dp"
+                android:layout_gravity="center"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="11dp"
+
                 />
 
             <!-- the semi transparent circle_primary_stroke_white on the line -->
-            <View
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/circle_primary_stroke_white"/>
-            <View
-                android:id="@+id/tl_s_circle"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="28dp"
-                android:background="@drawable/circle_double"/>
+<!--            <View-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_marginTop="24dp"-->
+<!--                android:background="@drawable/circle_primary_stroke_white"/>-->
+<!--            <View-->
+<!--                android:id="@+id/tl_s_circle"-->
+<!--                android:layout_width="16dp"-->
+<!--                android:layout_height="16dp"-->
+<!--                android:layout_marginLeft="4dp"-->
+<!--                android:layout_marginTop="28dp"-->
+<!--                android:background="@drawable/circle_double"/>-->
 
         </FrameLayout>
 
         <!-- views at the right of the blue line -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingStart="8dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingLeft="8dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical"-->
+<!--            android:paddingStart="8dp"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:paddingLeft="8dp">-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:ellipsize="end"
-                android:textSize="18sp"
-                android:singleLine="true"
-                android:visible="@{item.symptom}"
-                android:textColor="@color/white"
-                android:text="@{item.title}"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:ellipsize="end"
-                android:textSize="16sp"
-                android:singleLine="true"
-                android:visible="@{!item.symptom}"
-                android:textColor="@color/white"
-                android:text="@{item.title}"/>
-            <!-- other views -->
+<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_marginTop="24dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:ellipsize="end"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textSize="18sp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:singleLine="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:visible="@{item.symptom}"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textColor="@color/white"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:text="@{item.title}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_marginTop="24dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:ellipsize="end"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textSize="16sp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:singleLine="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:visible="@{!item.symptom}"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:textColor="@color/white"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:text="@{item.title}"/>&ndash;&gt;-->
+<!--            &lt;!&ndash; other views &ndash;&gt;-->
 
-        </LinearLayout>
-    </LinearLayout>
+<!--        </LinearLayout>-->
+    </RelativeLayout>
 </layout>
