@@ -106,8 +106,8 @@ public class FilterableLayoutAdapter<T> extends BaseAdapter implements Filterabl
                 List<BaseModel> nPlanetList = new ArrayList<BaseModel>();
 
                 for (BaseModel p : data) {
-                    if (p.getFilterrableText().toUpperCase()
-                            .startsWith(constraint.toString().toUpperCase()))
+                    if (p.getFilterrableText().toLowerCase()
+                            .contains(constraint.toString().toLowerCase()))
                         nPlanetList.add(p);
                 }
 
