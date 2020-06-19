@@ -18,6 +18,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -92,31 +94,16 @@ public class MenuActivity extends BaseActivity implements MenuNavigator {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
-        // Display Policy
+        // Block Display Policy
         // Must agree to continue to use the app
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Policy and agreement");
-        builder.setMessage(R.string.agreement);
-        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                System.exit(1);
-            }
-        });
-
-        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "Welcome", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        builder.setCancelable(false);
-        alertDialog = builder.create();
-        alertDialog.getWindow().setLayout(RecyclerView.LayoutParams.FILL_PARENT, RecyclerView.LayoutParams.FILL_PARENT);
-        alertDialog.show();
-
+        final Dialog dialog = new Dialog(MenuActivity.this, android.R.style.Theme_Light);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_agreement);
+        dialog.show();
+        Button agreeAndContinue = dialog.findViewById(R.id.agree_and_continue);
+        agreeAndContinue.setOnClickListener(v -> dialog.dismiss());
+        dialog.setCancelable(false);
+        //
         setContentView(R.layout.activity_menu);
         viewModel.setNavigator(this);
         viewModelBinding = DataBindingUtil.setContentView(this, R.layout.activity_menu);
