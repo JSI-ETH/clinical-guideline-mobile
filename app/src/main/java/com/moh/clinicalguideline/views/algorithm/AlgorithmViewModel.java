@@ -58,11 +58,13 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     public void SelectNode(AlgorithmDescription node, boolean skipSingleNode) {
-
+        if (symptomTitle.getValue() == null || symptomTitle.getValue().length() == 0) symptomTitle.setValue(node.getTitle());
         if (!skipSingleNode || node.getHasDescription() || node.getChildCount() > 1 || node.getFirstChildNodeId() == null) {
 
             this.node.setValue(node);
-            symptomTitle.setValue(node.getTitle());
+            if (node.getNodeTypeCode().equals("ASMPT") || node.getNodeTypeCode().equals("CSMPT") || node.getNodeTypeCode().equals("CHRNC")) {
+                symptomTitle.setValue(node.getTitle());
+            }
             this.onNodeSelectedListener.onNodeSelected(node);
         } else {
             this.onNodeSelectedListener.onNodeSelected(node);
