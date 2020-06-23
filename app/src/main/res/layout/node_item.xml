@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+        <variable
+            name="node"
+            type="com.moh.clinicalguideline.core.AlgorithmDescription"/>
+        <variable
+            name="viewModel"
+            type="com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_layout_bg"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:orientation="vertical">
+                <!-- TODO: Put android:setWebViewClient="@{viewModel.client}" later -->
+                <WebView
+                    android:id="@+id/web_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:setWebViewClient="@{viewModel.client}"
+                    android:visible="@{viewModel.hasDescription}"
+                    android:load="@{viewModel.description}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/noPadding"
+                    android:paddingRight="@dimen/noPadding">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_options"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="vertical"
+                            app:layoutManager=".views.CustomLinearLayoutManager" />
+
+                        <Button
+                            android:id="@+id/next_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:background="@drawable/curved_button_normal"
+                            android:text="@string/bt_next"
+                            android:layout_margin="10dp"
+                            android:textColor="@color/white"/>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_answers"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:nestedScrollingEnabled="false"
+                            app:layoutManager=".views.CustomLinearLayoutManager" />
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/time_line"
+                    android:layout_width="3dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/black"/>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+
+</layout>

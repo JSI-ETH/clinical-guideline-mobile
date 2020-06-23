@@ -42,7 +42,7 @@ public abstract class ActivityBindingModule {
     @ContributesAndroidInjector
     abstract ContentFragment contentFragment();
 
-    @ActivityScoped
-    @ContributesAndroidInjector
-    abstract TimeLineFragment timeLineFragment();
+//    @ActivityScoped
+//    @ContributesAndroidInjector
+//    abstract TimeLineFragment timeLineFragment();
 }

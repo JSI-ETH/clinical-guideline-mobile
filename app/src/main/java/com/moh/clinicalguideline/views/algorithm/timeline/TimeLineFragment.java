@@ -53,7 +53,7 @@ public class TimeLineFragment extends BaseFragment {
         });
         //when a child node is selected inform parent
         viewModel.getNode().observe((LifecycleOwner) getActivity(), node -> {
-            parentViewModel.PreviewNode(node.getNode());
+//            parentViewModel.PreviewNode(node.getNode());
         });
         initAdapters();
     }

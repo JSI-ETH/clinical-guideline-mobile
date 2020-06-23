@@ -81,7 +81,7 @@ public class ContentViewModel extends BaseViewModel {
 
         return description;  }
 
-    public MutableLiveData<Double> getSelectedPageId() {
+    MutableLiveData<Double> getSelectedPageId() {
         return selectedPageId;
     }
 
