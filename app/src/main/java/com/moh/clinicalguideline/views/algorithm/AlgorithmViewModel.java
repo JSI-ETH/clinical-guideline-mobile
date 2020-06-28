@@ -8,6 +8,7 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
@@ -17,7 +18,9 @@ import com.moh.clinicalguideline.repository.NodeRepository;
 import com.moh.clinicalguideline.views.algorithm.content.ContentViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -28,11 +31,11 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private final NodeRepository nodeRepository;
     private MutableLiveData<AlgorithmDescription> node;
     private List<AlgorithmDescription> nodeList;
-    private MutableLiveData<List<AlgorithmDescription>> nodes;
-    private MutableLiveData<List<AlgorithmCardViewModel>> nodeOptions;
+    private List<AlgorithmCardViewModel> nodeOptions;
     private OnNodeSelectedListener onNodeSelectedListener;
     private MutableLiveData<String> title = new MutableLiveData<>();
     private String symptomTitle = "";
+    private Map<AlgorithmDescription, List<AlgorithmCardViewModel>> map;
     private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
     private MutableLiveData<Double> selectedPageId;
     private boolean isSingleNode;
@@ -43,16 +46,13 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         this.nodeRepository = nodeRepository;
         this.node = new MutableLiveData<>();
         this.nodeList = new ArrayList<>();
-        this.nodes = new MutableLiveData<>();
         this.selectedPageId = new MutableLiveData<>();
-        this.nodeOptions = new MutableLiveData<List<AlgorithmCardViewModel>>();
+        this.nodeOptions = new ArrayList<AlgorithmCardViewModel>();
+        this.map = new HashMap<>();
         this.onNodeSelectedListener = algorithmDescription -> {
 
         };
-
     }
-
-
 
     @SuppressLint("CheckResult")
     public void LoadNode(int nodeId) {
@@ -62,15 +62,21 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     @SuppressLint("CheckResult")
+    public void setTitle(int nodeId, TextView symptomTitleTextView) {
+        nodeRepository.getNode(nodeId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(node -> {
+                    symptomTitleTextView.setText(node.getTitle());
+                });
+    }
+
+    @SuppressLint("CheckResult")
     public void LoadPage(double page) {
+        Log.d(TAG, "Node: LoadPage: " + page);
         nodeRepository.getNodeByPage(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNodeLoaded, this::onLoadError);
-
     }
-/// OPTIONS SECTION
-/// OPTIONS SECTION
-/// OPTIONS SECTION
 /// OPTIONS SECTION
 
     @SuppressLint("CheckResult")
@@ -80,7 +86,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .subscribe(this::onLoaded, this::onLoadError);
     }
 
-    public MutableLiveData<List<AlgorithmCardViewModel>> getNodes() {
+    public List<AlgorithmCardViewModel> getNodes() {
         return nodeOptions;
     }
 
@@ -90,11 +96,15 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     private void onLoaded(List<AlgorithmDescription> nodeDescriptionList) {
+        Log.d(TAG, "Node: onLoaded: nodeOPtions" + nodeDescriptionList.size());
         List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
         for (AlgorithmDescription aNodeDescription : nodeDescriptionList) {
-            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
+            boolean conditional = false;
+            if (aNodeDescription.getIsCondition()) conditional = true;
+            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription, conditional));
         }
-        nodeOptions.setValue(algorithmNodeViewModels);
+
+        nodeOptions = algorithmNodeViewModels;
         setSingleNode(algorithmNodeViewModels.size() == 1);
     }
 
@@ -108,10 +118,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     public void selectFirstNode() {
-        if (nodeOptions.getValue() != null && !nodeOptions.getValue().isEmpty()) {
-            AlgorithmDescription firstNode = nodeOptions.getValue().get(0).getNode();
-            selectNode(firstNode);
-        }
+//        if (nodeOptions.getValue() != null && !nodeOptions.getValue().isEmpty()) {
+//            AlgorithmDescription firstNode = nodeOptions.getValue().get(0).getNode();
+//            selectNode(firstNode);
+//        }
     }
 
     ////////////////////////////////
@@ -142,13 +152,39 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         return nodeList;
     }
 
+    @SuppressLint("CheckResult")
+    private void feedMap(AlgorithmDescription node) {
+        List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
+        nodeRepository.getChildNode(node.getId(), false)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(nodes -> {
+                    for (AlgorithmDescription aNodeDescription : nodes) {
+                        optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
+                    }
+                    map.put(node, optionsAndAnswers);
+                });
+        nodeRepository.getChildNode(node.getId(), true)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(nodes -> {
+
+                    for (AlgorithmDescription aNodeDescription : nodes) {
+                        optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, true));
+                    }
+                    map.put(node, optionsAndAnswers);
+                });
+    }
+
+    public Map<AlgorithmDescription, List<AlgorithmCardViewModel>> getMap() {
+        return map;
+    }
+
     public void SelectNode(AlgorithmDescription node, boolean skipSingleNode) {
         if (symptomTitle == null || symptomTitle.length() == 0)
             symptomTitle = (node.getTitle());
         if (!skipSingleNode || node.getHasDescription() || node.getChildCount() > 1 || node.getFirstChildNodeId() == null) {
-
-            this.node.setValue(node);
             nodeList.add(node);
+            feedMap(node);
+            this.node.setValue(node);
             if (node.getNodeTypeCode().equals("ASMPT") || node.getNodeTypeCode().equals("CSMPT") || node.getNodeTypeCode().equals("CHRNC")) {
                 nodeList = new ArrayList<>();
                 nodeList.add(node);
@@ -158,9 +194,11 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         } else {
             this.onNodeSelectedListener.onNodeSelected(node);
             LoadNode(node.getFirstChildNodeId());
+            nodeList.add(node);
+            feedMap(node);
         }
 
-        Log.i(TAG, "Node id: " + node.getId() + "\tNode title: " + node.getTitle());
+        Log.i(TAG, "Node id: " + node.getId() + "\tNode title: " + node.getTitle() + " nodeList size " + nodeList.size() + " Child count " + node.getChildCount());
     }
 
     //region Properties

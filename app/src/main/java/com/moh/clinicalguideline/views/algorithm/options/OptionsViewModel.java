@@ -64,7 +64,7 @@ public class OptionsViewModel extends BaseViewModel {
 
         List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
         for (AlgorithmDescription aNodeDescription : nodeDescriptionList) {
-            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
+//            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
         }
 
         nodes.setValue(algorithmNodeViewModels);

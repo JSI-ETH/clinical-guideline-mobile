@@ -2,23 +2,17 @@ package com.moh.clinicalguideline.views.algorithm.content;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
-import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
-import com.moh.clinicalguideline.repository.NodeRepository;
-import com.moh.clinicalguideline.views.algorithm.AlgorithmNavigator;
 
-import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ContentViewModel extends BaseViewModel {
 
@@ -81,7 +75,7 @@ public class ContentViewModel extends BaseViewModel {
 
         return description;  }
 
-    MutableLiveData<Double> getSelectedPageId() {
+    public MutableLiveData<Double> getSelectedPageId() {
         return selectedPageId;
     }
 

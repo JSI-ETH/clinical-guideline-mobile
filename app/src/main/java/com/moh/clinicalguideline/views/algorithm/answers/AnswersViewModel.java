@@ -46,11 +46,11 @@ public class AnswersViewModel extends BaseViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onLoaded, this::onLoadError);
     }
-    // የአንድ አይተም ልጆች fragment wst load tedergew wede main adapter add yderegu like this below code
+
     private void onLoaded(List<AlgorithmDescription> nodeDescriptionList) {
         List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
         for (AlgorithmDescription aNodeDescription : nodeDescriptionList) {
-            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
+//            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
         }
 
         nodes.setValue(algorithmNodeViewModels);

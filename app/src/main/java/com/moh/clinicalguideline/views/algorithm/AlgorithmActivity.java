@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.views.algorithm;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 
@@ -13,6 +14,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.recyclerview.MainNodeAdapter;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.algorithm.content.ContentViewModel;
+import com.moh.clinicalguideline.views.algorithm.options.OptionsViewModel;
 
 import java.util.List;
 
@@ -32,12 +35,13 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     public ViewModelProvider.Factory viewModelFactory;
     private AlgorithmViewModel viewModel;
     private ContentViewModel contentViewModel;
+    private OptionsViewModel optionsViewModel;
     private List<AlgorithmDescription> algorithmDescriptions;
     public static String Extra_NodeId = "Extra_NodeId";
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
-
+    private static final String TAG = "AlgorithmActivity";
     TextView textViewSymptomTitle;
     private MainNodeAdapter mainNodeAdapter;
 
@@ -51,19 +55,37 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         textViewSymptomTitle = findViewById(R.id.symptom_title);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
         contentViewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
-        viewModel.setNavigator(this);
 
+        viewModel.setNavigator(this);
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
         viewModel.LoadNode(nodeid);
-        textViewSymptomTitle.setText(viewModel.getSymptomTitle());
+        viewModel.setTitle(nodeid, textViewSymptomTitle);
+
+        //load algorithm content when new node is selected
+//        viewModel.getNode().observe(this, algorithmDescription -> {
+//            viewModel.loadNode(algorithmDescription);
+//        });
+
+        //Open Url Clicked
+        viewModel.getSelectedPageId().observe(this, page->{
+            viewModel.LoadPage(page);
+        });
+
+//        viewModel.getNode().observe(this, node -> {
+//            viewModel.loadNode(node);
+//            viewModel.loadNodes(node.getId());
+//        });
+
+
+
         viewModel.getNode().observe(this, algorithmDescription -> {
             algorithmDescriptions.add(algorithmDescription);
-            mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions);
+            mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap());
         });
 //        textViewSymptomTitle.setText(algorithmDescriptions.get(0).getTitle());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList());
+        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap());
         recyclerView.setAdapter(mainNodeAdapter);
         initViews();
     }

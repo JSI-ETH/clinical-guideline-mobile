@@ -6,9 +6,11 @@ import com.moh.clinicalguideline.core.AlgorithmDescription;
 public class AlgorithmCardViewModel {
 
     private AlgorithmDescription node;
+    private boolean condition;
 
-    public AlgorithmCardViewModel(AlgorithmDescription node){
+    public AlgorithmCardViewModel(AlgorithmDescription node, boolean condition){
         this.node = node;
+        this.condition = condition;
     }
 
     public int getId(){
@@ -17,6 +19,10 @@ public class AlgorithmCardViewModel {
             return node.getId();
         }
         return node.getFirstChildNodeId();
+    }
+
+    public boolean isCondition() {
+        return condition;
     }
 
     public String getTitle() {
