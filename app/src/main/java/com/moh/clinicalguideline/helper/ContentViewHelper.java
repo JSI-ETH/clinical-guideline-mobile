@@ -1,11 +1,14 @@
 package com.moh.clinicalguideline.helper;
 
+import android.content.Context;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.moh.clinicalguideline.core.AlgorithmDescription;
+import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
 
 public class ContentViewHelper {
 
@@ -52,15 +55,25 @@ public class ContentViewHelper {
         }
     }
 
+    public WebViewClient getWebViewClient(Context context, AlgorithmViewModel algorithmViewModel) {
+        return new Client(context, algorithmViewModel);
+    }
+
     private class Client extends WebViewClient {
+        private Context context;
+        private AlgorithmViewModel algorithmViewModel;
+        public Client(Context context, AlgorithmViewModel algorithmViewModel) {
+            this.context = context;
+            this.algorithmViewModel = algorithmViewModel;
+        }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             String pages =  url.replace("http://page/","")
                     .replace("file:///android_asset/styles/page/","");
-
             double page = Double.valueOf(pages.split("/")[0]);
-//            selectedPageId.setValue(page);
+            Toast.makeText(context, "" + page, Toast.LENGTH_SHORT).show();
+            algorithmViewModel.setSelectedPageId(page);
             return true;
 
         }

@@ -18,9 +18,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
+import com.moh.clinicalguideline.helper.recyclerview.ClickListener;
 import com.moh.clinicalguideline.helper.recyclerview.MainNodeAdapter;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.algorithm.content.ContentViewModel;
@@ -67,7 +69,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 //        });
 
         //Open Url Clicked
-        viewModel.getSelectedPageId().observe(this, page->{
+        viewModel.getSelectedPageId().observe(this, page -> {
             viewModel.LoadPage(page);
         });
 
@@ -77,20 +79,34 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 //        });
 
 
-
         viewModel.getNode().observe(this, algorithmDescription -> {
+            Log.d(TAG, "onCreate: " + algorithmDescriptions.size());
             algorithmDescriptions.add(algorithmDescription);
-            mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap());
+            mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap(), viewModel);
         });
 //        textViewSymptomTitle.setText(algorithmDescriptions.get(0).getTitle());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap());
+        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
+        mainNodeAdapter.setOnItemClickHandler(new ClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+
+            }
+
+            @Override
+            public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
+//                viewModel.feedMap(mainNodeAdapter.getList().get(selectedPosition).getFirstChildNodeId());
+                mainNodeAdapter.notifyDataSetChanged();
+                Log.d(TAG, "selectNextChildNode: " + mainNodeAdapter.getList().get(selectedPosition).getId() + " firstChildId: " + mainNodeAdapter.getList().get(selectedPosition).getChildCount());
+            }
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mainNodeAdapter);
         initViews();
     }
 
-    public void initViews(){
+    public void initViews() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

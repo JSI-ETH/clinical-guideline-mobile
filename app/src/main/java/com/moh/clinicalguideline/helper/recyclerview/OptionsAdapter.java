@@ -17,6 +17,7 @@ import java.util.List;
 
 public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHolder> {
     List<AlgorithmCardViewModel> algorithmCardViewModels;
+    private static ClickListener clickListener;
 
     public OptionsAdapter(List<AlgorithmCardViewModel> algorithmCardViewModels) {
         this.algorithmCardViewModels = algorithmCardViewModels;
@@ -48,7 +49,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
         return algorithmCardViewModels.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ConstraintLayout constraintLayout;
         TextView textViewTitle, textViewContent;
         Button buttonNext;
@@ -59,6 +60,11 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
             textViewTitle = itemView.findViewById(R.id.tvTitle);
             textViewContent = itemView.findViewById(R.id.tvContent);
             buttonNext = itemView.findViewById(R.id.btnNextOptions);
+        }
+
+        @Override
+        public void onClick(View v) {
+            clickListener.onItemClick(getAdapterPosition(), v);
         }
     }
 }

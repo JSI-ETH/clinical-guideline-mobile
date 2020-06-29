@@ -153,12 +153,13 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     @SuppressLint("CheckResult")
-    private void feedMap(AlgorithmDescription node) {
+    public void feedMap(AlgorithmDescription node) {
         List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
         nodeRepository.getChildNode(node.getId(), false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
                     for (AlgorithmDescription aNodeDescription : nodes) {
+                        nodeList.add(aNodeDescription);
                         optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
                     }
                     map.put(node, optionsAndAnswers);
@@ -166,11 +167,34 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         nodeRepository.getChildNode(node.getId(), true)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
-
                     for (AlgorithmDescription aNodeDescription : nodes) {
+                        nodeList.add(aNodeDescription);
                         optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, true));
                     }
                     map.put(node, optionsAndAnswers);
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    public void feedMapChild(int childNodeId) {
+        List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
+        nodeRepository.getChildNode(childNodeId, false)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(nodes -> {
+                    for (AlgorithmDescription aNodeDescription : nodes) {
+                        nodeList.add(aNodeDescription);
+                        optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
+                    }
+//                    map.put(node, optionsAndAnswers);
+                });
+        nodeRepository.getChildNode(childNodeId, true)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(nodes -> {
+                    for (AlgorithmDescription aNodeDescription : nodes) {
+                        nodeList.add(aNodeDescription);
+                        optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, true));
+                    }
+//                    map.put(node, optionsAndAnswers);
                 });
     }
 
@@ -182,12 +206,14 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         if (symptomTitle == null || symptomTitle.length() == 0)
             symptomTitle = (node.getTitle());
         if (!skipSingleNode || node.getHasDescription() || node.getChildCount() > 1 || node.getFirstChildNodeId() == null) {
-            nodeList.add(node);
-            feedMap(node);
+            if (!skipSingleNode) {
+                nodeList.add(node);
+                feedMap(node);
+            }
             this.node.setValue(node);
             if (node.getNodeTypeCode().equals("ASMPT") || node.getNodeTypeCode().equals("CSMPT") || node.getNodeTypeCode().equals("CHRNC")) {
                 nodeList = new ArrayList<>();
-                nodeList.add(node);
+//                nodeList.add(node);
                 symptomTitle = (node.getTitle());
             }
             this.onNodeSelectedListener.onNodeSelected(node);
@@ -313,6 +339,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
     public MutableLiveData<Double> getSelectedPageId() {
         return selectedPageId;
+    }
+
+    public void setSelectedPageId(double page) {
+        selectedPageId.setValue(page);
     }
 
     //Content ViewModel
