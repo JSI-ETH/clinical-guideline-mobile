@@ -37,7 +37,7 @@
                 <LinearLayout
                     android:id="@+id/main_section"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/noPadding"
@@ -55,6 +55,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
+                            android:nestedScrollingEnabled="false"
                             android:orientation="vertical" />
 
                     </LinearLayout>
@@ -83,7 +84,7 @@
                     android:layout_width="3dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@color/black"/>
+                    android:background="@color/gray4"/>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
