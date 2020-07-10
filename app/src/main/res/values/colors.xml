@@ -16,6 +16,7 @@
     <color name="splash_bg">#6C6D70</color>
     <color name="splash_text">#FFFFFF</color>
     <color name="splash_bar">#1C89CA</color>
+    <color name="very_light_blue">#E1E5F9</color>
 
 
     <!--Spark Line Color-->
@@ -34,6 +35,7 @@
     <color name="write_black">#333333</color>
     <color name="lighter_black">#555555</color>
     <color name="light_red">#F0584B</color>
+    <color name="very_light_red">#F6EEED</color>
     <color name="red">#bb0000</color>
     <color name="dark_red">#ff990000</color>
     <color name="white">#ffffff</color>

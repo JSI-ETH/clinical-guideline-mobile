@@ -56,7 +56,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         appBarLayout = findViewById(R.id.appBarLayout);
         textViewSymptomTitle = findViewById(R.id.symptom_title);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
-        contentViewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
 
         viewModel.setNavigator(this);
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
@@ -68,25 +67,26 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 //            viewModel.loadNode(algorithmDescription);
 //        });
 
-        //Open Url Clicked
-        viewModel.getSelectedPageId().observe(this, page -> {
-            viewModel.LoadPage(page);
-        });
-
 //        viewModel.getNode().observe(this, node -> {
 //            viewModel.loadNode(node);
 //            viewModel.loadNodes(node.getId());
 //        });
 
+        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mainNodeAdapter);
+        recyclerView.requestFocus(View.FOCUS_DOWN);
 
         viewModel.getNode().observe(this, algorithmDescription -> {
-            Log.d(TAG, "onCreate: " + algorithmDescriptions.size());
             algorithmDescriptions.add(algorithmDescription);
             mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap(), viewModel);
         });
-//        textViewSymptomTitle.setText(algorithmDescriptions.get(0).getTitle());
-        recyclerView.setHasFixedSize(true);
-        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
+
+        //Open Url Clicked
+        viewModel.getSelectedPageId().observe(this, page -> {
+            viewModel.LoadPage(page, textViewSymptomTitle, mainNodeAdapter);
+        });
+
         mainNodeAdapter.setOnItemClickHandler(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
@@ -95,14 +95,10 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
-//                viewModel.feedMap(mainNodeAdapter.getList().get(selectedPosition).getFirstChildNodeId());
-                mainNodeAdapter.notifyDataSetChanged();
-                Log.d(TAG, "selectNextChildNode: " + mainNodeAdapter.getList().get(selectedPosition).getId() + " firstChildId: " + mainNodeAdapter.getList().get(selectedPosition).getChildCount());
+                viewModel.feedMapChild(mainNodeAdapter.getList().get(selectedPosition), mainNodeAdapter);
+                // TODO: Change to submitList
             }
         });
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mainNodeAdapter);
         initViews();
     }
 

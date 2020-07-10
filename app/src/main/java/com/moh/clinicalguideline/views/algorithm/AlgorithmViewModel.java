@@ -3,6 +3,7 @@ package com.moh.clinicalguideline.views.algorithm;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
+import android.databinding.Observable;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -13,11 +14,13 @@ import android.widget.TextView;
 import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.data.entities.Node;
+import com.moh.clinicalguideline.helper.recyclerview.MainNodeAdapter;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 import com.moh.clinicalguideline.views.algorithm.content.ContentViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
     private MutableLiveData<Double> selectedPageId;
     private boolean isSingleNode;
+    private List<Integer> nodeListIds = new ArrayList<>();
+
     private static final String TAG = AlgorithmViewModel.class.getSimpleName();
 
     @Inject
@@ -71,11 +76,13 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     @SuppressLint("CheckResult")
-    public void LoadPage(double page) {
+    public void LoadPage(double page, TextView textView, MainNodeAdapter mainNodeAdapter) {
         Log.d(TAG, "Node: LoadPage: " + page);
         nodeRepository.getNodeByPage(page)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onNodeLoaded, this::onLoadError);
+                .subscribe(node -> {
+                    onNodeLoadedByUrl(node, textView, mainNodeAdapter);
+                });
     }
 /// OPTIONS SECTION
 
@@ -117,25 +124,21 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         node.setValue(algorithmDescription);
     }
 
-    public void selectFirstNode() {
-//        if (nodeOptions.getValue() != null && !nodeOptions.getValue().isEmpty()) {
-//            AlgorithmDescription firstNode = nodeOptions.getValue().get(0).getNode();
-//            selectNode(firstNode);
-//        }
-    }
-
-    ////////////////////////////////
-    ////////////////////////////////
-    ////////////////////////////////
-    ////////////////////////////////
-
     private void onNodeLoaded(AlgorithmDescription node) {
         SelectNode(node, true);
+    }
+
+    private void onNodeLoadedByUrl(AlgorithmDescription node, TextView textView, MainNodeAdapter mainNodeAdapter) {
+        selectNodeByUrl(node, textView, mainNodeAdapter);
     }
 
 
     public void PreviewNode(AlgorithmDescription node) {
         this.node.setValue(node);
+    }
+
+    public AlgorithmDescription getPreviewNode() {
+        return this.node.getValue();
     }
 
     public void SelectNode(AlgorithmDescription node) {
@@ -176,25 +179,44 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     @SuppressLint("CheckResult")
-    public void feedMapChild(int childNodeId) {
+    public void feedMapChild(AlgorithmDescription node, MainNodeAdapter mainNodeAdapter) {
         List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
-        nodeRepository.getChildNode(childNodeId, false)
+        nodeRepository.getChildNode(node.getId(), false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
                     for (AlgorithmDescription aNodeDescription : nodes) {
-                        nodeList.add(aNodeDescription);
-                        optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
+                        if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
+                            nodeRepository.getChildNode(aNodeDescription.getId(), true)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(childNodes -> {
+                                        for (AlgorithmDescription childNode : childNodes) {
+                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, true));
+                                        }
+                                        map.put(aNodeDescription, optionsAndAnswers);
+                                        nodeList.add(aNodeDescription);
+                                        mainNodeAdapter.setKeyNodesList(nodeList);
+                                    });
+                            nodeRepository.getChildNode(aNodeDescription.getId(), false)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(childNodes -> {
+                                        for (AlgorithmDescription childNode : childNodes) {
+                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, false));
+                                            Log.d(TAG, "feedMapChild from if false: " + optionsAndAnswers.size());
+                                        }
+                                        map.put(aNodeDescription, optionsAndAnswers);
+                                        nodeList.add(aNodeDescription);
+                                        mainNodeAdapter.setKeyNodesList(nodeList);
+                                    });
+                        } else {
+                            optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
+                            map.put(node, optionsAndAnswers);
+                            if (!nodeListIds.contains(aNodeDescription.getId())) {
+                                nodeListIds.add(aNodeDescription.getId());
+                                nodeList.add(aNodeDescription);
+                            }
+                            mainNodeAdapter.setKeyNodesList(nodeList);
+                        }
                     }
-//                    map.put(node, optionsAndAnswers);
-                });
-        nodeRepository.getChildNode(childNodeId, true)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(nodes -> {
-                    for (AlgorithmDescription aNodeDescription : nodes) {
-                        nodeList.add(aNodeDescription);
-                        optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, true));
-                    }
-//                    map.put(node, optionsAndAnswers);
                 });
     }
 
@@ -207,15 +229,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             symptomTitle = (node.getTitle());
         if (!skipSingleNode || node.getHasDescription() || node.getChildCount() > 1 || node.getFirstChildNodeId() == null) {
             if (!skipSingleNode) {
-                nodeList.add(node);
+//                nodeList.add(node);
                 feedMap(node);
             }
             this.node.setValue(node);
-            if (node.getNodeTypeCode().equals("ASMPT") || node.getNodeTypeCode().equals("CSMPT") || node.getNodeTypeCode().equals("CHRNC")) {
-                nodeList = new ArrayList<>();
-//                nodeList.add(node);
-                symptomTitle = (node.getTitle());
-            }
             this.onNodeSelectedListener.onNodeSelected(node);
         } else {
             this.onNodeSelectedListener.onNodeSelected(node);
@@ -225,6 +242,15 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         }
 
         Log.i(TAG, "Node id: " + node.getId() + "\tNode title: " + node.getTitle() + " nodeList size " + nodeList.size() + " Child count " + node.getChildCount());
+    }
+
+    private void selectNodeByUrl(AlgorithmDescription node, TextView textView, MainNodeAdapter mainNodeAdapter) {
+        if (node.getNodeTypeCode().equals("ASMPT") || node.getNodeTypeCode().equals("CSMPT") || node.getNodeTypeCode().equals("CHRNC")) {
+            nodeList.clear();
+            map.clear();
+            textView.setText(node.getTitle());
+            feedMapChild(node, mainNodeAdapter);
+        }
     }
 
     //region Properties
@@ -342,6 +368,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     public void setSelectedPageId(double page) {
+        Log.d(TAG, "getSelectedPageId: " + selectedPageId);
         selectedPageId.setValue(page);
     }
 

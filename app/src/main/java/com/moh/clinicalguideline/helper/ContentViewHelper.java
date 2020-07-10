@@ -72,7 +72,7 @@ public class ContentViewHelper {
             String pages =  url.replace("http://page/","")
                     .replace("file:///android_asset/styles/page/","");
             double page = Double.valueOf(pages.split("/")[0]);
-            Toast.makeText(context, "" + page, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "" + page, Toast.LENGTH_SHORT).show();
             algorithmViewModel.setSelectedPageId(page);
             return true;
 

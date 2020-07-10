@@ -49,7 +49,7 @@ public class ContentFragment extends BaseFragment {
         });
         //Open Url Clicked
         viewModel.getSelectedPageId().observe((LifecycleOwner) getActivity(),page->{
-            parentViewModel.LoadPage(page);
+//            parentViewModel.LoadPage(page);
         });
     }
 

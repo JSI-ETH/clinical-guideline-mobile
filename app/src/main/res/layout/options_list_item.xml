@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         card_view:cardBackgroundColor="#E6E6E6"
-        card_view:cardCornerRadius="20dp"
-        card_view:cardElevation="8dp">
+        card_view:cardCornerRadius="@dimen/corner_radius_10"
+        card_view:cardElevation="5dp">
 
 
         <LinearLayout

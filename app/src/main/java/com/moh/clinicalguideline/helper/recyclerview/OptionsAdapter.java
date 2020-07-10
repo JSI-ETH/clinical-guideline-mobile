@@ -60,11 +60,16 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
             textViewTitle = itemView.findViewById(R.id.tvTitle);
             textViewContent = itemView.findViewById(R.id.tvContent);
             buttonNext = itemView.findViewById(R.id.btnNextOptions);
+            buttonNext.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             clickListener.onItemClick(getAdapterPosition(), v);
         }
+    }
+
+    public void setOnItemClickListener(ClickListener clickListener) {
+        OptionsAdapter.clickListener = clickListener;
     }
 }
