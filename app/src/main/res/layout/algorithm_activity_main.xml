@@ -41,7 +41,6 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/node_recycler_view"
             android:layout_marginTop="?attr/actionBarSize"
-            android:background="@color/gray3"
             android:layout_width="match_parent"
             tools:listitem="@layout/node_item"
             android:layout_marginBottom="70dp"
