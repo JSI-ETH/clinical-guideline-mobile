@@ -49,10 +49,13 @@
         <TextView
             android:id="@+id/footerTextView"
             android:layout_width="match_parent"
-            android:background="@color/lighter_black"
             android:layout_height="70dp"
-            android:text="@string/policy_agreement"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:background="@color/footer_bg"
+            android:scrollbars="vertical"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white" />
 
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
