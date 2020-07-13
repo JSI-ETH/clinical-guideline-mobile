@@ -59,13 +59,10 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        ContentViewHelper cvh = new ContentViewHelper();
+        keyNodes = cvh.removeDuplicateNodes(keyNodes);
         int currentItem = keyNodes.size() <= i + 1 ? i : i + 1;
         AlgorithmDescription model = keyNodes.get(currentItem);
-        for (AlgorithmDescription AlDescription : keyNodes) {
-            keyNodes.indexOf(model);
-        }
-        ContentViewHelper cvh = new ContentViewHelper();
-//        viewHolder.webView.setVisibility(model.getHasDescription() ? View.VISIBLE : View.GONE);
 
         if (model.getHasDescription()) {
             tailCounter++;
