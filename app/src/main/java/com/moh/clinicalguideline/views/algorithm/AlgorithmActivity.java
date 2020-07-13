@@ -59,6 +59,8 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
         viewModel.setNavigator(this);
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
+        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
+        viewModel.setAdapterToViewModel(mainNodeAdapter);
         viewModel.LoadNode(nodeid);
         viewModel.setTitle(nodeid, textViewSymptomTitle);
 
@@ -72,7 +74,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 //            viewModel.loadNodes(node.getId());
 //        });
 
-        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mainNodeAdapter);
         recyclerView.requestFocus(View.FOCUS_DOWN);
@@ -84,7 +85,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
         //Open Url Clicked
         viewModel.getSelectedPageId().observe(this, page -> {
-            viewModel.LoadPage(page, textViewSymptomTitle, mainNodeAdapter);
+            viewModel.LoadPage(page, textViewSymptomTitle);
         });
 
         mainNodeAdapter.setOnItemClickHandler(new ClickListener() {
