@@ -203,6 +203,11 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         nodeRepository.getChildNode(node.getId(), false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
+                    if (nodes.size() == 0) {
+                        nodeList.add(node);
+                        map.put(node, optionsAndAnswers);
+                        mainNodeAdapter.setKeyNodesList(nodeList);
+                    }
                     for (AlgorithmDescription aNodeDescription : nodes) {
                         if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
                             nodeRepository.getChildNode(aNodeDescription.getId(), true)

@@ -67,7 +67,7 @@ public class NodeLocalRepository implements NodeRepository {
     public Observable<AlgorithmDescription> getNodeByPage(double pageId) {
         return Observable.defer(() -> {
             AlgorithmDescription item = nodeDao.getNodesWithDescriptionByPage(pageId);
-            return Observable.just(item);
+            return item != null ? Observable.just(item) : null;
         }).subscribeOn(Schedulers.io());
     }
 

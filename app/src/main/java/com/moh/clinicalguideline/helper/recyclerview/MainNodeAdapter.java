@@ -74,7 +74,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             displayed.put(model.getId(), true);
             currentNode = keyNodes.indexOf(algorithmDescriptions.get(model).get(0).getNode());
         } else {
-            if (displayed.get(model.getId())) return;
+            if (displayed != null && displayed.get(model.getId())) return;
+            // todo
         }
         // TODO: Create button programmatically
 
@@ -102,7 +103,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             @Override
             public void onItemClick(int position, View v) {
                 algorithmViewModel.feedMapChild(answers.get(position).getNode(), MainNodeAdapter.this);
-                Log.d(TAG, "onItemClick: " + answers.get(position).getId());
+                Log.d(TAG, "onItemClick: " + answers.get(position).getId() + "\tcurrent item position: " + currentItem);
             }
 
             @Override
@@ -117,7 +118,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         optionsAdapter.setOnItemClickListener(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                algorithmViewModel.feedMapChild(options.get(position).getNode(), MainNodeAdapter.this);
+                Log.d(TAG, "onItemClick: " + options.get(position).getId() + "\tcurrent item position: " + currentItem);
+                algorithmViewModel.feedMapChild(algorithmDescriptions.get(keyNodes.get(i)).get(position).getNode() /*options.get(position).getNode()*/, MainNodeAdapter.this);
             }
 
             @Override
