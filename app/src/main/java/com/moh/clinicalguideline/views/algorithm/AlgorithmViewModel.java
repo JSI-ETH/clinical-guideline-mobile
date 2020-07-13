@@ -292,6 +292,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         return symptomTitle;
     }
 
+    public void setAdapterToViewModel(MainNodeAdapter mainNodeAdapter) {
+        mainRecyclerAdapter = mainNodeAdapter;
+    }
+
     //endregion
 
     //region Listeners
