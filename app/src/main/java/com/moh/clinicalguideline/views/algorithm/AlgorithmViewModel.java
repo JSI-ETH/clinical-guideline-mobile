@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
 import android.databinding.Observable;
+import android.text.Html;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -44,6 +45,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private boolean isSingleNode;
     private List<Integer> nodeListIds = new ArrayList<>();
     private MainNodeAdapter mainRecyclerAdapter;
+    private TextView footerTextView;
     private static final String TAG = AlgorithmViewModel.class.getSimpleName();
 
     @Inject
@@ -167,6 +169,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
+                                            setFooter(childNode.getDescription());
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, true));
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
@@ -177,6 +180,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
+                                            setFooter(childNode.getDescription());
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, false));
                                             Log.d(TAG, "feedMapChild from if false: " + optionsAndAnswers.size());
                                         }
@@ -186,6 +190,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
+                            setFooter(aNodeDescription.getDescription());
                             map.put(node, optionsAndAnswers);
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
@@ -204,6 +209,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
                     if (nodes.size() == 0) {
+                        setFooter(node.getDescription());
                         nodeList.add(node);
                         map.put(node, optionsAndAnswers);
                         mainNodeAdapter.setKeyNodesList(nodeList);
@@ -215,6 +221,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, true));
+                                            setFooter(childNode.getDescription());
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
@@ -224,6 +231,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
+                                            setFooter(childNode.getDescription());
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, false));
                                             Log.d(TAG, "feedMapChild from if false: " + optionsAndAnswers.size());
                                         }
@@ -233,6 +241,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
+                            setFooter(aNodeDescription.getDescription());
                             map.put(node, optionsAndAnswers);
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
@@ -242,6 +251,16 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                         }
                     }
                 });
+    }
+
+    private void setFooter(String description) {
+        int start = description.indexOf("<p><em>");
+        int end = description.indexOf("</em></p>");
+        StringBuilder footer = new StringBuilder();
+        for (int i = start; i < end; i++) {
+            footer.append(description.charAt(i));
+        }
+        footerTextView.setText(Html.fromHtml(String.format("%s%s", footerTextView.getText().toString(), footer.toString())));
     }
 
     public Map<AlgorithmDescription, List<AlgorithmCardViewModel>> getMap() {
@@ -297,8 +316,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         return symptomTitle;
     }
 
-    public void setAdapterToViewModel(MainNodeAdapter mainNodeAdapter) {
+    public void setAdapterToViewModel(MainNodeAdapter mainNodeAdapter, TextView textView) {
         mainRecyclerAdapter = mainNodeAdapter;
+        footerTextView = textView;
     }
 
     //endregion
