@@ -10,6 +10,10 @@ import android.widget.Toast;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class ContentViewHelper {
 
     public String loadDataWithBaseURL(String data) {
@@ -62,6 +66,7 @@ public class ContentViewHelper {
     private class Client extends WebViewClient {
         private Context context;
         private AlgorithmViewModel algorithmViewModel;
+
         public Client(Context context, AlgorithmViewModel algorithmViewModel) {
             this.context = context;
             this.algorithmViewModel = algorithmViewModel;
@@ -69,8 +74,8 @@ public class ContentViewHelper {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            String pages =  url.replace("http://page/","")
-                    .replace("file:///android_asset/styles/page/","");
+            String pages = url.replace("http://page/", "")
+                    .replace("file:///android_asset/styles/page/", "");
             double page = Double.valueOf(pages.split("/")[0]);
 //            Toast.makeText(context, "" + page, Toast.LENGTH_SHORT).show();
             algorithmViewModel.setSelectedPageId(page);
@@ -91,4 +96,17 @@ public class ContentViewHelper {
 
         }
     }
+
+    public List<AlgorithmDescription> removeDuplicateNodes(List<AlgorithmDescription> nodes) {
+        Set<Integer> seen = new HashSet<>();
+        AlgorithmDescription aldToBeRemoved = null;
+        for (AlgorithmDescription ald : nodes) {
+            if (!seen.add(ald.getId())) {
+                aldToBeRemoved = ald;
+            }
+        }
+        nodes.remove(aldToBeRemoved);
+        return nodes;
+    }
+
 }
