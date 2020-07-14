@@ -69,6 +69,8 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
         }
     }
 
+
+
     public void setOnItemClickListener(ClickListener clickListener) {
         OptionsAdapter.clickListener = clickListener;
     }

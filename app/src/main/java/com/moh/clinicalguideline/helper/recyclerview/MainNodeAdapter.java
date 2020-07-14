@@ -2,7 +2,6 @@ package com.moh.clinicalguideline.helper.recyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.design.button.MaterialButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.moh.clinicalguideline.R;
@@ -26,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Observable;
 
 public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHolder> {
     private Context context;
@@ -37,6 +34,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     private static final String TAG = "MainNodeAdapter";
     private static ClickListener clickHandler;
     private static int currentNode;
+    private static int selectedPosition;
     private Map<Integer, Boolean> displayed = new HashMap<>();
 
     public MainNodeAdapter(Context context,
@@ -74,7 +72,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             displayed.put(model.getId(), true);
             currentNode = keyNodes.indexOf(algorithmDescriptions.get(model).get(0).getNode());
         } else {
-            if (displayed != null && displayed.get(model.getId())) return;
+            if (!displayed.isEmpty() && displayed.get(model.getId())) return;
             // todo
         }
         // TODO: Create button programmatically
@@ -102,7 +100,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         answersAdapter.setOnItemClickHandler(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                algorithmViewModel.feedMapChild(answers.get(position).getNode(), MainNodeAdapter.this);
+                rearrangeRecyclerView(position, currentItem);
+                algorithmViewModel.feedMapChild(algorithmDescriptions.get(keyNodes.get(rearrangeRecyclerView(position, currentItem))).get(position).getNode(), MainNodeAdapter.this);
                 Log.d(TAG, "onItemClick: " + answers.get(position).getId() + "\tcurrent item position: " + currentItem);
             }
 
@@ -119,7 +118,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             @Override
             public void onItemClick(int position, View v) {
                 Log.d(TAG, "onItemClick: " + options.get(position).getId() + "\tcurrent item position: " + currentItem);
-                algorithmViewModel.feedMapChild(algorithmDescriptions.get(keyNodes.get(i)).get(position).getNode() /*options.get(position).getNode()*/, MainNodeAdapter.this);
+                algorithmViewModel.feedMapChild(algorithmDescriptions.get(keyNodes.get(rearrangeRecyclerView(position, currentItem))).get(position).getNode() /*options.get(position).getNode()*/, MainNodeAdapter.this);
             }
 
             @Override
@@ -134,11 +133,22 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
 //      viewHolder.viewTimeLine.setVisibility(currentItem == keyNodes.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
+    private int rearrangeRecyclerView(int position, int currentItem) {
+        if (keyNodes.size() - 1 > currentItem) {
+            for (int i = currentItem; i < keyNodes.size(); i++) keyNodes.remove(i);
+        }
+        if (keyNodes.size() - 1 == currentItem) {
+            return currentItem;
+        } else {
+            return currentItem - 1;
+        }
+    }
+
     private void displayWebView(ViewHolder viewHolder, ContentViewHelper cvh, AlgorithmDescription model, int i) {
         WebView webView = viewHolder.webView;
         webView.loadDataWithBaseURL("file:///android_asset/styles/",
-                        cvh.loadDataWithBaseURL(cvh.setTitleToDescription(model)),
-                        "text/html;", "utf-8", null);
+                cvh.loadDataWithBaseURL(cvh.setTitleToDescription(model)),
+                "text/html;", "utf-8", null);
         webView.setWebViewClient(cvh.getWebViewClient(context, algorithmViewModel));
         webView.getSettings().setJavaScriptEnabled(false);
         webView.getSettings().setDomStorageEnabled(true);
@@ -174,10 +184,14 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             viewTimeLine = itemView.findViewById(R.id.time_line);
             cardView = itemView.findViewById(R.id.card_view_webView_holder);
             nextButton.setOnClickListener(this);
+            optionsRecyclerView.setOnClickListener(this);
+            answersRecyclerView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            selectedPosition = getAdapterPosition();
+            Log.d(TAG, "onClick: " + getAdapterPosition() + " oldPosition: " + getOldPosition() + " getLayoutPosition: " + getLayoutPosition());
             if (v.getId() == nextButton.getId()) {
                 clickHandler.selectNextChildNode(currentNode, getAdapterPosition(), v);
             }

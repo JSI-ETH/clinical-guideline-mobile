@@ -30,7 +30,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     public static String Extra_NodeId = "Extra_NodeId";
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
-    TextView textViewSymptomTitle;
+    TextView textViewSymptomTitle, textViewFooter;
     private MainNodeAdapter mainNodeAdapter;
 
     @Override
@@ -41,12 +41,13 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         toolbar = findViewById(R.id.toolbar);
         appBarLayout = findViewById(R.id.appBarLayout);
         textViewSymptomTitle = findViewById(R.id.symptom_title);
+        textViewFooter = findViewById(R.id.footerTextView);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
 
         viewModel.setNavigator(this);
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
         mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
-        viewModel.setAdapterToViewModel(mainNodeAdapter);
+        viewModel.setAdapterToViewModel(mainNodeAdapter, textViewFooter);
         viewModel.LoadNode(nodeid);
         viewModel.setTitle(nodeid, textViewSymptomTitle);
 
@@ -58,6 +59,10 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
             algorithmDescriptions.add(algorithmDescription);
             mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap(), viewModel);
         });
+/**
+ *
+ * <p><em>
+ */
 
         //Open Url Clicked
         viewModel.getSelectedPageId().observe(this, page -> {
