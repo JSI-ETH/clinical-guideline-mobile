@@ -124,9 +124,9 @@ public interface NodeDao {
             "    From node n \n" +
             "       Join nodeType nt on nt.id = n.NodeTypeId" +
             "       Left Join nodeDescription nd on n.id = nd.Id" +
-            "    Where n.page =:page and (NodeTypeCode ='ASMPT' OR NodeTypeCode='CSMPT' OR NodeTypeCode = 'CHRNC') LIMIT 1" +
+            "    Where n.page =:page LIMIT 1" +
             "")
-    AlgorithmDescription getNodesWithDescriptionByPage(int page);
+    AlgorithmDescription getNodesWithDescriptionByPage(double page);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Node... nodes);

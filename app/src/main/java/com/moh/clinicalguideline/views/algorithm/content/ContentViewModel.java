@@ -2,28 +2,22 @@ package com.moh.clinicalguideline.views.algorithm.content;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
-import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
-import com.moh.clinicalguideline.repository.NodeRepository;
-import com.moh.clinicalguideline.views.algorithm.AlgorithmNavigator;
 
-import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ContentViewModel extends BaseViewModel {
 
     private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
-    private MutableLiveData<Integer> selectedPageId;
+    private MutableLiveData<Double> selectedPageId;
 
     @Inject
     public ContentViewModel(){
@@ -32,6 +26,7 @@ public class ContentViewModel extends BaseViewModel {
     }
 
     public void loadNode(AlgorithmDescription nodeDescription) {
+
 
         this.algorithmNodeDescription.setValue(nodeDescription);
         notifyChange();
@@ -80,7 +75,7 @@ public class ContentViewModel extends BaseViewModel {
 
         return description;  }
 
-    public MutableLiveData<Integer> getSelectedPageId() {
+    public MutableLiveData<Double> getSelectedPageId() {
         return selectedPageId;
     }
 
@@ -97,7 +92,7 @@ public class ContentViewModel extends BaseViewModel {
             String pages =  url.replace("http://page/","")
                     .replace("file:///android_asset/styles/page/","");
 
-            int page = Integer.valueOf(pages.split("/")[0]);
+            double page = Double.valueOf(pages.split("/")[0]);
             selectedPageId.setValue(page);
             return true;
 

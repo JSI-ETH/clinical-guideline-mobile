@@ -1,6 +1,12 @@
 package com.moh.clinicalguideline.core;
 
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
 import com.moh.clinicalguideline.helper.BaseModel;
+import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
 
 import java.util.UUID;
 

@@ -39,7 +39,6 @@ public class TimeLineAdapter<T> extends BaseAdapter {
         holder.bind(item);
 
         line = (View) holder.itemView.findViewById(R.id.tl_line);
-        LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) line.getLayoutParams();
         //tl_s_circle
 
         holder.itemView.setOnClickListener(v -> {
@@ -60,13 +59,13 @@ public class TimeLineAdapter<T> extends BaseAdapter {
         else {
             line.setBackgroundResource(R.drawable.line_bg_bottom);
         }
-        if(position == selectedPosition)
-        {
-            holder.itemView.findViewById(R.id.tl_s_circle).setVisibility(View.VISIBLE);
-        }
-        else {
-            holder.itemView.findViewById(R.id.tl_s_circle).setVisibility(View.GONE);
-        }
+//        if(position == selectedPosition)
+//        {
+//            holder.itemView.findViewById(R.id.tl_s_circle).setVisibility(View.VISIBLE);
+//        }
+//        else {
+//            holder.itemView.findViewById(R.id.tl_s_circle).setVisibility(View.GONE);
+//        }
 
 
     }

@@ -22,7 +22,7 @@ import com.moh.clinicalguideline.data.entities.NodeType;
         NodeRelation.class,
         NodeDescription.class},
  exportSchema = false,
-         version = 4)
+         version = 5)
 @TypeConverters({Converters.class})
 public abstract class CgDatabase extends RoomDatabase {
     public abstract NodeDao getNodeDao();

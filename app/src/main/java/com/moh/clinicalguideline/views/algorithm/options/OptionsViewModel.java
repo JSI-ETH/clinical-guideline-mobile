@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.views.algorithm.options;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
 
@@ -52,6 +53,7 @@ public class OptionsViewModel extends BaseViewModel {
 
     //region Events
     //region DataLoader
+    @SuppressLint("CheckResult")
     public void loadNodes(int parentId) {
         nodeRepository.getChildNode(parentId, false)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -62,7 +64,7 @@ public class OptionsViewModel extends BaseViewModel {
 
         List<AlgorithmCardViewModel> algorithmNodeViewModels = new ArrayList();
         for (AlgorithmDescription aNodeDescription : nodeDescriptionList) {
-            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
+//            algorithmNodeViewModels.add(new AlgorithmCardViewModel(aNodeDescription));
         }
 
         nodes.setValue(algorithmNodeViewModels);

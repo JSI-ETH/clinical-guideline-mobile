@@ -10,13 +10,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.AlgorithmFragmentTimelineBinding;
-import com.moh.clinicalguideline.generated.callback.OnClickListener;
 import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseFragment;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
@@ -53,14 +53,22 @@ public class TimeLineFragment extends BaseFragment {
         });
         //when a child node is selected inform parent
         viewModel.getNode().observe((LifecycleOwner) getActivity(), node -> {
-            parentViewModel.PreviewNode(node.getNode());
+//            parentViewModel.PreviewNode(node.getNode());
         });
         initAdapters();
     }
 
     public void initAdapters(){
       adapter = new TimeLineAdapter<>(R.layout.algorithm_fragment_timeline_list, item -> {
-            viewModel.selectNode(item.getPositionId());
+          if(item.isActive())
+              viewModel.selectNode(item.getPositionId());
+          else{
+              try {
+                  viewModel.selectNode(item.getPositionId() + 1);
+              } catch (IndexOutOfBoundsException obe){
+                  Log.e("TimeLineFragment", "Unable to navigate to that node", obe);
+              }
+          }
         });
       binding.setAdapter(adapter);
       viewModel.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {

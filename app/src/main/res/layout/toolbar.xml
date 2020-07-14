@@ -24,4 +24,13 @@
         android:textSize="25sp"
         />
 
+    <ImageView
+        android:id="@+id/video_icon"
+        android:src="@drawable/video_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:onClick="launchVideo" />
+
 </android.support.v7.widget.Toolbar>
