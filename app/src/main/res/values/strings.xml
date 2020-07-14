@@ -33,5 +33,6 @@
     <string name="moh_logo">MOH Logo</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="notes">** Notes **</string>
+    <string name="footer_placeholder">Notes</string>
 
 </resources>
