@@ -9,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         appBarLayout = findViewById(R.id.appBarLayout);
         textViewSymptomTitle = findViewById(R.id.symptom_title);
         textViewFooter = findViewById(R.id.footerTextView);
+        textViewFooter.setMovementMethod(new ScrollingMovementMethod());
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
 
         viewModel.setNavigator(this);
