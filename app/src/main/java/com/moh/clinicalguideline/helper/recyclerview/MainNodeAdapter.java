@@ -1,6 +1,7 @@
 package com.moh.clinicalguideline.helper.recyclerview;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     private static int currentNode;
     private static int selectedPosition;
     private Map<Integer, Boolean> displayed = new HashMap<>();
+    List<AlgorithmCardViewModel> answers = new ArrayList<>();
+    List<AlgorithmCardViewModel> options = new ArrayList<>();
 
     public MainNodeAdapter(Context context,
                            List<AlgorithmDescription> keyNodes,
@@ -134,6 +137,9 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     }
 
     private int rearrangeRecyclerView(int position, int currentItem) {
+        if(currentItem == 4){
+            return 3;
+        }
         if (keyNodes.size() - 1 > currentItem) {
             for (int i = currentItem; i < keyNodes.size(); i++) keyNodes.remove(i);
         }
@@ -203,8 +209,11 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     }
 
     public void setKeyNodesList(List<AlgorithmDescription> list) {
+        Handler mainHandler = new Handler(context.getMainLooper());
         this.keyNodes = list;
-        notifyItemInserted(currentNode);
+        Runnable myRunnable = () -> notifyItemInserted(currentNode);
+        mainHandler.post(myRunnable);
+
         // TODO: request focus down
     }
 
