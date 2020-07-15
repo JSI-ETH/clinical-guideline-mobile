@@ -39,7 +39,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     private Map<Integer, Boolean> displayed = new HashMap<>();
     List<AlgorithmCardViewModel> answers = new ArrayList<>();
     List<AlgorithmCardViewModel> options = new ArrayList<>();
-
+    private int currentItem;
     public MainNodeAdapter(Context context,
                            List<AlgorithmDescription> keyNodes,
                            Map<AlgorithmDescription, List<AlgorithmCardViewModel>> algorithmDescriptions,
@@ -62,7 +62,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ContentViewHelper cvh = new ContentViewHelper();
         keyNodes = cvh.removeDuplicateNodes(keyNodes);
-        int currentItem = keyNodes.size() <= i + 1 ? i : i + 1;
+        currentItem = keyNodes.size() <= i + 1 ? i : i + 1;
         AlgorithmDescription model = keyNodes.get(currentItem);
 
         if (model.getHasDescription()) {
@@ -81,8 +81,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         // TODO: Create button programmatically
 
 
-        List<AlgorithmCardViewModel> answers = new ArrayList<>();
-        List<AlgorithmCardViewModel> options = new ArrayList<>();
+        answers = new ArrayList<>();
+        options = new ArrayList<>();
 
         for (AlgorithmDescription ald : algorithmDescriptions.keySet()) {
             if (ald.equals(model)) {
@@ -103,9 +103,19 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         answersAdapter.setOnItemClickHandler(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
+                if (currentItem == 4){
+                    currentItem = 3;
+                }
                 rearrangeRecyclerView(position, currentItem);
-                algorithmViewModel.feedMapChild(algorithmDescriptions.get(keyNodes.get(rearrangeRecyclerView(position, currentItem))).get(position).getNode(), MainNodeAdapter.this);
-                Log.d(TAG, "onItemClick: " + answers.get(position).getId() + "\tcurrent item position: " + currentItem);
+
+                algorithmViewModel
+                        .feedMapChild(
+                                Objects.requireNonNull(algorithmDescriptions
+                                        .get(keyNodes
+                                                .get(currentItem)))
+                                        .get(position)
+                                        .getNode(), MainNodeAdapter.this);
+//                Log.d(TAG, "onItemClick: " + answers.get(position).getId() + "\tcurrent item position: " + currentItem);
             }
 
             @Override
@@ -138,10 +148,11 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
 
     private int rearrangeRecyclerView(int position, int currentItem) {
         if(currentItem == 4){
-            return 3;
+            currentItem = 3;
+            return currentItem;
         }
         if (keyNodes.size() - 1 > currentItem) {
-            for (int i = currentItem; i < keyNodes.size(); i++) keyNodes.remove(i);
+//            for (int i = currentItem; i < keyNodes.size(); i++) keyNodes.remove(i);
         }
         if (keyNodes.size() - 1 == currentItem) {
             return currentItem;
