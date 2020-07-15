@@ -5,7 +5,7 @@
     <string name="app_title">Ethiopian primary health care clinical guidelines </string>
     <string name="app_subtitle">Care of children 5-14 years and Adults 15 years or older in Health Centers</string>
     <string name="city">Addis Ababa</string>
-    <string name="pub_date">2010(EC) | 2017(GC)</string>
+    <string name="pub_date">2012(EC) | 2020(GC)</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="no">Disagree</string>
     <string name="yes">I Agree</string>
@@ -30,5 +30,9 @@
     <string name="policy_agreement">\Policy and agreement</string>
     <string name="policy_agreement_sub_title">MOH Access Agreement for EPHCG Users</string>
     <string name="agree_and_continue">Agree and Continue</string>
+    <string name="moh_logo">MOH Logo</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="notes">** Notes **</string>
+    <string name="footer_placeholder">Notes</string>
 
 </resources>

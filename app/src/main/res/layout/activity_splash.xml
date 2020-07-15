@@ -17,13 +17,19 @@
         android:layout_weight="2"
         android:gravity="center"
         android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/logo" />
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white">
+    <ImageView
+        android:layout_width="176dp"
+        android:layout_height="156dp"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:src="@drawable/ic_moh_logo"/>
+</LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +75,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:padding="@dimen/smallPadding"
             android:text="@string/pub_date"
             android:textColor="@color/splash_text"

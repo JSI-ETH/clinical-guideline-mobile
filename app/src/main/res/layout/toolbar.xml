@@ -1,36 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_scrollFlags="scroll|enterAlways"
-    android:background="@color/primaryColor">
+    android:background="@color/primaryDarkColor"
+    app:layout_scrollFlags="scroll|enterAlways">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
         android:id="@+id/your_icon"
-        android:src="@mipmap/ic_launcher"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_margin="10dp"
-        />
-    <TextView
+        android:tint="@color/white"
+        android:src="@drawable/ic_moh_logo"
+        tools:srcCompat="@drawable/ic_moh_logo"
+        android:contentDescription="@string/moh_logo" />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:maxWidth="70dp"
+        android:maxHeight="70dp"
+        android:scaleType="centerInside"
         android:text="@string/app_name"
-        android:textColor="@color/white"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
+        android:tint="@color/white"
         android:textSize="25sp"
-        />
+        android:textStyle="bold"
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        tools:srcCompat="@drawable/ic_launcher_foreground" />
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/bookmarks_icon"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_gravity="end"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:onClick="bookmarks"-->
+<!--        android:src="@drawable/ic_baseline_bookmarks_24"-->
+<!--        android:tint="@color/white"-->
+<!--        android:background="@color/primaryDarkColor"-->
+<!--        android:contentDescription="@string/bookmarks" />-->
 
     <ImageView
         android:id="@+id/video_icon"
-        android:src="@drawable/video_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="end"
         android:layout_margin="10dp"
-        android:onClick="launchVideo" />
+        android:onClick="launchVideo"
+        android:src="@drawable/video_icon"
+        android:tint="@color/white" />
+
 
 </android.support.v7.widget.Toolbar>

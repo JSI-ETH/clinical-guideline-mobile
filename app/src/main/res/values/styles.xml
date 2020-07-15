@@ -34,8 +34,8 @@
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="android:editTextColor">@color/primaryTextColor</item>
         <item name="colorAccent">@color/accentColor</item>
-        <item name="dividerVertical">@color/dividerColor</item>
-        <item name="dividerHorizontal">@color/dividerColor</item>
+        <item name="dividerVertical">@color/accentColor</item>
+        <item name="dividerHorizontal">@color/accentColor</item>
         <item name="cardViewStyle">@style/CardView</item>
 
     </style>

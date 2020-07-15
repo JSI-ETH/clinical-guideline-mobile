@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.moh.clinicalguideline.R;
@@ -33,6 +34,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     private AppBarLayout appBarLayout;
     TextView textViewSymptomTitle, textViewFooter;
     private MainNodeAdapter mainNodeAdapter;
+    private ProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         textViewSymptomTitle = findViewById(R.id.symptom_title);
         textViewFooter = findViewById(R.id.footerTextView);
         textViewFooter.setMovementMethod(new ScrollingMovementMethod());
+        loadingProgressBar = findViewById(R.id.loadingProgressBar);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
 
         viewModel.setNavigator(this);
@@ -55,16 +58,13 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mainNodeAdapter);
-        recyclerView.requestFocus(View.FOCUS_DOWN);
+        recyclerView.getLayoutManager().scrollToPosition(mainNodeAdapter.getItemCount() - 1);
 
         viewModel.getNode().observe(this, algorithmDescription -> {
+            loadingProgressBar.setVisibility(View.GONE);
             algorithmDescriptions.add(algorithmDescription);
             mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap(), viewModel);
         });
-/**
- *
- * <p><em>
- */
 
         //Open Url Clicked
         viewModel.getSelectedPageId().observe(this, page -> {

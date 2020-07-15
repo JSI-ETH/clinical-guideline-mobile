@@ -38,6 +38,17 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="1dp"
+            android:foregroundTint="@color/primaryDarkColor"
+            android:indeterminateTint="@color/primaryDarkColor"
+            android:progressTint="@color/primaryDarkColor" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/node_recycler_view"
             android:layout_marginTop="?attr/actionBarSize"
@@ -53,9 +64,12 @@
             android:layout_gravity="bottom"
             android:background="@color/footer_bg"
             android:scrollbars="vertical"
-            android:text=""
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/footer_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textStyle="italic" />
 
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

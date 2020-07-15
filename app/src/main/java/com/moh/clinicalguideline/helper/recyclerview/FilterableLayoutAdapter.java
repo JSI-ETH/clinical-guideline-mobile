@@ -45,11 +45,7 @@ public class FilterableLayoutAdapter<T> extends BaseAdapter implements Filterabl
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         @SuppressWarnings("unchecked") BaseModel item = (BaseModel) getObjForPosition(position);
         View view = holder.itemView;
-        if (position % 2 == 1) {
-            view.setBackgroundColor(Color.parseColor("#ffffff"));
-        } else {
-            view.setBackgroundColor(Color.parseColor("#f3f3f3"));
-        }
+        view.setBackgroundColor(Color.parseColor("#ffffff"));
         holder.bind(item);
         holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
     }

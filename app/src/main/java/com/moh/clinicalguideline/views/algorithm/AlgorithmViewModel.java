@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -254,13 +256,23 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     private void setFooter(String description) {
-        int start = description.indexOf("<p><em>");
-        int end = description.indexOf("</em></p>");
-        StringBuilder footer = new StringBuilder();
-        for (int i = start; i < end; i++) {
-            footer.append(description.charAt(i));
+        Pattern pattern = Pattern.compile("<p><em>(.*?)</em></p>");
+        Matcher matcher = pattern.matcher(description);
+
+        List<String> listMatches = new ArrayList<String>();
+
+        if (matcher.find())
+        {
+            listMatches.add(matcher.group(1));
         }
-        footerTextView.setText(Html.fromHtml(String.format("%s%s", footerTextView.getText().toString(), footer.toString())));
+
+        StringBuilder footer = new StringBuilder();
+        for(String s : listMatches)
+        {
+            footer.append(s);
+        }
+        if(footerTextView.getText().toString().equals("Notes") && footer.toString().length() > 0) footerTextView.setText("");
+        footerTextView.setText(Html.fromHtml(String.format("%s%s", footerTextView.getText().toString() + "\n", footer.toString())));
     }
 
     public Map<AlgorithmDescription, List<AlgorithmCardViewModel>> getMap() {
