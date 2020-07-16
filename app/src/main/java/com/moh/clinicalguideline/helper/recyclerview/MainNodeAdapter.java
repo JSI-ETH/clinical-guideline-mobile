@@ -110,16 +110,13 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         answersAdapter.setOnItemClickHandler(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-//                if (currentItem == 4){
-//                    currentItem = 3;
-//                }
-                try {
+             try {
                int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
                int ansPos =  getOptionAnswerIndex(id);
                if (ansPos != -1)
                removeRecyclerValues(ansPos);
                currentItem = keyNodes.size() - 1;
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
                 algorithmViewModel
                         .feedMapChild(

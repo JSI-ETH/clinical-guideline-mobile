@@ -30,7 +30,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/secondaryBGColor"
         >
 
     <LinearLayout
@@ -38,30 +38,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp">
-
             <SearchView
                 android:id="@+id/simpleSearchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="8dp"
                 android:paddingTop="3dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
                 android:textColor="@color/write_black"
                 android:background="@drawable/search_box"
-                android:drawableRight="@drawable/ic_arrow_forward_next_black_24dp"
-                android:drawableEnd="@drawable/ic_arrow_forward_next_black_24dp"
                 android:iconifiedByDefault="false"
                 android:layout_gravity="center_horizontal"
                 android:queryHint="Search"
                 />
-
-        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -70,7 +61,6 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:visibility="@{menu.loading? View.VISIBLE : View.GONE}" />
-
 
             <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
@@ -91,7 +81,7 @@
                     app:itemDecoration="@{simpleItemDecorator}"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:adapter="@{menu.adapter}"
-                    tools:listitem="@android:layout/activity_list_item"
+                    tools:listitem="@layout/activity_menu_mlist"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     />
 
@@ -100,9 +90,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    app:labelVisibilityMode="labeled"
                     android:background="?android:attr/windowBackground"
-                    app:menu="@menu/activity_menu"/>
+                    app:labelVisibilityMode="labeled"
+                    app:menu="@menu/activity_menu" />
 
             </android.support.design.widget.CoordinatorLayout>
 

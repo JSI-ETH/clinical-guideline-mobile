@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools">-->
 
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/secondaryBGColor">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                <TextView
-                    android:id="@+id/symptom_title"
+                android:fitsSystemWindows="true"
+                android:layout_marginBottom="10dp"
+                >
+                <android.support.design.widget.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/colorPrimary"
-                    android:gravity="center_vertical"
-                    android:maxLines="2"
-                    android:text="@{menu.symptomTitle}"
-                    android:textColor="@color/white"
-                    android:textSize="20dp" />
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    android:theme="@style/AppTheme.AppBarOverlay">
 
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.AppBarLayout>
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin"
+                        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                        <TextView
+                            android:id="@+id/symptom_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="?attr/colorPrimary"
+                            android:gravity="center_vertical"
+                            android:maxLines="2"
+                            android:text="@{menu.symptomTitle}"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                    </android.support.v7.widget.Toolbar>
+                </android.support.design.widget.CollapsingToolbarLayout>
+            </android.support.design.widget.AppBarLayout>
 
         <ProgressBar
             android:id="@+id/loadingProgressBar"
@@ -59,6 +72,7 @@
 
         <TextView
             android:id="@+id/footerTextView"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_gravity="bottom"
@@ -72,4 +86,4 @@
             android:textStyle="italic" />
 
     </android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+<!--</LinearLayout>-->

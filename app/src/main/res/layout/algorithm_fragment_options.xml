@@ -45,10 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:visible="@{viewModel.isSingleNode}"
-            android:background="@drawable/curved_button_normal"
             android:onClick="@{()->viewModel.selectFirstNode()}"
             android:text="@string/bt_next"
             android:layout_margin="10dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/primaryColor"
+            android:background="@drawable/button_outline"/>
+
     </FrameLayout>
 </layout>

@@ -8,14 +8,16 @@
         android:id="@+id/title_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <TextView
             style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:gravity="center"
+            android:background="@color/primaryColor"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_marginBottom="10dp"
             android:text="@string/policy_agreement" />
 
@@ -62,13 +64,15 @@
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:elevation="5dp"
         android:layout_below="@+id/content_section"
         android:layout_gravity="start"
-        android:background="@drawable/curved_button_normal"
+        android:background="@drawable/button_outline"
+        android:textColor="@color/primaryColor"
         android:text="@string/agree_and_continue"
-        android:layout_marginLeft="10dp"
         android:textSize="16sp"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/white"/>
+        />
 
 </RelativeLayout>
