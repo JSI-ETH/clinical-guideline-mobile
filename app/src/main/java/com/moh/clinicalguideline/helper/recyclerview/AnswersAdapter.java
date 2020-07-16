@@ -17,11 +17,12 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
     private List<AlgorithmCardViewModel> answersNode;
     private MainNodeAdapter mainNodeAdapter;
     private static ClickListener clickHandler;
+    private int parentId;
 
-
-    public AnswersAdapter(List<AlgorithmCardViewModel> answersNode, MainNodeAdapter mainNodeAdapter) {
+    public AnswersAdapter(List<AlgorithmCardViewModel> answersNode, MainNodeAdapter mainNodeAdapter, Integer pId) {
         this.answersNode = answersNode;
         this.mainNodeAdapter = mainNodeAdapter;
+        this.parentId = pId;
     }
 
     @NonNull
@@ -36,6 +37,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         AlgorithmCardViewModel model = answersNode.get(i);
         viewHolder.answer.setText(model.getTitle());
+        viewHolder.answer.setHint( String.valueOf(this.parentId));
     }
 
     @Override

@@ -18,8 +18,9 @@ import java.util.List;
 public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHolder> {
     List<AlgorithmCardViewModel> algorithmCardViewModels;
     private static ClickListener clickListener;
+    private int parentId;
 
-    public OptionsAdapter(List<AlgorithmCardViewModel> algorithmCardViewModels) {
+    public OptionsAdapter(List<AlgorithmCardViewModel> algorithmCardViewModels, Integer pId) {
         this.algorithmCardViewModels = algorithmCardViewModels;
     }
 
@@ -42,6 +43,7 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
         if (model.getHasDescription())
             viewHolder.textViewContent.setText(Html.fromHtml(model.getDescription()));
         viewHolder.buttonNext.setBackgroundResource(urgent ? R.drawable.curved_button_urgent : R.drawable.curved_button_normal);
+        viewHolder.buttonNext.setHint(String.valueOf(this.parentId));
     }
 
     @Override

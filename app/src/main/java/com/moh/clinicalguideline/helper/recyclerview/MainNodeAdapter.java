@@ -3,6 +3,7 @@ package com.moh.clinicalguideline.helper.recyclerview;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,7 +98,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             }
         }
 
-        AnswersAdapter answersAdapter = new AnswersAdapter(answers, this);
+        AnswersAdapter answersAdapter = new AnswersAdapter(answers, this, model.getId());
         viewHolder.answersRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         viewHolder.answersRecyclerView.setAdapter(answersAdapter);
         answersAdapter.setOnItemClickHandler(new ClickListener() {
@@ -105,6 +106,13 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             public void onItemClick(int position, View v) {
                 if (currentItem == 4){
                     currentItem = 3;
+                }
+                try {
+               int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
+               int ansPos =  getOptionAnswerIndex(id);
+               if (ansPos != -1)
+               removeRecyclerValues(ansPos);
+                } catch (Exception e) {
                 }
                 rearrangeRecyclerView(position, currentItem);
 
@@ -124,7 +132,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             }
         });
 
-        OptionsAdapter optionsAdapter = new OptionsAdapter(options);
+        OptionsAdapter optionsAdapter = new OptionsAdapter(options, model.getId());
         viewHolder.optionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         viewHolder.optionsRecyclerView.setAdapter(optionsAdapter);
         optionsAdapter.setOnItemClickListener(new ClickListener() {
@@ -151,13 +159,44 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             currentItem = 3;
             return currentItem;
         }
-        if (keyNodes.size() - 1 > currentItem) {
-//            for (int i = currentItem; i < keyNodes.size(); i++) keyNodes.remove(i);
-        }
+//        if (keyNodes.size() - 1 > currentItem) {
+////            for (int i = currentItem; i < keyNodes.size(); i++) keyNodes.remove(i);
+//        }
         if (keyNodes.size() - 1 == currentItem) {
             return currentItem;
         } else {
             return currentItem - 1;
+        }
+    }
+
+    private int getOptionAnswerIndex(Integer value) {
+        int recyclerIndex = -1;
+        try {
+            for (int i = 0; i < keyNodes.size() - 1; i++ ) {
+                AlgorithmDescription algorithmDescription = keyNodes.get(i);
+                if (value.equals(algorithmDescription.getId())) {
+                    return i;
+                }
+            }
+            return recyclerIndex;
+        } catch (Exception e){
+            return -1;
+        }
+    }
+
+    private void removeRecyclerValues(int poss) {
+        // poss is the index of the answer/option selected
+        try {
+            int itemsToRemove = keyNodes.size() - (poss + 1);
+            for (int i = 0; i < itemsToRemove; i++){
+                int removedIndex = keyNodes.size() - 1;
+                AlgorithmDescription algorithmDescription = keyNodes.get(removedIndex);
+                keyNodes.remove(removedIndex);
+
+                algorithmDescriptions.remove(algorithmDescription);
+            }
+            notifyDataSetChanged();
+        } catch (Exception e) {
         }
     }
 
