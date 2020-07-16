@@ -21,6 +21,7 @@ import com.moh.clinicalguideline.helper.recyclerview.MainNodeAdapter;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -58,12 +59,13 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mainNodeAdapter);
-        recyclerView.getLayoutManager().scrollToPosition(mainNodeAdapter.getItemCount() - 1);
+        Objects.requireNonNull(recyclerView.getLayoutManager()).scrollToPosition(mainNodeAdapter.getItemCount() - 1);
 
         viewModel.getNode().observe(this, algorithmDescription -> {
             loadingProgressBar.setVisibility(View.GONE);
             algorithmDescriptions.add(algorithmDescription);
-            mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap(), viewModel);
+            mainNodeAdapter.notifyDataSetChanged();
+//            mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap(), viewModel);
         });
 
         //Open Url Clicked

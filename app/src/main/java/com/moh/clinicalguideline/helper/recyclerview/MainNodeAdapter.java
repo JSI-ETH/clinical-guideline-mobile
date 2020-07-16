@@ -32,15 +32,14 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     private List<AlgorithmDescription> keyNodes;
     private Map<AlgorithmDescription, List<AlgorithmCardViewModel>> algorithmDescriptions;
     private AlgorithmViewModel algorithmViewModel;
-    private int tailCounter = 0;
     private static final String TAG = "MainNodeAdapter";
     private static ClickListener clickHandler;
     private static int currentNode;
-    private static int selectedPosition;
     private Map<Integer, Boolean> displayed = new HashMap<>();
     List<AlgorithmCardViewModel> answers = new ArrayList<>();
     List<AlgorithmCardViewModel> options = new ArrayList<>();
     private int currentItem;
+
     public MainNodeAdapter(Context context,
                            List<AlgorithmDescription> keyNodes,
                            Map<AlgorithmDescription, List<AlgorithmCardViewModel>> algorithmDescriptions,
@@ -60,14 +59,21 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     }
 
     @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ContentViewHelper cvh = new ContentViewHelper();
         keyNodes = cvh.removeDuplicateNodes(keyNodes);
-        currentItem = keyNodes.size() <= i + 1 ? i : i + 1;
+        currentItem = keyNodes.size() - 1;
         AlgorithmDescription model = keyNodes.get(currentItem);
+        if (model.getChildCount() == 0) {
+            viewHolder.viewTimeLine.setVisibility(View.GONE);
+        }
 
         if (model.getHasDescription()) {
-            tailCounter++;
             displayWebView(viewHolder, cvh, model, i);
             displayed.put(model.getId(), true);
             currentNode = keyNodes.indexOf(model);
@@ -98,32 +104,29 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             }
         }
 
-        AnswersAdapter answersAdapter = new AnswersAdapter(answers, this, model.getId());
+        AnswersAdapter answersAdapter = new AnswersAdapter(answers, model.getId());
         viewHolder.answersRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         viewHolder.answersRecyclerView.setAdapter(answersAdapter);
         answersAdapter.setOnItemClickHandler(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                if (currentItem == 4){
-                    currentItem = 3;
-                }
+//                if (currentItem == 4){
+//                    currentItem = 3;
+//                }
                 try {
                int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
                int ansPos =  getOptionAnswerIndex(id);
                if (ansPos != -1)
                removeRecyclerValues(ansPos);
+               currentItem = keyNodes.size() - 1;
                 } catch (Exception e) {
                 }
-                rearrangeRecyclerView(position, currentItem);
-
                 algorithmViewModel
                         .feedMapChild(
                                 Objects.requireNonNull(algorithmDescriptions
-                                        .get(keyNodes
-                                                .get(currentItem)))
+                                        .get(keyNodes.get(currentItem)))
                                         .get(position)
                                         .getNode(), MainNodeAdapter.this);
-//                Log.d(TAG, "onItemClick: " + answers.get(position).getId() + "\tcurrent item position: " + currentItem);
             }
 
             @Override
@@ -139,7 +142,12 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             @Override
             public void onItemClick(int position, View v) {
                 Log.d(TAG, "onItemClick: " + options.get(position).getId() + "\tcurrent item position: " + currentItem);
-                algorithmViewModel.feedMapChild(algorithmDescriptions.get(keyNodes.get(rearrangeRecyclerView(position, currentItem))).get(position).getNode() /*options.get(position).getNode()*/, MainNodeAdapter.this);
+                algorithmViewModel
+                        .feedMapChild(Objects.requireNonNull(
+                                algorithmDescriptions
+                                .get(keyNodes.get(rearrangeRecyclerView(currentItem))))
+                                .get(position)
+                                .getNode(), MainNodeAdapter.this);
             }
 
             @Override
@@ -154,19 +162,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
 //      viewHolder.viewTimeLine.setVisibility(currentItem == keyNodes.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
-    private int rearrangeRecyclerView(int position, int currentItem) {
-        if(currentItem == 4){
-            currentItem = 3;
-            return currentItem;
-        }
-//        if (keyNodes.size() - 1 > currentItem) {
-////            for (int i = currentItem; i < keyNodes.size(); i++) keyNodes.remove(i);
-//        }
-        if (keyNodes.size() - 1 == currentItem) {
-            return currentItem;
-        } else {
+    private int rearrangeRecyclerView(int currentItem) {
             return currentItem - 1;
-        }
     }
 
     private int getOptionAnswerIndex(Integer value) {
@@ -192,10 +189,9 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                 int removedIndex = keyNodes.size() - 1;
                 AlgorithmDescription algorithmDescription = keyNodes.get(removedIndex);
                 keyNodes.remove(removedIndex);
-
                 algorithmDescriptions.remove(algorithmDescription);
+                notifyItemRemoved(removedIndex);
             }
-            notifyDataSetChanged();
         } catch (Exception e) {
         }
     }
@@ -246,7 +242,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            selectedPosition = getAdapterPosition();
+            int selectedPosition = getAdapterPosition();
             Log.d(TAG, "onClick: " + getAdapterPosition() + " oldPosition: " + getOldPosition() + " getLayoutPosition: " + getLayoutPosition());
             if (v.getId() == nextButton.getId()) {
                 clickHandler.selectNextChildNode(currentNode, getAdapterPosition(), v);

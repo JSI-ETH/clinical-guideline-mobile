@@ -1,6 +1,5 @@
 package com.moh.clinicalguideline.helper.recyclerview;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,13 +14,11 @@ import java.util.List;
 
 public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHolder> {
     private List<AlgorithmCardViewModel> answersNode;
-    private MainNodeAdapter mainNodeAdapter;
     private static ClickListener clickHandler;
     private int parentId;
 
-    public AnswersAdapter(List<AlgorithmCardViewModel> answersNode, MainNodeAdapter mainNodeAdapter, Integer pId) {
+    public AnswersAdapter(List<AlgorithmCardViewModel> answersNode, Integer pId) {
         this.answersNode = answersNode;
-        this.mainNodeAdapter = mainNodeAdapter;
         this.parentId = pId;
     }
 
