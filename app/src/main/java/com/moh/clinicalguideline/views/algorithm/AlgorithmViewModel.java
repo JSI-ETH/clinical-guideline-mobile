@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
 import android.databinding.Observable;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.webkit.WebResourceError;
@@ -172,11 +174,11 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
                                             setFooter(childNode.getDescription());
-                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, true));
+                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
-                                        mainRecyclerAdapter.setKeyNodesList(nodeList);
+                                        mainRecyclerAdapter.setKeyNodesList(nodeList,false);
                                     });
                             nodeRepository.getChildNode(aNodeDescription.getId(), false)
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -188,7 +190,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
-                                        mainRecyclerAdapter.setKeyNodesList(nodeList);
+                                        mainRecyclerAdapter.setKeyNodesList(nodeList, false);
                                     });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
@@ -198,58 +200,71 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                 nodeListIds.add(aNodeDescription.getId());
                                 nodeList.add(aNodeDescription);
                             }
-                            mainRecyclerAdapter.setKeyNodesList(nodeList);
+                            mainRecyclerAdapter.setKeyNodesList(nodeList, false);
                         }
                     }
                 });
     }
 
+    void postOnMainThread(AlgorithmDescription aNodeDescription, List<AlgorithmCardViewModel> optionsAndAnswers){
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        Runnable myRunnable = () -> {
+            map.put(aNodeDescription, optionsAndAnswers);
+            nodeList.add(aNodeDescription);
+            mainRecyclerAdapter.setKeyNodesList(nodeList,false);
+        };
+        mainHandler.post(myRunnable);
+    }
+
     @SuppressLint("CheckResult")
     public void feedMapChild(AlgorithmDescription node, MainNodeAdapter mainNodeAdapter) {
         List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
-        nodeRepository.getChildNode(node.getId(), false)
+        nodeRepository.getChildNode(node.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
                     if (nodes.size() == 0) {
                         setFooter(node.getDescription());
                         nodeList.add(node);
                         map.put(node, optionsAndAnswers);
-                        mainNodeAdapter.setKeyNodesList(nodeList);
+                        mainNodeAdapter.setKeyNodesList(nodeList,false);
                     }
                     for (AlgorithmDescription aNodeDescription : nodes) {
                         if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
-                            nodeRepository.getChildNode(aNodeDescription.getId(), true)
+                            nodeRepository.getChildNode(aNodeDescription.getId())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
-                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, true));
+                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
                                             setFooter(childNode.getDescription());
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
-                                        mainNodeAdapter.setKeyNodesList(nodeList);
+                                        mainNodeAdapter.setKeyNodesList(nodeList,false);
+//                                        postOnMainThread(aNodeDescription, optionsAndAnswers);
                                     });
-                            nodeRepository.getChildNode(aNodeDescription.getId(), false)
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(childNodes -> {
-                                        for (AlgorithmDescription childNode : childNodes) {
-                                            setFooter(childNode.getDescription());
-                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, false));
-                                            Log.d(TAG, "feedMapChild from if false: " + optionsAndAnswers.size());
-                                        }
-                                        map.put(aNodeDescription, optionsAndAnswers);
-                                        nodeList.add(aNodeDescription);
-                                        mainNodeAdapter.setKeyNodesList(nodeList);
-                                    });
+//                            nodeRepository.getChildNode(aNodeDescription.getId(), false)
+//                                    .observeOn(AndroidSchedulers.mainThread())
+//                                    .subscribe(childNodes -> {
+//                                        for (AlgorithmDescription childNode : childNodes) {
+//                                            setFooter(childNode.getDescription());
+//                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, false));
+//                                            Log.d(TAG, "feedMapChild from if false: " + optionsAndAnswers.size());
+//                                        }
+//                                        map.put(aNodeDescription, optionsAndAnswers);
+//                                        nodeList.add(aNodeDescription);
+//                                        mainNodeAdapter.setKeyNodesList(nodeList);
+//                                    });
                         } else {
-                            optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
+                            optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
                             setFooter(aNodeDescription.getDescription());
                             map.put(node, optionsAndAnswers);
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
                                 nodeList.add(aNodeDescription);
                             }
-                            mainNodeAdapter.setKeyNodesList(nodeList);
+                            mainNodeAdapter.setKeyNodesList(nodeList, false);
+//                            postOnMainThread(aNodeDescription, optionsAndAnswers);
+
                         }
                     }
                 });

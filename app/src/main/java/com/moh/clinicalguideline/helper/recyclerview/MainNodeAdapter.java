@@ -251,9 +251,13 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         return keyNodes;
     }
 
-    public void setKeyNodesList(List<AlgorithmDescription> list) {
+    public void setKeyNodesList(List<AlgorithmDescription> list, boolean appendList) {
         Handler mainHandler = new Handler(context.getMainLooper());
+        if (appendList){
+        this.keyNodes.addAll(list);
+        } else {
         this.keyNodes = list;
+        }
         Runnable myRunnable = () -> notifyItemInserted(currentNode);
         mainHandler.post(myRunnable);
 
