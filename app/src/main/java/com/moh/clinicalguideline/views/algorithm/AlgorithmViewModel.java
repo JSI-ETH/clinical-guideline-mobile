@@ -170,7 +170,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
-                                            setFooter(childNode.getDescription());
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
@@ -181,7 +180,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
-                                            setFooter(childNode.getDescription());
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, false));
                                             Log.d(TAG, "feedMapChild from if false: " + optionsAndAnswers.size());
                                         }
@@ -191,7 +189,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
-                            setFooter(aNodeDescription.getDescription());
                             map.put(node, optionsAndAnswers);
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
@@ -234,7 +231,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
                     if (nodes.size() == 0) {
-                        setFooter(node.getDescription());
                         nodeList.add(node);
                         map.put(node, optionsAndAnswers);
                         mainNodeAdapter.setKeyNodesList(nodeList,false);
@@ -246,7 +242,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
-                                            setFooter(childNode.getDescription());
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
@@ -267,7 +262,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 //                                    });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
-                            setFooter(aNodeDescription.getDescription());
                             map.put(node, optionsAndAnswers);
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
@@ -282,10 +276,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     private void setFooter(String description) {
-        Pattern pattern = Pattern.compile("<p><em>(.*?)</em></p>");
+        Pattern pattern = Pattern.compile("<p><em>(.*?)</em>");
         Matcher matcher = pattern.matcher(description);
 
-        List<String> listMatches = new ArrayList<String>();
+        List<String> listMatches = new ArrayList<>();
 
         if (matcher.find())
         {
