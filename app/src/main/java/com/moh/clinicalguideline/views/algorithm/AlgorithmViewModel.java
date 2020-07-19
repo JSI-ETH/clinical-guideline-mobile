@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Html;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -33,7 +32,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
     private final NodeRepository nodeRepository;
     private MutableLiveData<AlgorithmDescription> node;
+    private MutableLiveData<String> footerText;
     private List<AlgorithmDescription> nodeList;
+    private  MutableLiveData<List<AlgorithmDescription>> liveNodeList;
     private List<AlgorithmCardViewModel> nodeOptions;
     private OnNodeSelectedListener onNodeSelectedListener;
     private MutableLiveData<String> title = new MutableLiveData<>();
@@ -44,7 +45,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private boolean isSingleNode;
     private List<Integer> nodeListIds = new ArrayList<>();
     private MainNodeAdapter mainRecyclerAdapter;
-    private TextView footerTextView;
     private static final String TAG = AlgorithmViewModel.class.getSimpleName();
     public static HashMap<Integer, Integer> footersList = null;
 
@@ -53,6 +53,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         this.nodeRepository = nodeRepository;
         this.node = new MutableLiveData<>();
         this.nodeList = new ArrayList<>();
+        this.liveNodeList = new MutableLiveData<>();
+        this.footerText = new MutableLiveData<>();
         this.selectedPageId = new MutableLiveData<>();
         this.nodeOptions = new ArrayList<>();
         this.map = new HashMap<>();
@@ -86,6 +88,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .subscribe(node -> {
                     onNodeLoadedByUrl(node, textView);
                 });
+    }
+
+    public MutableLiveData<String> getFooterText() {
+        return footerText;
     }
 /// OPTIONS SECTION
 
@@ -135,7 +141,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         selectNodeByUrl(node, textView);
     }
 
-
     public void PreviewNode(AlgorithmDescription node) {
         this.node.setValue(node);
     }
@@ -151,11 +156,15 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             if (algorithmDescription == node) break;
         }
         nodeList = cp;
+        liveNodeList.setValue(nodeList);
         SelectNode(node, true);
     }
 
     public List<AlgorithmDescription> getNodeList() {
         return nodeList;
+    }
+    public MutableLiveData<List<AlgorithmDescription>> getLiveNodeList() {
+        return liveNodeList;
     }
 
     @SuppressLint("CheckResult")
@@ -174,7 +183,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
-                                        mainRecyclerAdapter.setKeyNodesList(nodeList,false);
+                                        liveNodeList.setValue(nodeList);
+//                                        mainRecyclerAdapter.setKeyNodesList(nodeList,false);
+
                                     });
                             nodeRepository.getChildNode(aNodeDescription.getId(), false)
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -185,7 +196,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
-                                        mainRecyclerAdapter.setKeyNodesList(nodeList, false);
+                                        liveNodeList.setValue(nodeList);
+//                                        mainRecyclerAdapter.setKeyNodesList(nodeList, false);
                                     });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
@@ -193,35 +205,12 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
                                 nodeList.add(aNodeDescription);
+                                liveNodeList.setValue(nodeList);
                             }
-                            mainRecyclerAdapter.setKeyNodesList(nodeList, false);
+//                            mainRecyclerAdapter.setKeyNodesList(nodeList, false);
                         }
                     }
                 });
-    }
-
-    void postOnMainThread(AlgorithmDescription aNodeDescription, List<AlgorithmCardViewModel> optionsAndAnswers){
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = () -> {
-            map.put(aNodeDescription, optionsAndAnswers);
-            nodeList.add(aNodeDescription);
-            mainRecyclerAdapter.setKeyNodesList(nodeList,false);
-        };
-        mainHandler.post(myRunnable);
-    }
-
-    @SuppressLint("CheckResult")
-    public void getFooter(int page) {
-        try {
-        int id = footersList.get(page);
-        if (id != -1 && id != 0)
-        nodeRepository.getNode(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(nodes -> {
-                    setFooter(nodes.getDescription());
-                });
-        } catch (Exception ignored) {
-        }
     }
 
     @SuppressLint("CheckResult")
@@ -232,8 +221,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .subscribe(nodes -> {
                     if (nodes.size() == 0) {
                         nodeList.add(node);
+                        liveNodeList.setValue(nodeList);
                         map.put(node, optionsAndAnswers);
-                        mainNodeAdapter.setKeyNodesList(nodeList,false);
+//                        mainNodeAdapter.setKeyNodesList(nodeList,false);
                     }
                     for (AlgorithmDescription aNodeDescription : nodes) {
                         if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
@@ -245,7 +235,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                         }
                                         map.put(aNodeDescription, optionsAndAnswers);
                                         nodeList.add(aNodeDescription);
-                                        mainNodeAdapter.setKeyNodesList(nodeList,false);
+                                        liveNodeList.setValue(nodeList);
+//                                        mainNodeAdapter.setKeyNodesList(nodeList,false);
 //                                        postOnMainThread(aNodeDescription, optionsAndAnswers);
                                     });
 //                            nodeRepository.getChildNode(aNodeDescription.getId(), false)
@@ -266,8 +257,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
                                 nodeList.add(aNodeDescription);
+                                liveNodeList.setValue(nodeList);
                             }
-                            mainNodeAdapter.setKeyNodesList(nodeList, false);
+//                            mainNodeAdapter.setKeyNodesList(nodeList, false);
 //                            postOnMainThread(aNodeDescription, optionsAndAnswers);
 
                         }
@@ -275,8 +267,33 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 });
     }
 
+    void postOnMainThread(AlgorithmDescription aNodeDescription, List<AlgorithmCardViewModel> optionsAndAnswers){
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        Runnable myRunnable = () -> {
+            map.put(aNodeDescription, optionsAndAnswers);
+            nodeList.add(aNodeDescription);
+            liveNodeList.setValue(nodeList);
+//            mainRecyclerAdapter.setKeyNodesList(nodeList,false);
+        };
+        mainHandler.post(myRunnable);
+    }
+
+    @SuppressLint("CheckResult")
+    private void getFooter(int page) {
+        try {
+            int id = footersList.get(page);
+            if (id != -1 && id != 0)
+                nodeRepository.getNode(id)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(nodes -> {
+                            setFooter(nodes.getDescription());
+                        });
+        } catch (Exception ignored) {
+        }
+    }
+
     private void setFooter(String description) {
-        Pattern pattern = Pattern.compile("<p><em>(.*?)</em>");
+        Pattern pattern = Pattern.compile("<em>(.*?)</em>");
         Matcher matcher = pattern.matcher(description);
 
         List<String> listMatches = new ArrayList<>();
@@ -291,8 +308,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         {
             footer.append(s);
         }
-        if(footerTextView.getText().toString().equals("Notes") && footer.toString().length() > 0) footerTextView.setText("");
-        footerTextView.setText(Html.fromHtml(String.format("%s%s", footerTextView.getText().toString() + "\n", footer.toString())));
+        footerText.setValue(footer.toString());
     }
 
     public Map<AlgorithmDescription, List<AlgorithmCardViewModel>> getMap() {
@@ -305,6 +321,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         if (!skipSingleNode || node.getHasDescription() || node.getChildCount() > 1 || node.getFirstChildNodeId() == null) {
             if (node.getChildCount() > 1) {
                 nodeList.add(node);
+                liveNodeList.setValue(nodeList);
                 feedMap(node);
             }
             this.node.setValue(node);
@@ -313,6 +330,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             this.onNodeSelectedListener.onNodeSelected(node);
             LoadNode(node.getFirstChildNodeId());
             nodeList.add(node);
+            liveNodeList.setValue(nodeList);
             feedMap(node);
         }
 
@@ -324,6 +342,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             nodeList.clear();
             map.clear();
             nodeList.add(node);
+            liveNodeList.setValue(nodeList);
             mainRecyclerAdapter.notifyDataSetChanged();
             textView.setText(node.getTitle());
             feedMap(node);
@@ -332,7 +351,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
     //region Properties
     public MutableLiveData<AlgorithmDescription> getNode() {
-
         return node;
     }
 
@@ -348,9 +366,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         return symptomTitle;
     }
 
-    public void setAdapterToViewModel(MainNodeAdapter mainNodeAdapter, TextView textView) {
+    public void setAdapterToViewModel(MainNodeAdapter mainNodeAdapter) {
         mainRecyclerAdapter = mainNodeAdapter;
-        footerTextView = textView;
     }
 
     //endregion
@@ -362,21 +379,13 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     //endregion
 
     //Content ViewModel
-    //Content ViewModel
-    //Content ViewModel
-    //Content ViewModel
-    //Content ViewModel
-    //Content ViewModel
 
     public void loadNode(AlgorithmDescription nodeDescription) {
-
-
         this.algorithmNodeDescription.setValue(nodeDescription);
         notifyChange();
     }
 
     public String getContentTitle() {
-
         AlgorithmDescription nodeDescription = node.getValue();
         if (nodeDescription == null || !nodeDescription.getHasTitle())
             return "";
@@ -384,7 +393,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             String yourHtmlText = nodeDescription.getTitle();
             return yourHtmlText;
         }
-
     }
 
     public boolean getHasDescription() {
@@ -395,7 +403,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     public String getDescription() {
-
         String description;
         AlgorithmDescription nodeDescription = node.getValue();
         if (nodeDescription == null)
@@ -426,7 +433,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             String pages = url.replace("http://page/", "")
                     .replace("file:///android_asset/styles/page/", "");
 
-            double page = Double.valueOf(pages.split("/")[0]);
+            double page = Double.parseDouble(pages.split("/")[0]);
             selectedPageId.setValue(page);
             return true;
         }
@@ -454,8 +461,5 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         selectedPageId.setValue(page);
     }
 
-    //Content ViewModel
-    //Content ViewModel
-    //Content ViewModel
     //Content ViewModel
 }

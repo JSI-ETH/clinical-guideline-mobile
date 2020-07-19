@@ -31,11 +31,11 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     private Context context;
     private List<AlgorithmDescription> keyNodes;
     private Map<AlgorithmDescription, List<AlgorithmCardViewModel>> algorithmDescriptions;
+    private Map< AlgorithmCardViewModel, AlgorithmDescription> reverseAlgorithmDescriptions;
     private AlgorithmViewModel algorithmViewModel;
     private static final String TAG = "MainNodeAdapter";
     private static ClickListener clickHandler;
     private static int currentNode;
-    private Map<Integer, Boolean> displayed = new HashMap<>();
     List<AlgorithmCardViewModel> answers = new ArrayList<>();
     List<AlgorithmCardViewModel> options = new ArrayList<>();
     private int currentItem;
@@ -43,6 +43,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     public MainNodeAdapter(Context context,
                            List<AlgorithmDescription> keyNodes,
                            Map<AlgorithmDescription, List<AlgorithmCardViewModel>> algorithmDescriptions,
+
                            AlgorithmViewModel algorithmViewModel) {
         this.context = context;
         this.keyNodes = keyNodes;
@@ -69,24 +70,18 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         keyNodes = cvh.removeDuplicateNodes(keyNodes);
         currentItem = keyNodes.size() - 1;
         AlgorithmDescription model = keyNodes.get(currentItem);
+
         if (model.getChildCount() == 0) {
             viewHolder.viewTimeLine.setVisibility(View.GONE);
         }
 
         if (model.getHasDescription()) {
             displayWebView(viewHolder, cvh, model, i);
-            displayed.put(model.getId(), true);
             currentNode = keyNodes.indexOf(model);
         } else if (algorithmDescriptions.get(model) != null && Objects.requireNonNull(algorithmDescriptions.get(model)).size() > 0 && !model.getHasDescription()) {
-            displayWebView(viewHolder, cvh, algorithmDescriptions.get(model).get(0).getNode(), i);
-            displayed.put(model.getId(), true);
-            currentNode = keyNodes.indexOf(algorithmDescriptions.get(model).get(0).getNode());
-        } else {
-            if (!displayed.isEmpty() && displayed.get(model.getId())) return;
-            // todo
+            displayWebView(viewHolder, cvh, Objects.requireNonNull(algorithmDescriptions.get(model)).get(0).getNode(), i);
+            currentNode = keyNodes.indexOf(Objects.requireNonNull(algorithmDescriptions.get(model)).get(0).getNode());
         }
-        // TODO: Create button programmatically
-
 
         answers = new ArrayList<>();
         options = new ArrayList<>();
@@ -103,19 +98,23 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                 }
             }
         }
+        addAnswersToNode(viewHolder, model);
+        addOptionsToNode(viewHolder, model);
+    }
 
+    private void addAnswersToNode(ViewHolder viewHolder, AlgorithmDescription model) {
         AnswersAdapter answersAdapter = new AnswersAdapter(answers, model.getId());
         viewHolder.answersRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         viewHolder.answersRecyclerView.setAdapter(answersAdapter);
         answersAdapter.setOnItemClickHandler(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-             try {
-               int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
-               int ansPos =  getOptionAnswerIndex(id);
-               if (ansPos != -1)
-               removeRecyclerValues(ansPos);
-               currentItem = keyNodes.size() - 1;
+                try {
+                    int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
+                    int ansPos =  getOptionAnswerIndex(id);
+                    if (ansPos != -1)
+                        removeRecyclerValues(ansPos);
+                    currentItem = keyNodes.size() - 1;
                 } catch (Exception ignored) {
                 }
                 algorithmViewModel
@@ -131,7 +130,9 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
 
             }
         });
+    }
 
+    private void addOptionsToNode(ViewHolder viewHolder, AlgorithmDescription model) {
         OptionsAdapter optionsAdapter = new OptionsAdapter(options, model.getId());
         viewHolder.optionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         viewHolder.optionsRecyclerView.setAdapter(optionsAdapter);
@@ -140,35 +141,23 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             public void onItemClick(int position, View v) {
                 Log.d(TAG, "onItemClick: " + options.get(position).getId() + "\tcurrent item position: " + currentItem);
                 algorithmViewModel
-                        .feedMapChild(Objects.requireNonNull(
-                                algorithmDescriptions
-                                .get(keyNodes.get(rearrangeRecyclerView(currentItem))))
+                        .feedMapChild(Objects.requireNonNull(algorithmDescriptions.get(keyNodes.get(currentItem - 1)))
                                 .get(position)
                                 .getNode(), MainNodeAdapter.this);
             }
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
-
             }
         });
-//
-//        }
-        // TODO: timeLine depends on tailCounter
-        // if node has no options or answers tail is gone
-//      viewHolder.viewTimeLine.setVisibility(currentItem == keyNodes.size() - 1 ? View.GONE : View.VISIBLE);
     }
 
-    private int rearrangeRecyclerView(int currentItem) {
-            return currentItem - 1;
-    }
-
-    private int getOptionAnswerIndex(Integer value) {
+    private int getOptionAnswerIndex(Integer id) {
         int recyclerIndex = -1;
         try {
             for (int i = 0; i < keyNodes.size() - 1; i++ ) {
                 AlgorithmDescription algorithmDescription = keyNodes.get(i);
-                if (value.equals(algorithmDescription.getId())) {
+                if (id.equals(algorithmDescription.getId())) {
                     return i;
                 }
             }
@@ -186,6 +175,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                 int removedIndex = keyNodes.size() - 1;
                 AlgorithmDescription algorithmDescription = keyNodes.get(removedIndex);
                 keyNodes.remove(removedIndex);
+
                 algorithmDescriptions.remove(algorithmDescription);
                 notifyItemRemoved(removedIndex);
             }
@@ -252,16 +242,11 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     }
 
     public void setKeyNodesList(List<AlgorithmDescription> list, boolean appendList) {
-        Handler mainHandler = new Handler(context.getMainLooper());
         if (appendList){
         this.keyNodes.addAll(list);
         } else {
         this.keyNodes = list;
         }
-        Runnable myRunnable = () -> notifyItemInserted(currentNode);
-        mainHandler.post(myRunnable);
-
-        // TODO: request focus down
     }
 
     public void setOnItemClickHandler(ClickListener clickHandler) {

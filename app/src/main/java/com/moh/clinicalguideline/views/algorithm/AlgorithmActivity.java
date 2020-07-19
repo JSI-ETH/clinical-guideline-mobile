@@ -9,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -63,7 +64,14 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         viewModel.setNavigator(this);
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
         mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
-        viewModel.setAdapterToViewModel(mainNodeAdapter, textViewFooter);
+
+        viewModel.getLiveNodeList().observe(this, nodes -> {
+            assert nodes != null;
+            mainNodeAdapter.setKeyNodesList(nodes,false);
+            mainNodeAdapter.notifyItemInserted(nodes.size() -1);
+        });
+
+        viewModel.setAdapterToViewModel(mainNodeAdapter);
         viewModel.LoadNode(nodeid);
         viewModel.setTitle(nodeid, textViewSymptomTitle);
 
@@ -71,11 +79,12 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         recyclerView.setAdapter(mainNodeAdapter);
         Objects.requireNonNull(recyclerView.getLayoutManager()).scrollToPosition(mainNodeAdapter.getItemCount() - 1);
 
+        viewModel.getFooterText().observe(this,this::setFooter);
+
         viewModel.getNode().observe(this, algorithmDescription -> {
             loadingProgressBar.setVisibility(View.GONE);
-            algorithmDescriptions.add(algorithmDescription);
-            mainNodeAdapter.notifyDataSetChanged();
-//            mainNodeAdapter = new MainNodeAdapter(this, algorithmDescriptions, viewModel.getMap(), viewModel);
+//            algorithmDescriptions.add(algorithmDescription);
+//            mainNodeAdapter.notifyDataSetChanged();
         });
 
         //Open Url Clicked
@@ -86,7 +95,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         mainNodeAdapter.setOnItemClickHandler(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-
             }
 
             @Override
@@ -129,6 +137,10 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 //        });
     }
 
+    private void setFooter(String footerText) {
+        if(textViewFooter.getText().toString().equals("Notes") && footerText.length() > 0) textViewFooter.setText("");
+        textViewFooter.setText(Html.fromHtml(String.format("%s%s", textViewFooter.getText().toString() + "\n", footerText)));
+    }
 
     public static HashMap<Integer, Integer> getFooterList() {
         return footersList;
