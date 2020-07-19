@@ -22,7 +22,6 @@ import com.moh.clinicalguideline.helper.recyclerview.MainNodeAdapter;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
 import com.moh.clinicalguideline.views.main.MenuViewModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -50,6 +49,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.algorithm_activity_main);
+
         RecyclerView recyclerView = findViewById(R.id.node_recycler_view);
         toolbar = findViewById(R.id.toolbar);
         appBarLayout = findViewById(R.id.appBarLayout);
@@ -62,30 +62,25 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         footersList = menuViewModel.getFooterList();
 
         viewModel.setNavigator(this);
-        int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
-        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getMap(), viewModel);
+        int nodeId = getIntent().getExtras().getInt(Extra_NodeId, 0);
+        mainNodeAdapter = new MainNodeAdapter(this, viewModel.getNodeList(), viewModel.getRecyclerMap(), viewModel);
 
         viewModel.getLiveNodeList().observe(this, nodes -> {
             assert nodes != null;
-            mainNodeAdapter.setKeyNodesList(nodes,false);
-            mainNodeAdapter.notifyItemInserted(nodes.size() -1);
+            mainNodeAdapter.setKeyNodesList(nodes, viewModel.getRecyclerMap());
+            Objects.requireNonNull(recyclerView.getLayoutManager()).scrollToPosition(mainNodeAdapter.getItemCount() - 1);
         });
 
         viewModel.setAdapterToViewModel(mainNodeAdapter);
-        viewModel.LoadNode(nodeid);
-        viewModel.setTitle(nodeid, textViewSymptomTitle);
+        viewModel.LoadNode(nodeId);
+        viewModel.setTitle(nodeId, textViewSymptomTitle);
+        viewModel.getFooterText().observe(this,this::setFooter);
+        viewModel.getNode().observe(this, algorithmDescription -> {
+            loadingProgressBar.setVisibility(View.GONE);
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mainNodeAdapter);
-        Objects.requireNonNull(recyclerView.getLayoutManager()).scrollToPosition(mainNodeAdapter.getItemCount() - 1);
-
-        viewModel.getFooterText().observe(this,this::setFooter);
-
-        viewModel.getNode().observe(this, algorithmDescription -> {
-            loadingProgressBar.setVisibility(View.GONE);
-//            algorithmDescriptions.add(algorithmDescription);
-//            mainNodeAdapter.notifyDataSetChanged();
-        });
 
         //Open Url Clicked
         viewModel.getSelectedPageId().observe(this, page -> {
@@ -99,8 +94,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
-                viewModel.feedMapChild(mainNodeAdapter.getList().get(selectedPosition), mainNodeAdapter);
-                // TODO: Change to submitList
+                viewModel.feedMapChild(mainNodeAdapter.getList().get(selectedPosition));
             }
         });
         initViews();
@@ -113,28 +107,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             appBarLayout.setOutlineProvider(null);
         }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-//        sheetBehavior = BottomSheetBehavior.from(binding.foregroundContainer);
-//        sheetBehavior.setFitToContents(false);
-//        sheetBehavior.setHideable(false);//prevents the boottom sheet from completely hiding off the screen
-//        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);//initially state to fully expanded
-//        viewModel.getNode().observe(this, new Observer<AlgorithmDescription>() {
-//            @Override
-//            public void onChanged(@Nullable AlgorithmDescription algorithmDescription) {
-//                if(sheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
-//                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//
-//                   // binding.toolbar.setNavigationIcon();
-//                }
-//
-//            }
-//        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     private void setFooter(String footerText) {
@@ -145,15 +118,4 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     public static HashMap<Integer, Integer> getFooterList() {
         return footersList;
     }
-
-//
-//
-//    @Override
-//    public void onBackPressed() {
-//        if(sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
-//            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-//        }
-//        else {
-//           super.onBackPressed();}
-//    }
 }

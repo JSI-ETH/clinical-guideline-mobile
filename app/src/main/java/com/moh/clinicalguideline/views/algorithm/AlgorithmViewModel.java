@@ -39,7 +39,9 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private OnNodeSelectedListener onNodeSelectedListener;
     private MutableLiveData<String> title = new MutableLiveData<>();
     private String symptomTitle = "";
-    private Map<AlgorithmDescription, List<AlgorithmCardViewModel>> map;
+    private Map<AlgorithmDescription, List<AlgorithmCardViewModel>> recyclerMap;
+    // option/ans map to node
+    private Map< AlgorithmDescription, AlgorithmDescription> reverseRecyclerMap;
     private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
     private MutableLiveData<Double> selectedPageId;
     private boolean isSingleNode;
@@ -57,7 +59,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         this.footerText = new MutableLiveData<>();
         this.selectedPageId = new MutableLiveData<>();
         this.nodeOptions = new ArrayList<>();
-        this.map = new HashMap<>();
+        this.recyclerMap = new HashMap<>();
+        this.reverseRecyclerMap = new HashMap<>();
         footersList = AlgorithmActivity.getFooterList();
         this.onNodeSelectedListener = algorithmDescription -> {
         };
@@ -163,8 +166,13 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     public List<AlgorithmDescription> getNodeList() {
         return nodeList;
     }
+
     public MutableLiveData<List<AlgorithmDescription>> getLiveNodeList() {
         return liveNodeList;
+    }
+
+    public Map<AlgorithmDescription, List<AlgorithmCardViewModel>> getRecyclerMap(){
+        return recyclerMap;
     }
 
     @SuppressLint("CheckResult")
@@ -175,33 +183,39 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .subscribe(nodes -> {
                     for (AlgorithmDescription aNodeDescription : nodes) {
                         if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
-                            nodeRepository.getChildNode(aNodeDescription.getId(), true)
+                            nodeRepository
+                                    .getChildNode(aNodeDescription.getId(), true)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
+                                            reverseRecyclerMap.put(childNode, aNodeDescription);
                                         }
-                                        map.put(aNodeDescription, optionsAndAnswers);
-                                        nodeList.add(aNodeDescription);
-                                        liveNodeList.setValue(nodeList);
+//                                        recyclerMap.put(aNodeDescription, optionsAndAnswers);
+//                                        nodeList.add(aNodeDescription);
+//                                        liveNodeList.setValue(nodeList);
+                                        updateRecyclerValues(aNodeDescription, optionsAndAnswers);
 //                                        mainRecyclerAdapter.setKeyNodesList(nodeList,false);
 
                                     });
-                            nodeRepository.getChildNode(aNodeDescription.getId(), false)
+                            nodeRepository
+                                    .getChildNode(aNodeDescription.getId(), false)
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, false));
-                                            Log.d(TAG, "feedMapChild from if false: " + optionsAndAnswers.size());
+                                            reverseRecyclerMap.put(childNode, aNodeDescription);
                                         }
-                                        map.put(aNodeDescription, optionsAndAnswers);
-                                        nodeList.add(aNodeDescription);
-                                        liveNodeList.setValue(nodeList);
+//                                        recyclerMap.put(aNodeDescription, optionsAndAnswers);
+//                                        nodeList.add(aNodeDescription);
+//                                        liveNodeList.setValue(nodeList);
+                                        updateRecyclerValues(aNodeDescription, optionsAndAnswers);
 //                                        mainRecyclerAdapter.setKeyNodesList(nodeList, false);
                                     });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, false));
-                            map.put(node, optionsAndAnswers);
+                            reverseRecyclerMap.put(aNodeDescription, aNodeDescription);
+                            recyclerMap.put(node, optionsAndAnswers);
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
                                 nodeList.add(aNodeDescription);
@@ -214,16 +228,17 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     @SuppressLint("CheckResult")
-    public void feedMapChild(AlgorithmDescription node, MainNodeAdapter mainNodeAdapter) {
+    public void feedMapChild(AlgorithmDescription node) {
         List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
         nodeRepository.getChildNode(node.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
                     if (nodes.size() == 0) {
-                        nodeList.add(node);
-                        liveNodeList.setValue(nodeList);
-                        map.put(node, optionsAndAnswers);
-//                        mainNodeAdapter.setKeyNodesList(nodeList,false);
+//                        nodeList.add(node);
+//                        liveNodeList.setValue(nodeList);
+                        reverseRecyclerMap.put(node, node);
+//                        recyclerMap.put(node, optionsAndAnswers);
+                        updateRecyclerValues(node, optionsAndAnswers);
                     }
                     for (AlgorithmDescription aNodeDescription : nodes) {
                         if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
@@ -232,12 +247,12 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                                     .subscribe(childNodes -> {
                                         for (AlgorithmDescription childNode : childNodes) {
                                             optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
+                                            reverseRecyclerMap.put(childNode, aNodeDescription);
                                         }
-                                        map.put(aNodeDescription, optionsAndAnswers);
-                                        nodeList.add(aNodeDescription);
-                                        liveNodeList.setValue(nodeList);
-//                                        mainNodeAdapter.setKeyNodesList(nodeList,false);
-//                                        postOnMainThread(aNodeDescription, optionsAndAnswers);
+//                                        recyclerMap.put(aNodeDescription, optionsAndAnswers);
+//                                        nodeList.add(aNodeDescription);
+//                                        liveNodeList.setValue(nodeList);
+                                        updateRecyclerValues(aNodeDescription, optionsAndAnswers);
                                     });
 //                            nodeRepository.getChildNode(aNodeDescription.getId(), false)
 //                                    .observeOn(AndroidSchedulers.mainThread())
@@ -253,29 +268,22 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 //                                    });
                         } else {
                             optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
-                            map.put(node, optionsAndAnswers);
+                            reverseRecyclerMap.put(aNodeDescription, aNodeDescription);
+                            recyclerMap.put(node, optionsAndAnswers);
                             if (!nodeListIds.contains(aNodeDescription.getId())) {
                                 nodeListIds.add(aNodeDescription.getId());
                                 nodeList.add(aNodeDescription);
                                 liveNodeList.setValue(nodeList);
                             }
-//                            mainNodeAdapter.setKeyNodesList(nodeList, false);
-//                            postOnMainThread(aNodeDescription, optionsAndAnswers);
-
                         }
                     }
                 });
     }
 
-    void postOnMainThread(AlgorithmDescription aNodeDescription, List<AlgorithmCardViewModel> optionsAndAnswers){
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = () -> {
-            map.put(aNodeDescription, optionsAndAnswers);
+    void updateRecyclerValues(AlgorithmDescription aNodeDescription, List<AlgorithmCardViewModel> optionsAndAnswers){
+            recyclerMap.put(aNodeDescription, optionsAndAnswers);
             nodeList.add(aNodeDescription);
-            liveNodeList.setValue(nodeList);
-//            mainRecyclerAdapter.setKeyNodesList(nodeList,false);
-        };
-        mainHandler.post(myRunnable);
+            liveNodeList.postValue(nodeList);
     }
 
     @SuppressLint("CheckResult")
@@ -311,10 +319,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         footerText.setValue(footer.toString());
     }
 
-    public Map<AlgorithmDescription, List<AlgorithmCardViewModel>> getMap() {
-        return map;
-    }
-
     public void SelectNode(AlgorithmDescription node, boolean skipSingleNode) {
         if (symptomTitle == null || symptomTitle.length() == 0)
             symptomTitle = (node.getTitle());
@@ -340,7 +344,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private void selectNodeByUrl(AlgorithmDescription node, TextView textView) {
         if (node.getNodeTypeCode().equals("ASMPT") || node.getNodeTypeCode().equals("CSMPT") || node.getNodeTypeCode().equals("CHRNC")) {
             nodeList.clear();
-            map.clear();
+            recyclerMap.clear();
+            reverseRecyclerMap.clear();
             nodeList.add(node);
             liveNodeList.setValue(nodeList);
             mainRecyclerAdapter.notifyDataSetChanged();
@@ -364,6 +369,37 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
 
     public String getSymptomTitle() {
         return symptomTitle;
+    }
+
+    public int getOptionAnswerIndex(Integer id) {
+        int recyclerIndex = -1;
+        try {
+            for (int i = 0; i < nodeList.size() - 1; i++ ) {
+                AlgorithmDescription algorithmDescription = nodeList.get(i);
+                if (id.equals(algorithmDescription.getId())) {
+                    return i;
+                }
+            }
+            return recyclerIndex;
+        } catch (Exception e){
+            return -1;
+        }
+    }
+
+    public void removeRecyclerValues(int poss) {
+        // poss is the index of the answer/option selected
+        // the reverse is to map from the options to the node
+        try {
+            int itemsToRemove = nodeList.size() - (poss + 1);
+            for (int i = 0; i < itemsToRemove; i++){
+                int removedIndex = nodeList.size() - 1;
+                AlgorithmDescription algorithmDescription = nodeList.get(removedIndex);
+                AlgorithmDescription algorithmDescriptionR =  reverseRecyclerMap.get(algorithmDescription);
+                recyclerMap.remove(algorithmDescriptionR);
+                nodeList.remove(removedIndex);
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     public void setAdapterToViewModel(MainNodeAdapter mainNodeAdapter) {

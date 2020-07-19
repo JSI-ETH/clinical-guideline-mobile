@@ -31,7 +31,6 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     private Context context;
     private List<AlgorithmDescription> keyNodes;
     private Map<AlgorithmDescription, List<AlgorithmCardViewModel>> algorithmDescriptions;
-    private Map< AlgorithmCardViewModel, AlgorithmDescription> reverseAlgorithmDescriptions;
     private AlgorithmViewModel algorithmViewModel;
     private static final String TAG = "MainNodeAdapter";
     private static ClickListener clickHandler;
@@ -110,19 +109,19 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             @Override
             public void onItemClick(int position, View v) {
                 try {
-                    int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
-                    int ansPos =  getOptionAnswerIndex(id);
-                    if (ansPos != -1)
-                        removeRecyclerValues(ansPos);
-                    currentItem = keyNodes.size() - 1;
-                } catch (Exception ignored) {
-                }
                 algorithmViewModel
                         .feedMapChild(
                                 Objects.requireNonNull(algorithmDescriptions
                                         .get(keyNodes.get(currentItem)))
                                         .get(position)
-                                        .getNode(), MainNodeAdapter.this);
+                                        .getNode());
+                    int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
+                    int ansPos =  algorithmViewModel.getOptionAnswerIndex(id);
+                    if (ansPos != -1)
+                        algorithmViewModel.removeRecyclerValues(ansPos);
+                    currentItem = keyNodes.size() - 1;
+                } catch (Exception ignored) {
+                }
             }
 
             @Override
@@ -141,46 +140,17 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             public void onItemClick(int position, View v) {
                 Log.d(TAG, "onItemClick: " + options.get(position).getId() + "\tcurrent item position: " + currentItem);
                 algorithmViewModel
-                        .feedMapChild(Objects.requireNonNull(algorithmDescriptions.get(keyNodes.get(currentItem - 1)))
+                        .feedMapChild(
+                                Objects.requireNonNull(algorithmDescriptions
+                                        .get(keyNodes.get(currentItem - 1)))
                                 .get(position)
-                                .getNode(), MainNodeAdapter.this);
+                                .getNode());
             }
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
             }
         });
-    }
-
-    private int getOptionAnswerIndex(Integer id) {
-        int recyclerIndex = -1;
-        try {
-            for (int i = 0; i < keyNodes.size() - 1; i++ ) {
-                AlgorithmDescription algorithmDescription = keyNodes.get(i);
-                if (id.equals(algorithmDescription.getId())) {
-                    return i;
-                }
-            }
-            return recyclerIndex;
-        } catch (Exception e){
-            return -1;
-        }
-    }
-
-    private void removeRecyclerValues(int poss) {
-        // poss is the index of the answer/option selected
-        try {
-            int itemsToRemove = keyNodes.size() - (poss + 1);
-            for (int i = 0; i < itemsToRemove; i++){
-                int removedIndex = keyNodes.size() - 1;
-                AlgorithmDescription algorithmDescription = keyNodes.get(removedIndex);
-                keyNodes.remove(removedIndex);
-
-                algorithmDescriptions.remove(algorithmDescription);
-                notifyItemRemoved(removedIndex);
-            }
-        } catch (Exception e) {
-        }
     }
 
     private void displayWebView(ViewHolder viewHolder, ContentViewHelper cvh, AlgorithmDescription model, int i) {
@@ -203,7 +173,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         return algorithmDescriptions.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private WebView webView;
         private Button nextButton;
         private View viewTimeLine;
@@ -241,12 +211,15 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         return keyNodes;
     }
 
-    public void setKeyNodesList(List<AlgorithmDescription> list, boolean appendList) {
-        if (appendList){
-        this.keyNodes.addAll(list);
-        } else {
+    public void setKeyNodesList(List<AlgorithmDescription> list, Map<AlgorithmDescription, List<AlgorithmCardViewModel>> recyclerMap) {
+//        if (appendList){
+//        this.keyNodes.addAll(list);
+//        } else {
         this.keyNodes = list;
-        }
+//        this.algorithmDescriptions = recyclerMap;
+        notifyItemInserted(currentNode);
+//        notifyDataSetChanged();
+//        }
     }
 
     public void setOnItemClickHandler(ClickListener clickHandler) {
