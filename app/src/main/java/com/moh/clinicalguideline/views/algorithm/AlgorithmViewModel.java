@@ -3,7 +3,6 @@ package com.moh.clinicalguideline.views.algorithm;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.Bindable;
-import android.databinding.Observable;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
@@ -16,14 +15,11 @@ import android.widget.TextView;
 
 import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
-import com.moh.clinicalguideline.data.entities.Node;
 import com.moh.clinicalguideline.helper.recyclerview.MainNodeAdapter;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
-import com.moh.clinicalguideline.views.algorithm.content.ContentViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
@@ -51,6 +46,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private MainNodeAdapter mainRecyclerAdapter;
     private TextView footerTextView;
     private static final String TAG = AlgorithmViewModel.class.getSimpleName();
+    public static HashMap<Integer, Integer> footersList = null;
 
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository) {
@@ -58,10 +54,10 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         this.node = new MutableLiveData<>();
         this.nodeList = new ArrayList<>();
         this.selectedPageId = new MutableLiveData<>();
-        this.nodeOptions = new ArrayList<AlgorithmCardViewModel>();
+        this.nodeOptions = new ArrayList<>();
         this.map = new HashMap<>();
+        footersList = AlgorithmActivity.getFooterList();
         this.onNodeSelectedListener = algorithmDescription -> {
-
         };
     }
 
@@ -78,6 +74,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(node -> {
                     symptomTitleTextView.setText(node.getTitle());
+                    getFooter(node.getPage());
                 });
     }
 
@@ -214,6 +211,20 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             mainRecyclerAdapter.setKeyNodesList(nodeList,false);
         };
         mainHandler.post(myRunnable);
+    }
+
+    @SuppressLint("CheckResult")
+    public void getFooter(int page) {
+        try {
+        int id = footersList.get(page);
+        if (id != -1 && id != 0)
+        nodeRepository.getNode(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(nodes -> {
+                    setFooter(nodes.getDescription());
+                });
+        } catch (Exception ignored) {
+        }
     }
 
     @SuppressLint("CheckResult")

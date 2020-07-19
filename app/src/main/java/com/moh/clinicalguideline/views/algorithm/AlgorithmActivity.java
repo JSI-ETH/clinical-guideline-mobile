@@ -19,7 +19,10 @@ import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.recyclerview.ClickListener;
 import com.moh.clinicalguideline.helper.recyclerview.MainNodeAdapter;
 import com.moh.clinicalguideline.helper.view.BaseActivity;
+import com.moh.clinicalguideline.views.main.MenuViewModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +31,10 @@ import javax.inject.Inject;
 public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigator {
     @Inject
     public ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    public MenuViewModel menuViewModel;
+
     private AlgorithmViewModel viewModel;
     private List<AlgorithmDescription> algorithmDescriptions;
     public static String Extra_NodeId = "Extra_NodeId";
@@ -36,6 +43,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     TextView textViewSymptomTitle, textViewFooter;
     private MainNodeAdapter mainNodeAdapter;
     private ProgressBar loadingProgressBar;
+    public static HashMap<Integer, Integer> footersList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +54,11 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         appBarLayout = findViewById(R.id.appBarLayout);
         textViewSymptomTitle = findViewById(R.id.symptom_title);
         textViewFooter = findViewById(R.id.footerTextView);
-        textViewFooter.setMovementMethod(new ScrollingMovementMethod());
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
+
+        textViewFooter.setMovementMethod(new ScrollingMovementMethod());
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
+        footersList = menuViewModel.getFooterList();
 
         viewModel.setNavigator(this);
         int nodeid = getIntent().getExtras().getInt(Extra_NodeId, 0);
@@ -118,6 +128,12 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 //            }
 //        });
     }
+
+
+    public static HashMap<Integer, Integer> getFooterList() {
+        return footersList;
+    }
+
 //
 //
 //    @Override

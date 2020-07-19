@@ -1,15 +1,19 @@
 package com.moh.clinicalguideline.views.main;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.core.AlgorithmDescription;
+import com.moh.clinicalguideline.helper.FooterReader;
 import com.moh.clinicalguideline.helper.recyclerview.FilterableLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,6 +24,7 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
 
     private FilterableLayoutAdapter<AlgorithmDescription> adapter;
     private final NodeRepository nodeRepository;
+    public static HashMap<Integer, Integer> footersList = null;
 
     private boolean loading;
     @Inject
@@ -56,6 +61,19 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnLoaded,this::onLoadError);
     }
+
+
+    public void createFooterList(Context context) {
+        if (footersList == null){
+            FooterReader footerReader = new FooterReader();
+            footersList = footerReader.createFooterList(context);
+        }
+    }
+
+    public HashMap<Integer, Integer> getFooterList() {
+        return footersList;
+    }
+
     public FilterableLayoutAdapter<AlgorithmDescription> getAdapter(){
          return adapter;
     }
