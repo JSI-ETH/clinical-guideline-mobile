@@ -37,7 +37,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     private static int currentNode;
     List<AlgorithmCardViewModel> answers = new ArrayList<>();
     List<AlgorithmCardViewModel> options = new ArrayList<>();
-    private int currentItem;
+    private int currentItem = 0;
 
     public MainNodeAdapter(Context context,
                            List<AlgorithmDescription> keyNodes,
@@ -66,10 +66,11 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ContentViewHelper cvh = new ContentViewHelper();
-        keyNodes = cvh.removeDuplicateNodes(keyNodes);
-        currentItem = keyNodes.size() - 1;
+//        keyNodes = cvh.removeDuplicateNodes(keyNodes);
+        int currentItem = keyNodes.size() <= i + 1 ? i : i + 1;
+        int difference = keyNodes.size() - currentItem;
+//        for (int d = 0; d < difference; d++) {
         AlgorithmDescription model = keyNodes.get(currentItem);
-
         if (model.getChildCount() == 0) {
             viewHolder.viewTimeLine.setVisibility(View.GONE);
         }
@@ -99,6 +100,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         }
         addAnswersToNode(viewHolder, model);
         addOptionsToNode(viewHolder, model);
+//            currentItem = keyNodes.size() <= currentItem + 1 ? currentItem + 1 : currentItem;
+//        }
     }
 
     private void addAnswersToNode(ViewHolder viewHolder, AlgorithmDescription model) {
@@ -109,17 +112,17 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             @Override
             public void onItemClick(int position, View v) {
                 try {
-                algorithmViewModel
-                        .feedMapChild(
-                                Objects.requireNonNull(algorithmDescriptions
-                                        .get(keyNodes.get(currentItem)))
-                                        .get(position)
-                                        .getNode());
                     int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
                     int ansPos =  algorithmViewModel.getOptionAnswerIndex(id);
                     if (ansPos != -1)
                         algorithmViewModel.removeRecyclerValues(ansPos);
                     currentItem = keyNodes.size() - 1;
+                algorithmViewModel
+                        .feedMap(
+                                Objects.requireNonNull(algorithmDescriptions
+                                        .get(keyNodes.get(currentItem)))
+                                        .get(position)
+                                        .getNode());
                 } catch (Exception ignored) {
                 }
             }
@@ -138,13 +141,21 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         optionsAdapter.setOnItemClickListener(new ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                Log.d(TAG, "onItemClick: " + options.get(position).getId() + "\tcurrent item position: " + currentItem);
+                try {
+                int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
+                int ansPos =  algorithmViewModel.getOptionAnswerIndex(id);
+                if (ansPos != -1)
+                    algorithmViewModel.removeRecyclerValues(ansPos);
+                currentItem = keyNodes.size() - 1;
                 algorithmViewModel
-                        .feedMapChild(
+                        .feedMap(
                                 Objects.requireNonNull(algorithmDescriptions
-                                        .get(keyNodes.get(currentItem - 1)))
+                                        .get(keyNodes.get(keyNodes.size() - 1)))
                                 .get(position)
                                 .getNode());
+                } catch (Exception e) {
+
+                }
             }
 
             @Override
@@ -173,7 +184,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         return algorithmDescriptions.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private WebView webView;
         private Button nextButton;
         private View viewTimeLine;
@@ -181,7 +192,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         private RecyclerView optionsRecyclerView;
         private RecyclerView answersRecyclerView;
         private CardView cardView;
-
+        private Integer id;
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -211,13 +222,19 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         return keyNodes;
     }
 
-    public void setKeyNodesList(List<AlgorithmDescription> list, Map<AlgorithmDescription, List<AlgorithmCardViewModel>> recyclerMap) {
-//        if (appendList){
-//        this.keyNodes.addAll(list);
-//        } else {
+    public void setKeyNodesList(
+            List<AlgorithmDescription> list, Map<AlgorithmDescription,
+            List<AlgorithmCardViewModel>> recyclerMap,
+            int typeOfUpdate,
+            int updateIndex) {
+
         this.keyNodes = list;
+        if (typeOfUpdate == 0) {
+            notifyItemRemoved(updateIndex);
+        } else {
+            notifyItemInserted(currentNode);
+        }
 //        this.algorithmDescriptions = recyclerMap;
-        notifyItemInserted(currentNode);
 //        notifyDataSetChanged();
 //        }
     }

@@ -67,7 +67,13 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
         viewModel.getLiveNodeList().observe(this, nodes -> {
             assert nodes != null;
-            mainNodeAdapter.setKeyNodesList(nodes, viewModel.getRecyclerMap());
+            mainNodeAdapter.setKeyNodesList(
+                    nodes,
+                    viewModel.getRecyclerMap(),
+                    viewModel.getRecyclerUpdate().getTypeOfUpdate(),
+                    viewModel.getRecyclerUpdate().getUpdateIndex());
+
+           viewModel.setRecyclerDefault();
             Objects.requireNonNull(recyclerView.getLayoutManager()).scrollToPosition(mainNodeAdapter.getItemCount() - 1);
         });
 
@@ -94,7 +100,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
-                viewModel.feedMapChild(mainNodeAdapter.getList().get(selectedPosition));
+                viewModel.feedMap(mainNodeAdapter.getList().get(selectedPosition));
             }
         });
         initViews();

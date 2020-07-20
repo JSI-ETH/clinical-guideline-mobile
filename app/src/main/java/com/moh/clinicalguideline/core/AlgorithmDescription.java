@@ -14,10 +14,9 @@ public class AlgorithmDescription implements BaseModel {
     private int Page;
     private String NodeTypeCode;
     private int ChildCount;
-    private Integer  FirstChildNodeId;
+    private Integer FirstChildNodeId;
     private UUID rowguid;
     //private String FullTitle;
-
     public int getId() {
         return Id;
     }
