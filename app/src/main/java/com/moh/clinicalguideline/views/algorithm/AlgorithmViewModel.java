@@ -178,76 +178,89 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     }
 
     @SuppressLint("CheckResult")
-    public void feedMap(AlgorithmDescription node) {
-        List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
+    public void feedMap(AlgorithmDescription node, Boolean isOptionNode) {
+        if (isOptionNode){
+            List<AlgorithmDescription> subNodes = new ArrayList<>();
+            subNodes.add(node);
+            populateRecycler(node, subNodes);
+        } else {
         nodeRepository.getChildNode(node.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(nodes -> {
-                    for (AlgorithmDescription aNodeDescription : nodes) {
-                        if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
-                            nodeRepository
-                                    .getChildNode(aNodeDescription.getId())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(childNodes -> {
-                                        for (AlgorithmDescription childNode : childNodes) {
-                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
-                                        }
-                                        updateRecyclerValues(aNodeDescription, optionsAndAnswers);
-                                    });
-                        } else {
-                            List<AlgorithmCardViewModel> previousOptions = recyclerMap.get(node);
-                            if (previousOptions != null){
-                                previousOptions.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
-                                recyclerMap.put(node, previousOptions);
-                            } else {
-                                optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
-                                recyclerMap.put(node, optionsAndAnswers);
-                            }
-                            reverseRecyclerMap.put(aNodeDescription, aNodeDescription);
-//                            if (!nodeListIds.contains(aNodeDescription.getId())) {
-                                nodeListIds.add(aNodeDescription.getId());
-                                nodeList.add(aNodeDescription);
-                                liveNodeList.setValue(nodeList);
-//                            }
-                        }
-                    }
+                    populateRecycler(node, nodes);
                 });
+        }
     }
 
     @SuppressLint("CheckResult")
-    public void feedMapChild(AlgorithmDescription node) {
+    public void populateRecycler(AlgorithmDescription parentNode, List<AlgorithmDescription> subNodes) {
         List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
-        nodeRepository.getChildNode(node.getId())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(nodes -> {
-                    if (nodes.size() == 0) {
-//                        reverseRecyclerMap.put(node, node);
-                        updateRecyclerValues(node, optionsAndAnswers);
-                    }
-                    for (AlgorithmDescription aNodeDescription : nodes) {
-                        if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
-                            nodeRepository.getChildNode(aNodeDescription.getId())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(childNodes -> {
-                                        for (AlgorithmDescription childNode : childNodes) {
-                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
-//                                            reverseRecyclerMap.put(childNode, aNodeDescription);
-                                        }
-                                        updateRecyclerValues(aNodeDescription, optionsAndAnswers);
-                                    });
-                        } else {
-                            optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
-                            recyclerMap.put(node, optionsAndAnswers);
-                            reverseRecyclerMap.put(aNodeDescription, node);
-                            if (!nodeListIds.contains(aNodeDescription.getId())) {
-                                nodeListIds.add(aNodeDescription.getId());
-                                nodeList.add(aNodeDescription);
-                                liveNodeList.setValue(nodeList);
+        for (AlgorithmDescription aNodeDescription : subNodes) {
+            if (aNodeDescription.getChildCount() > 1 && subNodes.size() == 1) {
+                nodeRepository
+                        .getChildNode(aNodeDescription.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(childNodes -> {
+                            for (AlgorithmDescription childNode : childNodes) {
+                                optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
                             }
-                        }
-                    }
-                });
+                            updateRecyclerValues(aNodeDescription, optionsAndAnswers);
+                        });
+            } else {
+                List<AlgorithmCardViewModel> previousOptions = recyclerMap.get(parentNode);
+                if (previousOptions != null){
+                    previousOptions.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
+                    recyclerMap.put(parentNode, previousOptions);
+                } else {
+                    optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
+                    recyclerMap.put(parentNode, optionsAndAnswers);
+                }
+                reverseRecyclerMap.put(aNodeDescription, aNodeDescription);
+//                            if (!nodeListIds.contains(aNodeDescription.getId())) {
+                nodeListIds.add(aNodeDescription.getId());
+                nodeList.add(aNodeDescription);
+                liveNodeList.setValue(nodeList);
+//                            }
+            }
+        }
+
     }
+
+
+//    @SuppressLint("CheckResult")
+//    public void feedMapChild(AlgorithmDescription node) {
+//        List<AlgorithmCardViewModel> optionsAndAnswers = new ArrayList<>();
+//        nodeRepository.getChildNode(node.getId())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(nodes -> {
+//                    if (nodes.size() == 0) {
+////                        reverseRecyclerMap.put(node, node);
+//                        updateRecyclerValues(node, optionsAndAnswers);
+//                    }
+//                    for (AlgorithmDescription aNodeDescription : nodes) {
+//                        if (aNodeDescription.getChildCount() > 1 && nodes.size() == 1) {
+//                            nodeRepository.getChildNode(aNodeDescription.getId())
+//                                    .observeOn(AndroidSchedulers.mainThread())
+//                                    .subscribe(childNodes -> {
+//                                        for (AlgorithmDescription childNode : childNodes) {
+//                                            optionsAndAnswers.add(new AlgorithmCardViewModel(childNode, childNode.getIsCondition()));
+////                                            reverseRecyclerMap.put(childNode, aNodeDescription);
+//                                        }
+//                                        updateRecyclerValues(aNodeDescription, optionsAndAnswers);
+//                                    });
+//                        } else {
+//                            optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
+//                            recyclerMap.put(node, optionsAndAnswers);
+//                            reverseRecyclerMap.put(aNodeDescription, node);
+//                            if (!nodeListIds.contains(aNodeDescription.getId())) {
+//                                nodeListIds.add(aNodeDescription.getId());
+//                                nodeList.add(aNodeDescription);
+//                                liveNodeList.setValue(nodeList);
+//                            }
+//                        }
+//                    }
+//                });
+//    }
 
     void updateRecyclerValues(AlgorithmDescription aNodeDescription, List<AlgorithmCardViewModel> optionsAndAnswers){
             recyclerMap.put(aNodeDescription, optionsAndAnswers);
@@ -299,7 +312,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             if (node.getChildCount() > 1) {
                 nodeList.add(node);
                 liveNodeList.setValue(nodeList);
-                feedMap(node);
+                feedMap(node, false);
             }
             this.node.setValue(node);
             this.onNodeSelectedListener.onNodeSelected(node);
@@ -308,7 +321,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             LoadNode(node.getFirstChildNodeId());
             nodeList.add(node);
             liveNodeList.setValue(nodeList);
-            feedMap(node);
+            feedMap(node, false);
         }
 
         Log.i(TAG, "Node id: " + node.getId() + "\tNode title: " + node.getTitle() + " nodeList size " + nodeList.size() + " Child count " + node.getChildCount());
@@ -323,7 +336,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             liveNodeList.setValue(nodeList);
             mainRecyclerAdapter.notifyDataSetChanged();
             textView.setText(node.getTitle());
-            feedMap(node);
+            feedMap(node, false);
         }
     }
 

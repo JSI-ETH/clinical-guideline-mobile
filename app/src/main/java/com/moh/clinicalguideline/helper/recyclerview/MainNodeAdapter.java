@@ -122,7 +122,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                                 Objects.requireNonNull(algorithmDescriptions
                                         .get(keyNodes.get(currentItem)))
                                         .get(position)
-                                        .getNode());
+                                        .getNode(), true);
                 } catch (Exception ignored) {
                 }
             }
@@ -152,7 +152,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                                 Objects.requireNonNull(algorithmDescriptions
                                         .get(keyNodes.get(keyNodes.size() - 1)))
                                 .get(position)
-                                .getNode());
+                                .getNode(), false);
                 } catch (Exception e) {
 
                 }
