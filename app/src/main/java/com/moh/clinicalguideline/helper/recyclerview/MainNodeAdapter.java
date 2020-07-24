@@ -1,7 +1,6 @@
 package com.moh.clinicalguideline.helper.recyclerview;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
@@ -22,7 +21,6 @@ import com.moh.clinicalguideline.views.algorithm.AlgorithmCardViewModel;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -59,16 +57,11 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     }
 
     @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ContentViewHelper cvh = new ContentViewHelper();
 //        keyNodes = cvh.removeDuplicateNodes(keyNodes);
         int currentItem = keyNodes.size() <= i + 1 ? i : i + 1;
-        int difference = keyNodes.size() - currentItem;
+//        int difference = keyNodes.size() - currentItem;
 //        for (int d = 0; d < difference; d++) {
         AlgorithmDescription model = keyNodes.get(currentItem);
         if (model.getChildCount() == 0) {
@@ -91,9 +84,11 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                 for (AlgorithmCardViewModel alCVM : Objects.requireNonNull(algorithmDescriptions.get(model))) {
                     if (alCVM.isCondition()) {
                         Log.d(TAG, "onBindViewHolder: " + alCVM.getTitle());
-                        answers.add(alCVM);
+                        if (alCVM.getId() != model.getId() && model.getDescription() != null && model.getHasDescription())
+                            answers.add(alCVM);
                     } else {
-                        options.add(alCVM);
+                        if (alCVM.getId() != model.getId() && model.getDescription() != null && model.getHasDescription())
+                            options.add(alCVM);
                     }
                 }
             }
@@ -113,7 +108,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             public void onItemClick(int position, View v) {
                 try {
                     int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
-                    int ansPos =  algorithmViewModel.getOptionAnswerIndex(id);
+                    int ansPos =  algorithmViewModel.getOptionAnswerIndex(id,false);
                     if (ansPos != -1)
                         algorithmViewModel.removeRecyclerValues(ansPos);
                     currentItem = keyNodes.size() - 1;
@@ -122,7 +117,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                                 Objects.requireNonNull(algorithmDescriptions
                                         .get(keyNodes.get(currentItem)))
                                         .get(position)
-                                        .getNode(), true);
+                                        .getNode(), keyNodes.get(algorithmViewModel.getOptionAnswerIndex(id,true)));
                 } catch (Exception ignored) {
                 }
             }
@@ -143,7 +138,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             public void onItemClick(int position, View v) {
                 try {
                 int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
-                int ansPos =  algorithmViewModel.getOptionAnswerIndex(id);
+                int ansPos =  algorithmViewModel.getOptionAnswerIndex(id, false);
                 if (ansPos != -1)
                     algorithmViewModel.removeRecyclerValues(ansPos);
                 currentItem = keyNodes.size() - 1;
@@ -152,7 +147,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                                 Objects.requireNonNull(algorithmDescriptions
                                         .get(keyNodes.get(keyNodes.size() - 1)))
                                 .get(position)
-                                .getNode(), false);
+                                .getNode(), keyNodes.get(algorithmViewModel.getOptionAnswerIndex(id,true)));
                 } catch (Exception e) {
 
                 }

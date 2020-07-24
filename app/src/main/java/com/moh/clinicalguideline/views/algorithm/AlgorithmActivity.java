@@ -100,7 +100,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
-                viewModel.feedMap(mainNodeAdapter.getList().get(selectedPosition), false);
+                viewModel.feedMap(mainNodeAdapter.getList().get(selectedPosition), null);
             }
         });
         initViews();

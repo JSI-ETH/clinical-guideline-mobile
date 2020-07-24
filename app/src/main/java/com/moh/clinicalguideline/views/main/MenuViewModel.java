@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.views.main;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
@@ -42,12 +43,14 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
                 .subscribe(this::OnLoaded,this::onLoadError);
     }
 
+    @SuppressLint("CheckResult")
     public void loadChildSymptom() {
         setLoading(true);
         nodeRepository.getChildSymptom()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnLoaded,this::onLoadError);
     }
+    @SuppressLint("CheckResult")
     public void loadChronic() {
         setLoading(true);
         nodeRepository.getChronicCare()
@@ -55,6 +58,7 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
                 .subscribe(this::OnLoaded,this::onLoadError);
     }
 
+    @SuppressLint("CheckResult")
     public void loadAll() {
         setLoading(true);
         nodeRepository.getAllSymptoms()
