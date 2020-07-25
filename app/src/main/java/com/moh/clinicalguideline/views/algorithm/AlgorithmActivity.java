@@ -49,7 +49,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.algorithm_activity_main);
-
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
         RecyclerView recyclerView = findViewById(R.id.node_recycler_view);
         toolbar = findViewById(R.id.toolbar);
         appBarLayout = findViewById(R.id.appBarLayout);
@@ -58,7 +58,6 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
 
         textViewFooter.setMovementMethod(new ScrollingMovementMethod());
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AlgorithmViewModel.class);
         footersList = menuViewModel.getFooterList();
 
         viewModel.setNavigator(this);
@@ -100,6 +99,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
+                if (selectedPosition < mainNodeAdapter.getList().size() && selectedPosition != -1)
                 viewModel.feedMap(mainNodeAdapter.getList().get(selectedPosition), null);
             }
         });
@@ -108,7 +108,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
     public void initViews() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             appBarLayout.setOutlineProvider(null);

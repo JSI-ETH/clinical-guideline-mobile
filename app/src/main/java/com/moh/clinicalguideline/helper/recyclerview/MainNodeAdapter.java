@@ -68,7 +68,7 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             viewHolder.viewTimeLine.setVisibility(View.GONE);
         }
 
-        if (model.getHasDescription()) {
+        if (model.getHasDescription() || model.getHasTitle()) {
             displayWebView(viewHolder, cvh, model, i);
             currentNode = keyNodes.indexOf(model);
         } else if (algorithmDescriptions.get(model) != null && Objects.requireNonNull(algorithmDescriptions.get(model)).size() > 0 && !model.getHasDescription()) {
@@ -80,11 +80,13 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         options = new ArrayList<>();
 
         for (AlgorithmDescription ald : algorithmDescriptions.keySet()) {
-            if (ald.getId() == model.getId()) {
+            if (ald.getId() == model.getId() || algorithmDescriptions.keySet().size() == 1) {
                 for (AlgorithmCardViewModel alCVM : Objects.requireNonNull(algorithmDescriptions.get(ald))) {
 //                    if (alCVM.isCondition()) {
 //                        Log.d(TAG, "onBindViewHolder: " + alCVM.getTitle());
-                        if (alCVM.getId() != model.getId() && model.getDescription() != null && model.getHasDescription())
+                        if (alCVM.getId() != model.getId() && (
+                                (model.getDescription() != null) ||
+                                        (model.getTitle().equals("") && model.getDescription().equals(""))))
                             answers.add(alCVM);
 //                    }
 //                    else {
