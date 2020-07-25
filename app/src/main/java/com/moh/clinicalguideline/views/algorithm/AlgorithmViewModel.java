@@ -40,7 +40,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private String symptomTitle = "";
     private Map<AlgorithmDescription, List<AlgorithmCardViewModel>> recyclerMap;
     // option/ans map to node
-    private Map< AlgorithmDescription, AlgorithmDescription> reverseRecyclerMap;
+    public Map< AlgorithmDescription, AlgorithmDescription> reverseRecyclerMap;
     private RecyclerUpdate recyclerUpdate;
 
     private MutableLiveData<AlgorithmDescription> algorithmNodeDescription;
@@ -206,7 +206,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 .subscribe(nodes -> {
                     if (useSameForParent && nodes.size() > 0){
                         populateRecycler(nodes.get(0), nodes);
-                    }else {
+                    } else {
                     populateRecycler(node, nodes);
                     }
                 });

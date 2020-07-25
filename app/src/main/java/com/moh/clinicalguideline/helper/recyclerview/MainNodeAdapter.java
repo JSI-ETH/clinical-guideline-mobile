@@ -113,12 +113,16 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                     if (ansPos != -1)
                         algorithmViewModel.removeRecyclerValues(ansPos);
                     currentItem = keyNodes.size() - 1;
+
+                    AlgorithmDescription childNode = null;
+                    for (AlgorithmDescription ald : algorithmViewModel.reverseRecyclerMap.keySet()) {
+                        if (ald.getTitle() == ((AppCompatButton) v).getText()) {
+                            childNode = ald;
+                            break;
+                        }
+                    }
                 algorithmViewModel
-                        .feedMap(
-                                Objects.requireNonNull(algorithmDescriptions
-                                        .get(keyNodes.get(currentItem)))
-                                        .get(position)
-                                        .getNode(), keyNodes.get(algorithmViewModel.getOptionAnswerIndex(id,true)));
+                        .feedMap(childNode, keyNodes.get(algorithmViewModel.getOptionAnswerIndex(id,true)));
                 } catch (Exception ignored) {
                 }
             }
