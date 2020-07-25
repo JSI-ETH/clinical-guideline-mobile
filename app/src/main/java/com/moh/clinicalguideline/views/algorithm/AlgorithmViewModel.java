@@ -185,7 +185,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             subNodes.add(node);
             populateRecycler(node, subNodes);
             } else {
-//                List<AlgorithmDescription> subNodes = new ArrayList<>();
                 if (node.getId() == parentNode.getId()) {
                     getChildNode(node, true);
 
@@ -194,10 +193,6 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                     subNodes.add(node);
                     populateRecycler(node, subNodes);
                 }
-
-//                subNodes.add(node);
-//                AlgorithmDescription parentNode = getParentNode(ansPos);
-//                populateRecycler(parentNode, subNodes);
             }
         } else {
             getChildNode(node, false);
@@ -233,7 +228,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                         });
             } else {
                 List<AlgorithmCardViewModel> previousOptions = recyclerMap.get(parentNode);
-                if (previousOptions != null){
+                if (previousOptions != null && subNodes.size() == 1){
                     previousOptions = new ArrayList<>();
                     previousOptions.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
                     recyclerMap.put(aNodeDescription, previousOptions);

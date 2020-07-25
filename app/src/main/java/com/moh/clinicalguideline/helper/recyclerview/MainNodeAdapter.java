@@ -80,16 +80,17 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
         options = new ArrayList<>();
 
         for (AlgorithmDescription ald : algorithmDescriptions.keySet()) {
-            if (ald.equals(model)) {
-                for (AlgorithmCardViewModel alCVM : Objects.requireNonNull(algorithmDescriptions.get(model))) {
-                    if (alCVM.isCondition()) {
-                        Log.d(TAG, "onBindViewHolder: " + alCVM.getTitle());
+            if (ald.getId() == model.getId()) {
+                for (AlgorithmCardViewModel alCVM : Objects.requireNonNull(algorithmDescriptions.get(ald))) {
+//                    if (alCVM.isCondition()) {
+//                        Log.d(TAG, "onBindViewHolder: " + alCVM.getTitle());
                         if (alCVM.getId() != model.getId() && model.getDescription() != null && model.getHasDescription())
                             answers.add(alCVM);
-                    } else {
-                        if (alCVM.getId() != model.getId() && model.getDescription() != null && model.getHasDescription())
-                            options.add(alCVM);
-                    }
+//                    }
+//                    else {
+//                        if (alCVM.getId() != model.getId() && model.getDescription() != null && model.getHasDescription())
+//                            options.add(alCVM);
+//                    }
                 }
             }
         }
@@ -137,19 +138,18 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
             @Override
             public void onItemClick(int position, View v) {
                 try {
-                int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
-                int ansPos =  algorithmViewModel.getOptionAnswerIndex(id, false);
-                if (ansPos != -1)
-                    algorithmViewModel.removeRecyclerValues(ansPos);
-                currentItem = keyNodes.size() - 1;
-                algorithmViewModel
-                        .feedMap(
-                                Objects.requireNonNull(algorithmDescriptions
-                                        .get(keyNodes.get(keyNodes.size() - 1)))
-                                .get(position)
-                                .getNode(), keyNodes.get(algorithmViewModel.getOptionAnswerIndex(id,true)));
-                } catch (Exception e) {
-
+                    int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
+                    int ansPos =  algorithmViewModel.getOptionAnswerIndex(id,false);
+                    if (ansPos != -1)
+                        algorithmViewModel.removeRecyclerValues(ansPos);
+                    currentItem = keyNodes.size() - 1;
+                    algorithmViewModel
+                            .feedMap(
+                                    Objects.requireNonNull(algorithmDescriptions
+                                            .get(keyNodes.get(currentItem)))
+                                            .get(position)
+                                            .getNode(), keyNodes.get(algorithmViewModel.getOptionAnswerIndex(id,true)));
+                } catch (Exception ignored) {
                 }
             }
 
