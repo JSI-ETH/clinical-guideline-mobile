@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.helper;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 
 import org.json.JSONArray;
@@ -9,14 +10,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FooterReader {
     public String loadJSONFromAsset(Context context) {
         String json = null;
         try {
-            InputStream is = context.getAssets().open("db/footer.json");
+            InputStream is = context.getAssets().open("db/cgFixes.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -28,9 +28,9 @@ public class FooterReader {
         return json;
     }
 
-    public HashMap<Integer, Integer> createFooterList(Context context) {
-//        ArrayList<HashMap<Integer, Integer>> footersList = new ArrayList<>();
-        HashMap<Integer, Integer> footerMap = new HashMap<>();
+    public MutableLiveData<HashMap<Integer, Integer>> createFooterList(Context context) {
+       HashMap<Integer, Integer>  footerMap = new HashMap<>();
+       MutableLiveData<HashMap<Integer, Integer>>  footerMapLive = new MutableLiveData<>();
         try {
             JSONObject obj = new JSONObject(loadJSONFromAsset(context));
             JSONArray footersArray = obj.getJSONArray("footers");
@@ -40,12 +40,12 @@ public class FooterReader {
                 Integer id = footerJsonObj.getInt("id");
 
                 footerMap.put(page, id);
-//                footersList.add(footerMap);
+                footerMapLive.postValue(footerMap);
             }
-                return footerMap;
+                return footerMapLive;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return footerMap;
+        return footerMapLive;
     }
 }

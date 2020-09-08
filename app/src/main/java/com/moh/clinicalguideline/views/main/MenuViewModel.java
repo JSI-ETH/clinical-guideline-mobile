@@ -1,6 +1,6 @@
 package com.moh.clinicalguideline.views.main;
 
-import android.annotation.SuppressLint;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +25,7 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
 
     private FilterableLayoutAdapter<AlgorithmDescription> adapter;
     private final NodeRepository nodeRepository;
-    public static HashMap<Integer, Integer> footersList = null;
+    public static MutableLiveData<HashMap<Integer, Integer>> footersList = null;
 
     private boolean loading;
     @Inject
@@ -43,14 +43,12 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
                 .subscribe(this::OnLoaded,this::onLoadError);
     }
 
-    @SuppressLint("CheckResult")
     public void loadChildSymptom() {
         setLoading(true);
         nodeRepository.getChildSymptom()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::OnLoaded,this::onLoadError);
     }
-    @SuppressLint("CheckResult")
     public void loadChronic() {
         setLoading(true);
         nodeRepository.getChronicCare()
@@ -58,7 +56,6 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
                 .subscribe(this::OnLoaded,this::onLoadError);
     }
 
-    @SuppressLint("CheckResult")
     public void loadAll() {
         setLoading(true);
         nodeRepository.getAllSymptoms()
@@ -74,7 +71,7 @@ public class MenuViewModel extends BaseViewModel<MenuNavigator> {
         }
     }
 
-    public HashMap<Integer, Integer> getFooterList() {
+    public MutableLiveData<HashMap<Integer, Integer>>  getFooterList() {
         return footersList;
     }
 

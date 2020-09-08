@@ -1,5 +1,6 @@
 package com.moh.clinicalguideline.views.algorithm;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProvider;
 
 import android.arch.lifecycle.ViewModelProviders;
@@ -43,7 +44,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
     TextView textViewSymptomTitle, textViewFooter;
     private MainNodeAdapter mainNodeAdapter;
     private ProgressBar loadingProgressBar;
-    public static HashMap<Integer, Integer> footersList = null;
+    public static MutableLiveData<HashMap<Integer, Integer>>  footersList = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,9 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
 
         textViewFooter.setMovementMethod(new ScrollingMovementMethod());
-        footersList = menuViewModel.getFooterList();
+         menuViewModel.getFooterList().observe(this, footers -> {
+             footersList.postValue(footers);
+         } );
 
         viewModel.setNavigator(this);
         int nodeId = getIntent().getExtras().getInt(Extra_NodeId, 0);
@@ -121,7 +124,7 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
         textViewFooter.setText(Html.fromHtml(String.format("%s%s", textViewFooter.getText().toString() + "\n", footerText)));
     }
 
-    public static HashMap<Integer, Integer> getFooterList() {
+    public static MutableLiveData<HashMap<Integer, Integer>> getFooterList() {
         return footersList;
     }
 }

@@ -136,29 +136,6 @@ public class MenuActivity extends BaseActivity implements MenuNavigator {
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) symptomsListView
                     .getLayoutManager();
             final int[] firstVisibleInListview = {linearLayoutManager.findFirstVisibleItemPosition()};
-
-//            symptomsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                @Override
-//                public void onScrolled(RecyclerView recyclerView,
-//                                       int dx, int dy) {
-//                    super.onScrolled(recyclerView, dx, dy);
-//                    int currentFirstVisible = linearLayoutManager.findFirstVisibleItemPosition();
-//
-//                    if (currentFirstVisible > firstVisibleInListview[0] && firstVisibleInListview[0]> -1 )
-//                    {
-//                        Log.d("RecyclerView scrolled: ", "scroll down!");
-//                        searchView.setVisibility(View.GONE);
-//                    }
-//                    else  if (currentFirstVisible < firstVisibleInListview[0])
-//                    {
-//                        Log.d("RecyclerView scrolled: ", "scroll up!");
-//                        searchView.setVisibility(View.VISIBLE);
-//                    }
-//
-//                    firstVisibleInListview[0] = currentFirstVisible;
-//                }
-//            });
-
         }
     }
 

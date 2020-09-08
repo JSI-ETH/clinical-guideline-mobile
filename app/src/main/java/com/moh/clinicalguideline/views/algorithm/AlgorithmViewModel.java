@@ -62,7 +62,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
         this.nodeOptions = new ArrayList<>();
         this.recyclerMap = new HashMap<>();
         this.reverseRecyclerMap = new HashMap<>();
-        footersList = AlgorithmActivity.getFooterList();
+        footersList = AlgorithmActivity.getFooterList().getValue();
         this.onNodeSelectedListener = algorithmDescription -> {
         };
         recyclerUpdate = new RecyclerUpdate(-1,-1);
@@ -207,7 +207,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                     if (useSameForParent && nodes.size() > 0){
                         populateRecycler(nodes.get(0), nodes);
                     } else {
-                    populateRecycler(node, nodes);
+                        populateRecycler(node, nodes);
                     }
                 });
     }
@@ -233,6 +233,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                     previousOptions.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
                     recyclerMap.put(aNodeDescription, previousOptions);
                 } else {
+
                     optionsAndAnswers.add(new AlgorithmCardViewModel(aNodeDescription, aNodeDescription.getIsCondition()));
                     recyclerMap.put(parentNode, optionsAndAnswers);
                 }

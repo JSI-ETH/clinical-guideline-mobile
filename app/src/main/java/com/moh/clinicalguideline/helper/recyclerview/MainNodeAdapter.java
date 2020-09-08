@@ -84,9 +84,12 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                 for (AlgorithmCardViewModel alCVM : Objects.requireNonNull(algorithmDescriptions.get(ald))) {
 //                    if (alCVM.isCondition()) {
 //                        Log.d(TAG, "onBindViewHolder: " + alCVM.getTitle());
-                        if (alCVM.getId() != model.getId() && (
-                                (model.getDescription() != null) ||
-                                        (model.getTitle().equals("") && model.getDescription().equals(""))))
+                        if (alCVM.getId() != model.getId() && model.getChildCount() != 1
+//                                && (!model.getDescription().equals(""))
+//                                && (
+//                                (!model.getDescription().equals("")) ||
+//                                        (model.getTitle().equals("") && model.getDescription().equals("")))
+                        )
                             answers.add(alCVM);
 //                    }
 //                    else {
