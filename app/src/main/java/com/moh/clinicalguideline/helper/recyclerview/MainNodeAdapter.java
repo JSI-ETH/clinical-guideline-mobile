@@ -137,6 +137,10 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
 
             }
         });
+
+        if (algorithmDescriptions.size() == 2) {
+
+        }
     }
 
     private void addOptionsToNode(ViewHolder viewHolder, AlgorithmDescription model) {

@@ -50,6 +50,8 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
     private MainNodeAdapter mainRecyclerAdapter;
     private static final String TAG = AlgorithmViewModel.class.getSimpleName();
     public static HashMap<Integer, Integer> footersList = null;
+    public boolean duplicatesRemoved = false;
+    public boolean isFirstChildDuplicate = false;
 
     @Inject
     public AlgorithmViewModel(NodeRepository nodeRepository) {
@@ -195,7 +197,19 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
                 }
             }
         } else {
-            getChildNode(node, false);
+            if (nodeList.size() >= 3)
+                isFirstChildDuplicate = false;
+            if (!isFirstChildDuplicate) {
+            getChildNode(node, true);
+            isFirstChildDuplicate = true;
+            }
+        }
+    }
+
+    public void removeDuplicateFirstNode() {
+        if(nodeList.size() == 2 && !duplicatesRemoved) {
+            removeRecyclerValues(1);
+            duplicatesRemoved = true;
         }
     }
 
