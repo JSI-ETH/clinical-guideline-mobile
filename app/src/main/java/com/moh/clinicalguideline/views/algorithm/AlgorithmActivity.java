@@ -102,8 +102,9 @@ public class AlgorithmActivity extends BaseActivity implements AlgorithmNavigato
 
             @Override
             public void selectNextChildNode(int selectedPosition, int itemPosition, View v) {
-                if (selectedPosition < mainNodeAdapter.getList().size() && selectedPosition != -1) {
+                if (selectedPosition < mainNodeAdapter.getList().size() && selectedPosition != -1 && itemPosition + 1 > mainNodeAdapter.lastActivatedNode) {
                     viewModel.isFirstChildDuplicate = false;
+                    mainNodeAdapter.lastActivatedNode = selectedPosition;
                 viewModel.feedMap(mainNodeAdapter.getList().get(selectedPosition), null);
                 }
             }

@@ -36,6 +36,8 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
     List<AlgorithmCardViewModel> answers = new ArrayList<>();
     List<AlgorithmCardViewModel> options = new ArrayList<>();
     private int currentItem = 0;
+    private boolean firstNodePassed = false;
+    public int lastActivatedNode = -1;
 
     public MainNodeAdapter(Context context,
                            List<AlgorithmDescription> keyNodes,
@@ -115,8 +117,10 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                 try {
                     int id = Integer.parseInt((String) ((AppCompatButton) v).getHint()) ;
                     int ansPos =  algorithmViewModel.getOptionAnswerIndex(id,false);
-                    if (ansPos != -1)
-                        algorithmViewModel.removeRecyclerValues(ansPos);
+                    if (ansPos != -1 && ansPos > lastActivatedNode) {
+                        lastActivatedNode = ansPos;
+                       algorithmViewModel.removeRecyclerValues(ansPos);
+                    }
                     currentItem = keyNodes.size() - 1;
 
                     AlgorithmDescription childNode = null;
@@ -126,7 +130,12 @@ public class MainNodeAdapter extends RecyclerView.Adapter<MainNodeAdapter.ViewHo
                             break;
                         }
                     }
-                algorithmViewModel
+                    // To disallow selecting an already passed node
+                    if (currentItem == 2 && !firstNodePassed)
+                        firstNodePassed = true;
+
+                    if (ansPos == currentItem || !firstNodePassed)
+                        algorithmViewModel
                         .feedMap(childNode, keyNodes.get(algorithmViewModel.getOptionAnswerIndex(id,true)));
                 } catch (Exception ignored) {
                 }
