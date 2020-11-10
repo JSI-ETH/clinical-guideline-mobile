@@ -336,6 +336,7 @@ public class AlgorithmViewModel extends BaseViewModel<AlgorithmNavigator> {
             nodeList.clear();
             recyclerMap.clear();
             reverseRecyclerMap.clear();
+            isFirstChildDuplicate = false;
             nodeList.add(node);
             liveNodeList.setValue(nodeList);
             mainRecyclerAdapter.notifyDataSetChanged();
