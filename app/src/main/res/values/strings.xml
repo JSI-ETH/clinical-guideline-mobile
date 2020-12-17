@@ -34,5 +34,6 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="notes">** Notes **</string>
     <string name="footer_placeholder">Notes</string>
+    <string name="agreed">agreed</string>
 
 </resources>

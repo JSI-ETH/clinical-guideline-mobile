@@ -3,8 +3,10 @@ package com.moh.clinicalguideline.views.main;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -98,13 +100,22 @@ public class MenuActivity extends BaseActivity implements MenuNavigator {
         }
         // Block Display Policy
         // Must agree to continue to use the app
-        final Dialog dialog = new Dialog(MenuActivity.this, android.R.style.Theme_Light);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.layout_agreement);
-        dialog.show();
-        Button agreeAndContinue = dialog.findViewById(R.id.agree_and_continue);
-        agreeAndContinue.setOnClickListener(v -> dialog.dismiss());
-        dialog.setCancelable(false);
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String agreementAccepted = sharedPref.getString(getResources().getString(R.string.agreed),"0") ;
+
+        if (agreementAccepted.equals("0")) {
+            final Dialog dialog = new Dialog(MenuActivity.this, android.R.style.Theme_Light);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.layout_agreement);
+            dialog.show();
+            Button agreeAndContinue = dialog.findViewById(R.id.agree_and_continue);
+            agreeAndContinue.setOnClickListener(v -> dialog.dismiss());
+            dialog.setCancelable(false);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(getString(R.string.agreed), "1");
+            editor.apply();
+        }
         //
         setContentView(R.layout.activity_menu);
         viewModel.setNavigator(this);
