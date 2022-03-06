@@ -1,9 +1,9 @@
 package com.moh.clinicalguideline.helper.recyclerview;
 
-import android.databinding.ViewDataBinding;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.databinding.library.baseAdapters.BR;
+import androidx.databinding.library.baseAdapters.BR;
 
 
 public class BaseViewHolder extends RecyclerView.ViewHolder {

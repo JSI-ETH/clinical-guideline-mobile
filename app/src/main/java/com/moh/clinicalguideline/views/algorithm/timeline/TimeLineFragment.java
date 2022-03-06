@@ -1,15 +1,15 @@
 package com.moh.clinicalguideline.views.algorithm.timeline;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.databinding.Observable;
-import android.databinding.ObservableList;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableList;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.moh.clinicalguideline.R;
 import com.moh.clinicalguideline.databinding.AlgorithmFragmentTimelineBinding;
-import com.moh.clinicalguideline.helper.recyclerview.SimpleLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseFragment;
 import com.moh.clinicalguideline.views.algorithm.AlgorithmViewModel;
 

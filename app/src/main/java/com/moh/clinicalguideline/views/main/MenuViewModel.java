@@ -1,9 +1,9 @@
 package com.moh.clinicalguideline.views.main;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.databinding.BindingAdapter;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.BindingAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 
 import com.moh.clinicalguideline.R;
@@ -13,7 +13,6 @@ import com.moh.clinicalguideline.helper.recyclerview.FilterableLayoutAdapter;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;
 import com.moh.clinicalguideline.repository.NodeRepository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.moh.clinicalguideline.views.algorithm.answers;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;

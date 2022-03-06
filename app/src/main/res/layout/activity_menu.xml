@@ -9,7 +9,7 @@
             type="com.moh.clinicalguideline.views.main.MenuViewModel" />
         <variable
             name="itemAnimator"
-            type="android.support.v7.widget.RecyclerView.ItemAnimator" />
+            type="androidx.recyclerview.widget.RecyclerView.ItemAnimator" />
 
         <variable
             name="simpleItemDecorator"
@@ -62,7 +62,7 @@
             android:layout_weight="1"
             android:visibility="@{menu.loading? View.VISIBLE : View.GONE}" />
 
-            <android.support.design.widget.CoordinatorLayout
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -72,20 +72,20 @@
                 android:paddingRight="@dimen/noPadding"
                 android:paddingTop="@dimen/noPadding">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     app:itemAnimator="@{itemAnimator}"
                     app:itemDecoration="@{simpleItemDecorator}"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:adapter="@{menu.adapter}"
                     tools:listitem="@layout/activity_menu_mlist"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                     />
 
-                <android.support.design.widget.BottomNavigationView
+                <com.google.android.material.bottomnavigation.BottomNavigationView
                     android:id="@+id/navigation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                     app:labelVisibilityMode="labeled"
                     app:menu="@menu/activity_menu" />
 
-            </android.support.design.widget.CoordinatorLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
     </FrameLayout>

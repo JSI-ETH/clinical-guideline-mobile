@@ -1,10 +1,8 @@
 package com.moh.clinicalguideline.helper.view;
 
 
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-
-import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 

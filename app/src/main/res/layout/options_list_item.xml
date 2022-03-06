@@ -8,7 +8,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -23,7 +23,7 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_layout_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,7 +46,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="@{item.title}" />
 
-                <android.support.constraint.Barrier
+                <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/tvTitleb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvTitleb"
                     tools:text="Content " />
 
-                <android.support.constraint.Barrier
+                <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/tvContentb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,8 +89,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvContentb" />
 
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

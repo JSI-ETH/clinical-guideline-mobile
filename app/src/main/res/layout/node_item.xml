@@ -7,7 +7,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true">
@@ -17,7 +17,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <!-- TODO: Put android:setWebViewClient="@{viewModel.client}" later -->
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/card_view_webView_holder"
                     android:layout_width="match_parent"
                     android:layout_marginEnd="10dp"
@@ -65,7 +65,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_options"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_answers"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -92,7 +92,7 @@
                     </LinearLayout>
                 </LinearLayout>
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
                 <View
                     android:id="@+id/time_line"
                     android:layout_width="3dp"
@@ -102,6 +102,6 @@
                     android:background="@color/gray4"/>
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </RelativeLayout>

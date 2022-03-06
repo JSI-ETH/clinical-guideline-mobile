@@ -1,7 +1,7 @@
 package com.moh.clinicalguideline.setup;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.moh.clinicalguideline.helper.view.ViewModelFactory;
 import com.moh.clinicalguideline.setup.scope.ViewModelKey;

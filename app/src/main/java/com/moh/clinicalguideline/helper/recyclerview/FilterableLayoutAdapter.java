@@ -1,13 +1,11 @@
 package com.moh.clinicalguideline.helper.recyclerview;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.moh.clinicalguideline.helper.BaseModel;
-
-import com.moh.clinicalguideline.R;
 
 import java.util.ArrayList;
 import java.util.List;

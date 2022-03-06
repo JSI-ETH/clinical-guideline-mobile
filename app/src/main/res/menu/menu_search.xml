@@ -8,7 +8,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:icon="@android:drawable/ic_menu_search"
     android:iconifiedByDefault="false"
     app:showAsAction="always"
-    app:actionViewClass="android.support.v7.widget.SearchView">
+    app:actionViewClass="androidx.appcompat.widget.SearchView">
 </item>
 
 

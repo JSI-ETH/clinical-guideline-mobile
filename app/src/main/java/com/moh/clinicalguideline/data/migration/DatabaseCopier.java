@@ -1,6 +1,6 @@
 package com.moh.clinicalguideline.data.migration;
 
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 import android.util.Log;
 import com.moh.clinicalguideline.data.CgDatabase;

@@ -1,7 +1,7 @@
 package com.moh.clinicalguideline.views.algorithm.content;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.databinding.Bindable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.databinding.Bindable;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;

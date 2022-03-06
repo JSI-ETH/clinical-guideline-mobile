@@ -1,9 +1,9 @@
 package com.moh.clinicalguideline.helper.view;
-import android.arch.lifecycle.ViewModel;
-import android.databinding.Bindable;
-import android.databinding.Observable;
-import android.databinding.ObservableField;
-import android.databinding.PropertyChangeRegistry;
+import androidx.lifecycle.ViewModel;
+import androidx.databinding.Bindable;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableField;
+import androidx.databinding.PropertyChangeRegistry;
 import android.util.Log;
 
 import com.moh.clinicalguideline.BR;

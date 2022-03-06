@@ -1,6 +1,6 @@
 package com.moh.clinicalguideline.setup;
 
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 
 import com.moh.clinicalguideline.data.CgDatabase;

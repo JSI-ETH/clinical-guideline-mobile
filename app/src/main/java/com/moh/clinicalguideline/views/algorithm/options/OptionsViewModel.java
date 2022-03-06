@@ -1,8 +1,8 @@
 package com.moh.clinicalguideline.views.algorithm.options;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.MutableLiveData;
-import android.databinding.Bindable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.databinding.Bindable;
 
 import com.moh.clinicalguideline.BR;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;

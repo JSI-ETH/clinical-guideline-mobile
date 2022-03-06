@@ -1,20 +1,18 @@
 package com.moh.clinicalguideline.helper;
 
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
+
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-
-import com.moh.clinicalguideline.R;
 
 import java.io.IOException;
 import java.io.InputStream;

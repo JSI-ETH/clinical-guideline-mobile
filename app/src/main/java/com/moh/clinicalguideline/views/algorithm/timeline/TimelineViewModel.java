@@ -1,9 +1,9 @@
 package com.moh.clinicalguideline.views.algorithm.timeline;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.databinding.Bindable;
-import android.databinding.Observable;
-import android.databinding.ObservableList;
+import androidx.lifecycle.MutableLiveData;
+import androidx.databinding.Bindable;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableList;
 
 import com.moh.clinicalguideline.core.AlgorithmDescription;
 import com.moh.clinicalguideline.helper.view.BaseViewModel;

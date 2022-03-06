@@ -6,7 +6,7 @@
 <!--    xmlns:tools="http://schemas.android.com/tools">-->
 
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -15,21 +15,21 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:background="@color/secondaryBGColor">
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="true"
                 android:layout_marginBottom="10dp"
                 >
-                <android.support.design.widget.CollapsingToolbarLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
                     android:theme="@style/AppTheme.AppBarOverlay">
 
-                    <android.support.v7.widget.Toolbar
+                    <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
@@ -47,9 +47,9 @@
                             android:textColor="@color/white"
                             android:textSize="20sp" />
 
-                    </android.support.v7.widget.Toolbar>
-                </android.support.design.widget.CollapsingToolbarLayout>
-            </android.support.design.widget.AppBarLayout>
+                    </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
         <ProgressBar
             android:id="@+id/loadingProgressBar"
@@ -62,7 +62,7 @@
             android:indeterminateTint="@color/primaryDarkColor"
             android:progressTint="@color/primaryDarkColor" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/node_recycler_view"
             android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="match_parent"
@@ -85,5 +85,5 @@
             android:textColor="@color/white"
             android:textStyle="italic" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 <!--</LinearLayout>-->
